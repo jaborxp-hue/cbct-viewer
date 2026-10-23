@@ -59,6 +59,25 @@ button{cursor:pointer}
 .brand .tag{color:var(--fg-dim);font-size:13px}
 .lead{color:var(--fg-dim);max-width:62ch;margin:0;text-wrap:pretty}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.install{display:flex;align-items:center;gap:14px;background:linear-gradient(90deg,rgba(227,52,60,.12),rgba(227,52,60,.03));border:1px solid rgba(227,52,60,.35);border-radius:var(--r);padding:14px 16px}
+.install h2{margin:0 0 2px;font-size:15px}
+.install .fine{margin:0;line-height:1.7}
+.installTxt{flex:1;min-width:0}
+.install .kbd{display:inline-flex;align-items:center;gap:4px;background:var(--ink-2);border:1px solid var(--line);border-radius:6px;padding:0 6px;color:var(--fg);font-weight:600;white-space:nowrap}
+@media (max-width:600px){.install{flex-wrap:wrap}.install .ring{display:none}.installTxt{flex-basis:100%}}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;counter-reset:st}
+.steps li{counter-increment:st;background:var(--ink-1);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px 12px;display:flex;flex-direction:column;gap:4px;position:relative}
+.steps li::before{content:counter(st);position:absolute;inset-inline-end:12px;top:10px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:12.5px;display:grid;place-items:center}
+.steps b{font-size:14px}
+.steps span{color:var(--fg-dim);font-size:13px;line-height:1.7}
+@media (max-width:719px){
+  .steps{grid-template-columns:1fr;gap:0;background:var(--ink-1);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .steps li{border:0;border-radius:0;padding:10px 14px 10px 44px;padding-inline:14px 44px;gap:2px}
+  .steps li+li{border-top:1px solid var(--line)}
+  .steps li::before{top:12px}
+  .steps span{font-size:12.5px;line-height:1.6}
+  .grid2 > section[aria-labelledby="hOpen"]{order:-1}
+}
 @media (max-width:760px){.grid2{grid-template-columns:1fr}}
 .card{background:var(--ink-1);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
 .card h2{font-size:15px;font-weight:600;margin:0}
@@ -274,9 +293,25 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
       </div>
       <p class="lead" data-en="Open the scan exactly as the imaging center sends it (RAR, ZIP or a folder of slices). It opens on your device only and is never uploaded.">افتح ملف الأشعة كما يرسله مركز الأشعة (RAR أو ZIP أو مجلد الشرائح). يُفتح الملف داخل جهازك فقط، ولا يُرفع إلى أي خادم.</p>
 
+      <section class="install" id="installCard" hidden aria-labelledby="hInstall">
+        <span class="ring sm" aria-hidden="true"></span>
+        <div class="installTxt">
+          <h2 id="hInstall" data-en="Install the viewer on this device">ثبّت العارض على جهازك</h2>
+          <p class="fine" id="installHow"></p>
+        </div>
+        <button class="btn primary" type="button" id="btnInstall" data-en="Install">تثبيت</button>
+        <button class="iconbtn quiet" type="button" id="installLater" data-en="Later">لاحقاً</button>
+      </section>
+
+      <ol class="steps" aria-label="طريقة البدء">
+        <li><b data-en="Save the scan">احفظ ملف الأشعة</b><span data-en="From WhatsApp or Telegram, tap the file and choose “Save to Files” (iPhone) or “Download” (Android). Keep it compressed.">من واتساب أو تليجرام اضغط على الملف واختر «حفظ في الملفات» في آيفون أو «تنزيل» في أندرويد. اتركه مضغوطاً كما هو.</span></li>
+        <li><b data-en="Open it here">افتحه هنا</b><span data-en="Tap “Choose scan file” and pick the RAR or ZIP. On a computer you can also drag it onto the page.">اضغط «اختر ملف الأشعة» واختر ملف RAR أو ZIP. في الحاسوب يمكنك سحبه إلى الصفحة.</span></li>
+        <li><b data-en="Read and plan">اقرأ وخطّط</b><span data-en="Four views appear with the dental arch drawn automatically. The ? on each view explains what you see.">تظهر أربع نوافذ والقوس مرسوم تلقائياً. علامة ؟ على كل نافذة تشرح ما تراه.</span></li>
+      </ol>
+
       <div class="grid2">
         <section class="card" aria-labelledby="hCheck">
-          <h2 id="hCheck" data-en="1 · Device check">١ · فحص الجهاز</h2>
+          <h2 id="hCheck" data-en="Device check">فحص الجهاز</h2>
           <ul class="checks" id="checks"></ul>
           <div id="verdict"></div>
           <div class="field">
@@ -290,7 +325,7 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
         </section>
 
         <section class="card" aria-labelledby="hOpen">
-          <h2 id="hOpen" data-en="2 · Open the scan">٢ · افتح الأشعة</h2>
+          <h2 id="hOpen" data-en="Open the scan">افتح الأشعة</h2>
           <button class="btn primary big" type="button" id="btnOpen" data-en="Choose scan file">اختر ملف الأشعة</button>
           <div class="row">
             <button class="btn" type="button" id="btnFolder" data-en="Choose slices folder">اختر مجلد الشرائح</button>
@@ -419,6 +454,7 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
       <label>اللغة · Language</label>
       <div class="seg langSeg" role="group" aria-label="Language"><button type="button" data-lang="ar">عربي</button><button type="button" data-lang="en">English</button></div>
     </div>
+    <button class="btn" type="button" id="btnInstall2" data-en="Install the viewer on this device">تثبيت العارض على هذا الجهاز</button>
     <label class="toggle"><span><b data-en="Beginner mode">وضع المبتدئ</b><br><span class="fine" data-en="A ? on every pane explains what you are looking at.">علامة ؟ على كل نافذة تشرح ما تراه فيها.</span></span><input type="checkbox" class="beginnerTg" id="beginnerTg2"></label>
     <div class="field">
       <label data-en="Guide language">لغة الشرح</label>
@@ -537,7 +573,7 @@ const S = {
   lutVer: 0,
 };
 /* اللغة: tr(عربي، إنجليزي) */
-S.lang = (() => { try { const v = localStorage.getItem("cbct.lang"); if (v === "ar" || v === "en") return v; } catch (_) {} return /^ar/i.test(navigator.language || "ar") ? "ar" : "en"; })();
+S.lang = (() => { try { const v = localStorage.getItem("cbct.lang"); if (v === "ar" || v === "en") return v; } catch (_) {} return "ar"; })(); // العربية افتراضياً، ويُحفظ اختيار المستخدم
 function tr(ar, en) { return S.lang === "en" ? en : ar; }
 const VIEWS_AR = { axial: "محوري", coronal: "تاجي", sagittal: "سهمي", pano: "بانوراما", cross: "مقطع عرضي", "3d": "ثلاثي الأبعاد" };
 const VIEWS_EN = { axial: "Axial", coronal: "Coronal", sagittal: "Sagittal", pano: "Panoramic", cross: "Cross-section", "3d": "3D" };
@@ -2567,6 +2603,36 @@ $("nerveAuto").onclick = () => smartTrace();
 $("safeIn").onchange = (e) => { const v = parseFloat(e.target.value); if (v > 0 && v <= 5) { S.safety = v; updateSheet(); requestRender(); } };
 $("layoutSeg").querySelectorAll("button").forEach((b) => (b.onclick = () => { buildPanes(+b.dataset.n); assignDefaultViews(); }));
 initShare();
+/* ===== التثبيت كتطبيق ويب ===== */
+const INST = { evt: null };
+const isStandalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+const isIOS = () => /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+const onOwnSite = () => { try { return window.top === window && location.protocol === "https:"; } catch (_) { return false; } };
+function renderInstall() {
+  const card = $("installCard"); let later = false;
+  try { later = localStorage.getItem("cbct.installLater") === "1"; } catch (_) {}
+  if (isStandalone() || later || !onOwnSite()) { card.hidden = true; return; }
+  if (INST.evt) { // أندرويد وChrome والحاسوب: تثبيت بضغطة واحدة
+    $("installHow").innerHTML = tr("أيقونة على الشاشة الرئيسية، يفتح بملء الشاشة ويعمل بدون إنترنت بعد أول فتح.", "An icon on your home screen; opens full screen and works offline after the first visit.");
+    $("btnInstall").hidden = false; card.hidden = false;
+  } else if (isIOS()) { // آيفون وآيباد: لا يسمح النظام بزر تثبيت، فنشرح الخطوتين
+    $("installHow").innerHTML = tr(`اضغط زر المشاركة <span class="kbd">⬆︎</span> في Safari، ثم اختر <span class="kbd">إضافة إلى الشاشة الرئيسية ⊞</span>، ثم <span class="kbd">إضافة</span>.`,
+      `Tap the Share button <span class="kbd">⬆︎</span> in Safari, choose <span class="kbd">Add to Home Screen ⊞</span>, then <span class="kbd">Add</span>.`);
+    $("btnInstall").hidden = true; card.hidden = false;
+  } else card.hidden = true;
+}
+addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); INST.evt = e; renderInstall(); });
+addEventListener("appinstalled", () => { INST.evt = null; $("installCard").hidden = true; toast(tr("ثُبّت العارض. ستجده على الشاشة الرئيسية.", "Installed. You'll find it on your home screen.")); });
+$("btnInstall").onclick = async () => { if (!INST.evt) return; INST.evt.prompt(); try { await INST.evt.userChoice; } catch (_) {} INST.evt = null; renderInstall(); };
+$("installLater").onclick = () => { try { localStorage.setItem("cbct.installLater", "1"); } catch (_) {} $("installCard").hidden = true; };
+renderInstall();
+$("btnInstall2").onclick = async () => {
+  if (isStandalone()) { toast(tr("العارض مثبّت على هذا الجهاز ويعمل كتطبيق.", "The viewer is already installed on this device.")); return; }
+  if (INST.evt) { INST.evt.prompt(); try { await INST.evt.userChoice; } catch (_) {} INST.evt = null; return; }
+  if (!onOwnSite()) { toast(tr("التثبيت متاح من الموقع cbct.thepf.net", "Install from cbct.thepf.net"), 4000); return; }
+  toast(isIOS() ? tr("في Safari: زر المشاركة ⬆︎ ثم «إضافة إلى الشاشة الرئيسية» ثم «إضافة».", "In Safari: Share ⬆︎ → Add to Home Screen → Add.")
+    : tr("من قائمة المتصفح ⋮ اختر «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية».", "From the browser menu ⋮ choose Install app or Add to Home screen."), 6000);
+};
 $("btnMeasures").onclick = () => { updatePlan(); openDrawer("drawerMeasures"); };
 $("btnSettings").onclick = () => openDrawer("drawerSettings");
 document.querySelectorAll("[data-close]").forEach((b) => (b.onclick = closeDrawers));
@@ -2612,7 +2678,7 @@ function applyLang() {
   const en = S.lang === "en";
   document.querySelectorAll("[data-en]").forEach((el) => { if (el.dataset.ar === undefined) el.dataset.ar = el.innerHTML; el.innerHTML = en ? el.dataset.en : el.dataset.ar; });
   [$("app"), $("drawerMeasures"), $("drawerSettings"), $("drawerLib"), $("drawerLearn"), $("drawerShare")].forEach((el) => { el.dir = en ? "ltr" : "rtl"; el.lang = en ? "en" : "ar"; });
-  fillSysSelect(); if (!$("drawerLib").hidden) renderLib(); if (!$("drawerLearn").hidden) renderLearn(); if (!$("drawerShare").hidden) refreshShare(); S.panes.forEach((p) => p.tipCard && (p.tipCard.hidden = true));
+  fillSysSelect(); if (typeof renderInstall === "function") renderInstall(); if (!$("drawerLib").hidden) renderLib(); if (!$("drawerLearn").hidden) renderLearn(); if (!$("drawerShare").hidden) refreshShare(); S.panes.forEach((p) => p.tipCard && (p.tipCard.hidden = true));
   { const sel = S.implants.find((m) => m.id === S.sel); if (sel) fillSizeSelects(sel); }
   document.documentElement.lang = en ? "en" : "ar";
   document.querySelectorAll(".langSeg button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.lang === S.lang));
