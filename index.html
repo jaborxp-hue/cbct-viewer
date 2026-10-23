@@ -245,6 +245,30 @@ html[data-dev="tablet"] .pane footer .step{width:36px;height:34px}
 .sw{width:14px;height:14px;border-radius:3px;flex:none;display:inline-block;transform:translateY(2px);border:1px solid rgba(255,255,255,.25)}
 .check li::marker{content:"☐  "}
 #learnBody{display:flex;flex-direction:column;gap:8px}
+.peerBtn{font-weight:600}
+hr.sep{border:0;border-top:1px solid var(--line);margin:4px 0;width:100%}
+.grid2.tight{gap:10px}
+.drawer input[type=text],.drawer textarea{box-sizing:border-box}
+.drawer input[type=text]{background:var(--ink-2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;color:var(--fg);font:inherit}
+.thread{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:10px}
+.thread .msg{background:var(--ink-2);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.thread .msg.in{border-inline-start:3px solid #4cc9c0}
+.thread .msg.out{border-inline-start:3px solid var(--accent)}
+.thread .who{font-size:12.5px;color:var(--fg-dim)}
+.thread .txt{margin-top:4px;white-space:pre-wrap}
+.peerBanner{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:linear-gradient(90deg,rgba(76,201,192,.14),rgba(76,201,192,.03));border:1px solid rgba(76,201,192,.45);border-radius:var(--r);padding:14px 16px}
+.peerBanner .pbTxt{flex:1;min-width:220px}
+.peerBanner p{margin:4px 0 0}
+.pbNote{white-space:pre-wrap;background:rgba(0,0,0,.25);border-radius:6px;padding:6px 8px;margin:6px 0 0}
+.pbAct{display:flex;gap:8px;align-items:center}
+.caseList{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.caseList li{display:flex;gap:6px}
+.caseOpen{flex:1;text-align:start;background:var(--ink-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;display:flex;flex-direction:column;gap:2px;color:var(--fg)}
+.caseOpen span{font-size:12.5px;color:var(--fg-dim)}
+.caseOpen:hover{border-color:#4cc9c0}
+.caseDel{background:none;border:1px solid var(--line);border-radius:8px;color:var(--fg-dim);width:36px}
+.peerNote{position:fixed;inset-inline:0;top:calc(64px + env(safe-area-inset-top,0px));margin:0 auto;width:min(520px,calc(100% - 24px));background:rgba(17,22,29,.97);border:1px solid rgba(76,201,192,.5);border-radius:12px;padding:12px 14px;z-index:25;box-shadow:0 12px 40px rgba(0,0,0,.55);display:flex;flex-direction:column;gap:10px;font-size:13.5px;line-height:1.7}
+.peerNote .pnAct{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .shRow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .shRow .mini{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--fg-dim)}
 .shFig{margin:0;background:#000;border:1px solid var(--line);border-radius:8px;padding:6px;display:flex;flex-direction:column;gap:4px}
@@ -292,6 +316,7 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
         <div class="seg langSeg" role="group" aria-label="Language" style="margin-inline-start:auto"><button type="button" data-lang="ar">عربي</button><button type="button" data-lang="en">English</button></div>
       </div>
       <p class="lead" data-en="Open the scan exactly as the imaging center sends it (RAR, ZIP or a folder of slices). It opens on your device only and is never uploaded.">افتح ملف الأشعة كما يرسله مركز الأشعة (RAR أو ZIP أو مجلد الشرائح). يُفتح الملف داخل جهازك فقط، ولا يُرفع إلى أي خادم.</p>
+      <section class="peerBanner" id="peerBanner" hidden></section>
 
       <section class="install" id="installCard" hidden aria-labelledby="hInstall">
         <span class="ring sm" aria-hidden="true"></span>
@@ -343,6 +368,11 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
           <input type="file" id="inFolder" hidden webkitdirectory multiple>
         </section>
       </div>
+      <section class="card" id="casesCard" hidden aria-labelledby="hCases">
+        <h2 id="hCases" data-en="Your cases and shared plans">حالاتك والخطط المشتركة</h2>
+        <ul class="caseList" id="caseList"></ul>
+        <p class="fine" style="margin:0" data-en="Saved on this device only. Tap a case, then choose its scan file.">محفوظة على هذا الجهاز فقط. اضغط الحالة ثم اختر ملف الأشعة الخاص بها.</p>
+      </section>
       <p class="fine" data-en="For viewing and preliminary planning, not primary diagnosis. Verify any measurement used for a surgical decision in certified software.">أداة للعرض والتخطيط المبدئي، وليست للتشخيص الأساسي. راجع أي قياس يُبنى عليه قرار جراحي في برنامج معتمد.</p>
     </div>
   </main>
@@ -523,6 +553,10 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
 <aside class="drawer wide" id="drawerShare" hidden aria-label="مشاركة" dir="rtl">
   <header><h3 data-en="Share snapshot &amp; plan">مشاركة اللقطة والخطة</h3><button class="iconbtn" type="button" data-close data-en="Close">إغلاق</button></header>
   <div class="body">
+    <button class="btn peerBtn" type="button" id="btnPeer"><span aria-hidden="true">👨‍⚕️</span> <span data-en="Share the plan with a colleague (link)">مشاركة الخطة مع طبيب زميل (رابط)</span></button>
+    <p class="fine" style="margin:-4px 0 4px" data-en="Your colleague opens the same scan file and sees your plan on it. The scan itself is never sent.">زميلك يفتح نفس ملف الأشعة الذي عنده فتظهر خطتك عليه. ملف الأشعة نفسه لا يُرسل.</p>
+    <hr class="sep">
+    <b data-en="Share with AI tools">مشاركة مع أدوات الذكاء الاصطناعي</b>
     <div class="shRow"><div class="seg" role="group" id="shWhich"><button type="button" data-w="all" data-en="All panes">كل النوافذ</button><button type="button" data-w="active" data-en="Active pane">النافذة الفعّالة</button></div>
       <label class="mini"><input type="checkbox" id="shHide"> <span data-en="Hide patient name">إخفاء اسم المريض</span></label></div>
     <figure class="shFig"><img id="shImg" alt="snapshot"><figcaption class="fine"><span data-en="Light JPEG image">صورة JPEG خفيفة</span> · <span id="shSize" class="num"></span> · <span data-en="Long-press or right-click to save">اضغط مطولاً لحفظها</span></figcaption></figure>
@@ -543,6 +577,24 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
     <p class="fine" data-en="The request asks for a full explanation in Arabic and English. You can edit it before sending. AI output is a second opinion, not a diagnosis.">الطلب يطلب شرحاً كاملاً بالعربي والإنجليزي، ويمكنك تعديله قبل الإرسال. رأي الذكاء الاصطناعي رأي مساعد وليس تشخيصاً.</p>
   </div>
 </aside>
+<aside class="drawer wide" id="drawerPeer" hidden aria-label="مشاركة مع زميل" dir="rtl">
+  <header><h3 data-en="Share with a colleague">مشاركة مع طبيب زميل</h3><button class="iconbtn" type="button" data-close data-en="Close">إغلاق</button></header>
+  <div class="body">
+    <p class="fine" style="margin:0" data-en="A link is created for this case only. Your colleague opens it, chooses the same scan file they received, and your plan appears. They can reply with their own link.">يُنشأ رابط خاص بهذه الحالة فقط. زميلك يفتحه ويختار نفس ملف الأشعة الذي وصله، فتظهر خطتك عليه، ويستطيع الرد عليك برابط منه.</p>
+    <div class="field"><label for="pTitle" data-en="Case name (as your colleague will see it)">اسم الحالة (كما سيراه زميلك)</label><input id="pTitle" type="text" maxlength="60"></div>
+    <div class="grid2 tight">
+      <div class="field"><label for="pMe" data-en="Your name">اسمك</label><input id="pMe" type="text" maxlength="40" placeholder="جبر"></div>
+      <div class="field"><label for="pTo" data-en="Colleague">الزميل</label><input id="pTo" type="text" maxlength="40"></div>
+    </div>
+    <div class="field"><label for="pNote" data-en="Note or question">ملاحظة أو سؤال</label><textarea id="pNote" rows="3" maxlength="600" placeholder="ماذا تنصح في هذه الحالة؟"></textarea></div>
+    <button class="btn primary" type="button" id="pShare" data-en="Create link and share (WhatsApp, Telegram…)">إنشاء الرابط ومشاركته (واتساب، تليجرام…)</button>
+    <button class="iconbtn" type="button" id="pCopy" data-en="Copy link only">نسخ الرابط فقط</button>
+    <div id="pLinkBox" hidden><textarea id="pLink" rows="6" readonly dir="auto"></textarea></div>
+    <div id="pThread" class="thread" hidden></div>
+    <p class="fine" data-en="The link carries the plan only (implants, canal, measurements, arch) inside the address. It is not stored on any server.">الرابط يحمل الخطة فقط (الزرعات والقناة والقياسات والقوس) داخل العنوان نفسه، ولا يُخزّن على أي خادم.</p>
+  </div>
+</aside>
+<div class="peerNote" id="peerNote" hidden role="status"></div>
 <div class="toast" id="toast" hidden role="status"></div>
 
 <script>
@@ -632,7 +684,9 @@ function deviceCheck(keep) {
   else if (tier === "full") vd.innerHTML = `<div class="verdict ok">✓<div>${tr("الجهاز مناسب بالدقة الكاملة", "Suitable at full resolution")}<small>${tr("يمكن فتح الأشعة بكل تفاصيلها.", "Scans open with every detail.")}</small></div></div>`;
   else if (S.lang === "en") vd.innerHTML = `<div class="verdict warn">!<div>Suitable at reduced resolution<small>Scans open at half resolution to avoid running out of memory. Measurements stay in mm, with less precision.</small></div></div>`;
   else vd.innerHTML = `<div class="verdict warn">!<div>الجهاز مناسب بدقة مخففة<small>نفتح الأشعة بنصف الدقة لتجنّب امتلاء الذاكرة. القياسات تبقى بالملم لكن بدقة أقل.</small></div></div>`;
-  setQuality(keep ? S.quality : tier === "full" ? "full" : "half");
+  let q0 = "full"; try { const v = localStorage.getItem("cbct.quality"); if (v === "full" || v === "half") q0 = v; } catch (_) {}
+  if (S._crashed) q0 = "half";
+  setQuality(keep ? S.quality : q0);
   if (tier === "reject") { ["btnOpen", "btnFolder", "btnDemo", "qFull", "qHalf"].forEach((id) => ($(id).disabled = true)); }
 }
 function setQuality(q) {
@@ -812,12 +866,16 @@ function setLoad(msg, frac) {
   bar.querySelector("i").style.width = frac == null ? "" : Math.round(frac * 100) + "%";
 }
 function backToStart(err) {
-  clearInterval(loadTimer);
+  clearInterval(loadTimer); openingDone();
   $("loadScreen").hidden = true; $("viewer").hidden = true; $("startScreen").hidden = false;
   const box = $("startErr");
   if (err) { box.hidden = false; box.className = "err"; box.textContent = err; } else box.hidden = true;
 }
 
+// إن أُغلقت الصفحة أثناء الفتح بالدقة الكاملة (امتلاء الذاكرة في الهاتف) نعود في المرة القادمة إلى الدقة المخففة
+function openingStart() { try { if (S.quality === "full") localStorage.setItem("cbct.opening", String(Date.now())); } catch (_) {} }
+function openingDone() { try { localStorage.removeItem("cbct.opening"); } catch (_) {} }
+S._crashed = (() => { try { const t = +localStorage.getItem("cbct.opening"); localStorage.removeItem("cbct.opening"); return t > 0 && Date.now() - t < 30 * 60e3; } catch (_) { return false; } })();
 function isArchive(name) { return /\.(rar|zip|7z|tar|gz|tgz)$/i.test(name); }
 
 async function openFile(file) {
@@ -826,6 +884,7 @@ async function openFile(file) {
   return openLoose([file]);
 }
 function openArchive(file) {
+  openingStart();
   const asm = new Assembler(S.quality === "half" ? 2 : 1);
   showLoading(file.name + " · " + (file.size / 1048576).toFixed(0) + tr(" ميغابايت", " MB"));
   let worker;
@@ -851,6 +910,7 @@ function openArchive(file) {
 async function openLoose(files) {
   const list = [...files];
   if (list.length === 1 && isArchive(list[0].name)) return openArchive(list[0]);
+  openingStart();
   const asm = new Assembler(S.quality === "half" ? 2 : 1);
   showLoading(list.length + tr(" ملف", " files"));
   const keep = list.filter((f) => !/\.(exe|dll|ini|xml|inf|txt|png|jpe?g|bmp|obj|mtl|dat|html?|js|css|pdf)$/i.test(f.name) && !/\.mp_[ps]/i.test(f.name));
@@ -931,6 +991,7 @@ function percentiles(vol) {
   return vol._P;
 }
 function startViewer(vol) {
+  openingDone();
   S.volVer++; G3.lastKey = ""; $("panes").classList.remove("maxed");
   S.vol = vol; S.measures = []; S.pending = null; S.curve = null; S.pano = null; S.archDraft = []; S.curveVer++; S.panoVer++;
   S.implants = []; S.nerves = []; S.curNerve = -1; S.archZ = null; selectImplant(null); UNDO.length = 0; updateUndoBtn();
@@ -958,6 +1019,7 @@ function startViewer(vol) {
     if (ok) { setStatus(tr("اكتُشف قوس الأسنان تلقائياً وولّدت البانوراما. يمكنك تعديله من زر «تعديل القوس» أسفل البانوراما.", "Dental arch detected automatically and the panoramic generated. Adjust it with “Edit arch” below the panoramic.")); }
     else setStatus(tr("لم يُكتشف القوس تلقائياً. افتح البانوراما واضغط «ارسم القوس».", "The arch was not detected automatically. Open the panoramic and tap “Draw arch”."));
     requestRender();
+    afterScanOpened();
   }, 50);
 }
 const fmt3 = (v) => (Math.round(v * 1000) / 1000).toString();
@@ -1893,6 +1955,212 @@ function initShare() {
 }
 
 /* ============================================================
+   المشاركة بين الأطباء (المرحلة ١) وحفظ خطة كل حالة على الجهاز
+   - لكل مسح «بصمة» من بياناته (الاسم والتاريخ والفوكسل والمجال)، فيعرف البرنامج أن الملف هو نفس الحالة.
+   - الخطة تُحفظ بوحدات فوكسل الدقة الأصلية، فتعمل بين دقة كاملة ومخففة.
+   - الرابط يحمل الخطة فقط داخل جزء # من العنوان، ولا يصل إلى أي خادم. ملف الأشعة لا يُرسل أبداً.
+   ============================================================ */
+const PEER = { pending: null, saveT: 0, applying: false };
+function caseFP(vol) {
+  const m = vol.meta || {};
+  const s = [m.patient || "", m.scanDate || "", fmt3(vol.vox0), (m.fov || "").replace(/\s+/g, ""), m.source || ""].join("|");
+  let h1 = 0x811c9dc5, h2 = 0x01000193 ^ s.length;
+  for (let i = 0; i < s.length; i++) { const c = s.charCodeAt(i); h1 = Math.imul(h1 ^ c, 0x01000193); h2 = Math.imul(h2 ^ c, 0x5bd1e995) ^ (h2 >>> 13); }
+  return ((h1 >>> 0).toString(16).padStart(8, "0") + (h2 >>> 0).toString(16).padStart(8, "0")).slice(0, 12);
+}
+const r2 = (x) => Math.round(x * 100) / 100;
+// تصدير الخطة بوحدات الدقة الأصلية (k = f)
+function exportPlan() {
+  const v = S.vol, k = v.f || 1, sc = (a) => a.map((x) => r2(x * k));
+  return {
+    ctrl: S.curve ? S.curve.ctrl.map(sc) : null, archZ: S.archZ == null ? null : r2(S.archZ * k), crossS: S.curve ? r2(S.crossS * k) : null,
+    imp: S.implants.map((i) => ({ n: i.n, s: r2(i.s * k), o: r2(i.o), z: r2(i.z), a: Math.round(i.a * 1e4) / 1e4, D: i.D, L: i.L, sys: i.sys, lab: i.lab || "" })),
+    nrv: S.nerves.filter((n) => n.pts.length >= 2).map((n) => ({ n: n.n, t: n.traced ? 1 : 0, p: n.pts.map(sc) })),
+    mes: S.measures.map((m) => ({ v: m.view, k: m.key, a: sc(m.a), b: sc(m.b), w: m.where })),
+  };
+}
+function importPlan(P) {
+  const v = S.vol, k = 1 / (v.f || 1), sc = (a) => a.map((x) => x * k);
+  S.implants = []; S.nerves = []; S.measures = []; S.pending = null; S.curNerve = -1; selectImplant(null);
+  if (P.ctrl && P.ctrl.length >= 2) { setCurve(P.ctrl.map(sc)); if (P.crossS != null) S.crossS = clamp(P.crossS * k, 0, S.curve.L - 1); }
+  if (P.archZ != null) S.archZ = Math.round(P.archZ * k);
+  let id = Date.now();
+  S.implants = (P.imp || []).map((i) => ({ id: id++, n: i.n, s: S.curve ? clamp(Math.round(i.s * k), 0, S.curve.L - 1) : 0, o: i.o, z: i.z, a: i.a, D: i.D, L: i.L, sys: i.sys, lab: i.lab || "" })).filter(() => !!S.curve);
+  S.nerves = (P.nrv || []).map((n) => ({ id: id++, n: n.n, traced: !!n.t, pts: n.p.map(sc) }));
+  const rk = (key) => { // مفاتيح القياس تحمل رقم الشريحة أو نسخة القوس
+    const t = key[0];
+    if (t === "a" || t === "c" || t === "s") return t + Math.round(+key.slice(1) * k);
+    if (t === "p") return "p" + S.curveVer;
+    if (t === "x") return "x" + S.curveVer + ":" + Math.round(+key.split(":")[1] * k);
+    return key;
+  };
+  S.measures = (P.mes || []).map((m) => ({ id: id++, view: m.v, key: rk(m.k), a: sc(m.a), b: sc(m.b), where: m.w || { ar: "", en: "" } }));
+  updatePlan(); updateSheet(); G3.lastKey = ""; syncPaneUI(); requestRender();
+}
+/* ---------- سجل الحالات على الجهاز ---------- */
+const CASES_KEY = "cbct.cases";
+function loadCases() { try { return JSON.parse(localStorage.getItem(CASES_KEY) || "[]"); } catch (_) { return []; } }
+function saveCases(list) { try { localStorage.setItem(CASES_KEY, JSON.stringify(list.slice(0, 60))); } catch (_) {} }
+function getCase(fp) { return loadCases().find((c) => c.fp === fp) || null; }
+function putCase(rec) {
+  const list = loadCases().filter((c) => c.fp !== rec.fp); rec.at = Date.now(); list.unshift(rec); saveCases(list); renderCaseList();
+}
+function autosavePlan() { // تحفظ الخطة الحالية لهذه الحالة بعد كل تغيير
+  if (!S.vol || PEER.applying || S.vol.meta.demo) return;
+  clearTimeout(PEER.saveT);
+  PEER.saveT = setTimeout(() => {
+    const fp = caseFP(S.vol), old = getCase(fp), P = exportPlan();
+    const empty = !P.imp.length && !P.nrv.length && !P.mes.length;
+    if (empty && !old) return;
+    putCase({ ...(old || {}), fp, title: (old && old.title) || defaultCaseTitle(), plan: P, thread: (old && old.thread) || [] });
+  }, 700);
+}
+function defaultCaseTitle() {
+  const m = S.vol.meta || {}, d = (m.scanDate || "").slice(0, 10);
+  const name = !S.hideName && m.patient ? m.patient.split(/\s+/).slice(0, 2).join(" ") : tr("حالة", "Case");
+  return (name + (d ? " · " + d : "")).trim();
+}
+/* ---------- الرابط ---------- */
+const b64u = (u8) => { let s = ""; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode(...u8.subarray(i, i + 0x8000)); return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); };
+const unb64u = (s) => { const b = atob(s.replace(/-/g, "+").replace(/_/g, "/")); const u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; };
+async function packPayload(obj) {
+  const raw = new TextEncoder().encode(JSON.stringify(obj));
+  if (typeof CompressionStream === "function") {
+    try { const z = new Uint8Array(await new Response(new Blob([raw]).stream().pipeThrough(new CompressionStream("deflate-raw"))).arrayBuffer()); return "z" + b64u(z); } catch (_) {}
+  }
+  return "j" + b64u(raw);
+}
+async function unpackPayload(s) {
+  const kind = s[0], u = unb64u(s.slice(1));
+  const raw = kind === "z" ? new Uint8Array(await new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer()) : u;
+  return JSON.parse(new TextDecoder().decode(raw));
+}
+function siteBase() { try { if (window.top === window && /^https?:$/.test(location.protocol) && !/claude/.test(location.hostname)) return location.origin + location.pathname; } catch (_) {} return "https://cbct.thepf.net/"; }
+let ME = (() => { try { return localStorage.getItem("cbct.me") || ""; } catch (_) { return ""; } })();
+/* ---------- نافذة «مشاركة مع طبيب زميل» ---------- */
+function openPeer() {
+  if (!S.vol) return;
+  closeDrawers(); openDrawer("drawerPeer");
+  const fp = caseFP(S.vol), rec = getCase(fp);
+  $("pTitle").value = (rec && rec.title) || defaultCaseTitle();
+  $("pMe").value = ME;
+  const lastPeer = rec && rec.thread && rec.thread.length ? rec.thread[rec.thread.length - 1] : null;
+  $("pTo").value = lastPeer ? (lastPeer.dir === "in" ? lastPeer.from : lastPeer.to) || "" : "";
+  $("pNote").value = ""; $("pLinkBox").hidden = true;
+  renderThread(rec);
+}
+function renderThread(rec) {
+  const t = (rec && rec.thread) || [], el = $("pThread");
+  el.hidden = !t.length;
+  el.innerHTML = `<b>${tr("سجل المشاركة لهذه الحالة", "Sharing history for this case")}</b>` + t.slice().reverse().map((m) =>
+    `<div class="msg ${m.dir}"><div class="who">${m.dir === "in" ? "⬇︎ " + tr("من ", "From ") + esc(m.from || tr("زميل", "a colleague")) : "⬆︎ " + tr("إلى ", "To ") + esc(m.to || tr("زميل", "a colleague"))} · <span class="num">${new Date(m.at).toLocaleString(S.lang === "en" ? "en-GB" : "ar-IQ", { dateStyle: "short", timeStyle: "short" })}</span></div>${m.note ? `<div class="txt">${esc(m.note)}</div>` : ""}<div class="fine">${esc(m.sum || "")}</div></div>`).join("");
+}
+function planSummary(P) {
+  const parts = [];
+  if (P.imp.length) parts.push(P.imp.length + tr(" زرعة", " implant(s)"));
+  if (P.nrv.length) parts.push(P.nrv.length + tr(" قناة", " canal(s)"));
+  if (P.mes.length) parts.push(P.mes.length + tr(" قياس", " measurement(s)"));
+  return parts.join(" · ") || tr("القوس فقط", "Arch only");
+}
+async function makePeerLink() {
+  const fp = caseFP(S.vol), title = $("pTitle").value.trim() || defaultCaseTitle(), me = $("pMe").value.trim(), to = $("pTo").value.trim(), note = $("pNote").value.trim();
+  ME = me; try { localStorage.setItem("cbct.me", me); } catch (_) {}
+  const P = exportPlan();
+  const payload = { v: 1, fp, title, from: me, to, note, at: Date.now(), plan: P, hint: { date: (S.vol.meta.scanDate || "").slice(0, 10), vox: fmt3(S.vol.vox0) } };
+  const url = siteBase() + "#c=" + (await packPayload(payload));
+  const rec = getCase(fp) || { fp, thread: [] };
+  rec.title = title; rec.plan = P; rec.peer = to || rec.peer || ""; rec.thread = [...(rec.thread || []), { dir: "out", to, from: me, note, at: payload.at, sum: planSummary(P) }];
+  putCase(rec);
+  const msg = (me ? tr("د. ", "Dr. ") + me + " " : "") + tr("شاركك خطة الحالة «", "shared the plan for case “") + title + tr("» في عارض المنصة.", "” in the Almanasa viewer.") +
+    (note ? "\n" + note : "") + "\n" + tr("١) احفظ ملف الأشعة الذي وصلك لهذه الحالة.\n٢) افتح الرابط ثم اختر الملف:", "1) Save the scan file you received for this case.\n2) Open the link, then choose the file:") + "\n" + url;
+  $("pLink").value = msg; $("pLinkBox").hidden = false; renderThread(rec);
+  return { url, msg, title };
+}
+async function sharePeer() {
+  const { msg, title } = await makePeerLink();
+  let shared = false;
+  if (navigator.share) { try { await navigator.share({ title: title, text: msg }); shared = true; } catch (e) { if (e && e.name === "AbortError") return; } }
+  if (!shared) { const ok = await copyText(msg); toast(ok ? tr("نُسخ الرابط مع الرسالة. الصقه في واتساب أو تليجرام.", "Link and message copied. Paste it into WhatsApp or Telegram.") : tr("انسخ الرسالة من المربع أدناه.", "Copy the message from the box below."), 4500); }
+}
+/* ---------- استقبال رابط ---------- */
+async function readIncoming() {
+  const m = location.hash.match(/[#&]c=([A-Za-z0-9_-]+)/); if (!m) return;
+  let p; try { p = await unpackPayload(m[1]); } catch (_) { toast(tr("الرابط تالف أو ناقص. اطلب من زميلك إرساله مرة أخرى.", "The link is damaged or incomplete. Ask your colleague to resend it."), 5000); return; }
+  try { history.replaceState(null, "", location.pathname + location.search); } catch (_) {}
+  if (!p || p.v !== 1 || !p.fp || !p.plan) return;
+  const rec = getCase(p.fp) || { fp: p.fp, thread: [] };
+  if (!rec.thread.some((t) => t.dir === "in" && t.at === p.at)) rec.thread = [...(rec.thread || []), { dir: "in", from: p.from, to: p.to, note: p.note, at: p.at, sum: planSummary(p.plan) }];
+  rec.title = rec.title || p.title; rec.peer = p.from || rec.peer || ""; rec.inPlan = p.plan; rec.inAt = p.at; rec.hint = p.hint;
+  putCase(rec);
+  PEER.pending = { fp: p.fp, title: p.title, from: p.from, note: p.note, plan: p.plan, hint: p.hint };
+  showPendingBanner();
+}
+function showPendingBanner() {
+  const b = $("peerBanner"), q = PEER.pending;
+  if (!q || S.vol) { b.hidden = true; return; }
+  b.innerHTML = `<div class="pbTxt"><b>${q.from ? tr("د. ", "Dr. ") + esc(q.from) + tr(" شاركك حالة", " shared a case") : tr("حالة مشتركة", "Shared case")}: «${esc(q.title || "")}»</b>
+    ${q.note ? `<p class="pbNote">${esc(q.note)}</p>` : ""}
+    <p class="fine">${tr("اختر ملف الأشعة الخاص بهذه الحالة، وستظهر خطة زميلك عليه تلقائياً.", "Choose this case's scan file and your colleague's plan will appear on it automatically.")}${q.hint && q.hint.date ? " · " + tr("تاريخ المسح ", "scan date ") + esc(q.hint.date) : ""}</p></div>
+    <div class="pbAct"><button class="btn primary" type="button" data-pb="open">${tr("اختر ملف الأشعة", "Choose scan file")}</button><button class="iconbtn quiet" type="button" data-pb="x">${tr("إلغاء", "Dismiss")}</button></div>`;
+  b.querySelector("[data-pb=open]").onclick = () => $("btnOpen").click();
+  b.querySelector("[data-pb=x]").onclick = () => { PEER.pending = null; b.hidden = true; };
+  b.hidden = false;
+}
+// بعد فتح أي مسح: خطة زميل منتظرة، أو خطتك المحفوظة لهذه الحالة
+function afterScanOpened() {
+  if (!S.vol || S.vol.meta.demo) return;
+  const fp = caseFP(S.vol), rec = getCase(fp), q = PEER.pending;
+  if (q) {
+    if (q.fp !== fp) { peerNotice(tr("هذا الملف لا يطابق الحالة المشتركة «", "This file doesn't match the shared case “") + esc(q.title || "") + tr("» (الاسم أو التاريخ مختلف).", "” (name or date differ)."), [[tr("طبّق الخطة رغم ذلك", "Apply the plan anyway"), () => applyIncoming(q, true)], [tr("لا", "No"), null]]); return; }
+    applyIncoming(q, false); return;
+  }
+  if (rec && rec.plan && (rec.plan.imp.length || rec.plan.nrv.length || rec.plan.mes.length)) {
+    PEER.applying = true; importPlan(rec.plan); PEER.applying = false;
+    const extra = rec.inPlan && rec.inAt && !(rec.thread || []).some((t) => t.dir === "out" && t.at > rec.inAt) ? [[tr("اعرض خطة ", "Show ") + (rec.peer ? tr("د. ", "Dr. ") + esc(rec.peer) : tr("الزميل", "colleague's plan")), () => applyIncoming({ fp, title: rec.title, from: rec.peer, plan: rec.inPlan }, true)]] : [];
+    peerNotice(tr("استُرجعت خطتك السابقة لهذه الحالة: ", "Your previous plan for this case was restored: ") + planSummary(rec.plan) + ".", [...extra, [tr("حسناً", "OK"), null]]);
+  }
+}
+function applyIncoming(q, undoable) {
+  pushUndo("خطة الزميل", "colleague's plan");
+  PEER.applying = true; importPlan(q.plan); PEER.applying = false; autosavePlan();
+  PEER.pending = null; $("peerBanner").hidden = true;
+  peerNotice(`<b>${q.from ? tr("خطة د. ", "Plan from Dr. ") + esc(q.from) : tr("خطة الزميل", "Colleague's plan")}</b> · ${planSummary(q.plan)}${q.note ? `<div class="pbNote">${esc(q.note)}</div>` : ""}<div class="fine">${tr("عدّل ما تراه مناسباً ثم أرسل ردّك من «مشاركة» ← «مع طبيب زميل». زر «تراجع» يعيد خطتك السابقة.", "Adjust as you see fit, then reply from Share → With a colleague. Undo restores your previous plan.")}</div>`,
+    [[tr("الرد على الزميل", "Reply"), () => openPeer()], [tr("إغلاق", "Close"), null]]);
+}
+function peerNotice(html, actions) {
+  const c = $("peerNote");
+  c.innerHTML = `<div class="pnTxt">${html}</div><div class="pnAct">${actions.map((a, i) => `<button class="${i === 0 && a[1] ? "btn primary" : "iconbtn"}" type="button" data-i="${i}">${a[0]}</button>`).join("")}</div>`;
+  c.querySelectorAll("[data-i]").forEach((b) => (b.onclick = () => { c.hidden = true; const f = actions[+b.dataset.i][1]; if (f) f(); }));
+  c.hidden = false;
+}
+/* ---------- قائمة «الحالات المشتركة» في صفحة البداية ---------- */
+function renderCaseList() {
+  const list = loadCases(), box = $("caseList"); if (!box) return;
+  $("casesCard").hidden = !list.length;
+  box.innerHTML = list.map((c) => {
+    const last = (c.thread || [])[c.thread.length - 1];
+    const peer = last ? (last.dir === "in" ? "⬇︎ " + tr("من د. ", "from Dr. ") + esc(last.from || "?") : "⬆︎ " + tr("إلى د. ", "to Dr. ") + esc(last.to || "?")) : tr("خطة محفوظة على هذا الجهاز", "Plan saved on this device");
+    const when = new Date(c.at).toLocaleDateString(S.lang === "en" ? "en-GB" : "ar-IQ", { dateStyle: "medium" });
+    return `<li><button type="button" class="caseOpen" data-fp="${c.fp}"><b>${esc(c.title || c.fp)}</b><span>${peer} · ${when}${c.plan ? " · " + planSummary(c.plan) : ""}</span></button><button type="button" class="caseDel" data-del="${c.fp}" aria-label="${tr("حذف", "Delete")}">✕</button></li>`;
+  }).join("");
+  box.querySelectorAll("[data-fp]").forEach((b) => (b.onclick = () => {
+    const c = getCase(b.dataset.fp); if (!c) return;
+    PEER.pending = c.inPlan && c.inAt && !(c.thread || []).some((t) => t.dir === "out" && t.at > c.inAt) ? { fp: c.fp, title: c.title, from: c.peer, plan: c.inPlan, hint: c.hint } : null;
+    if (!PEER.pending) { $("peerBanner").innerHTML = `<div class="pbTxt"><b>«${esc(c.title)}»</b><p class="fine">${tr("اختر ملف الأشعة لهذه الحالة، وستُسترجع خطتك المحفوظة.", "Choose this case's scan file and your saved plan will be restored.")}</p></div><div class="pbAct"><button class="btn primary" type="button" id="pbOpen2">${tr("اختر ملف الأشعة", "Choose scan file")}</button></div>`; $("peerBanner").hidden = false; $("pbOpen2").onclick = () => $("btnOpen").click(); }
+    else showPendingBanner();
+    $("peerBanner").scrollIntoView({ block: "center", behavior: "smooth" });
+  }));
+  box.querySelectorAll("[data-del]").forEach((b) => (b.onclick = () => { saveCases(loadCases().filter((c) => c.fp !== b.dataset.del)); renderCaseList(); }));
+}
+function initPeer() {
+  $("btnPeer").onclick = openPeer;
+  $("pShare").onclick = sharePeer;
+  $("pCopy").onclick = async () => { const { msg } = await makePeerLink(); toast((await copyText(msg)) ? tr("نُسخ الرابط مع الرسالة", "Link and message copied") : tr("انسخ الرسالة من المربع", "Copy the message from the box")); };
+  addEventListener("hashchange", readIncoming);
+  renderCaseList(); readIncoming();
+}
+
+/* ============================================================
    تتبّع القناة الذكي بين نقاط يضعها الطبيب
    بين كل نقطتين متتاليتين نبحث في المقاطع العرضية عن «ثقب داكن تحيطه حلقة بيضاء»،
    ونصل أفضل المواقع بمسار ناعم يبدأ وينتهي عند نقطتي الطبيب، ولا يبتعد عنهما أكثر من بضعة ملم.
@@ -2518,6 +2786,7 @@ function updateArchBar() {
 }
 function updateMeasureList() { updatePlan(); }
 function updatePlan() {
+  if (typeof autosavePlan === "function") autosavePlan();
   const nrv = S.nerves.filter((n) => n.pts.length >= 2), total = S.measures.length + S.implants.length + nrv.length;
   $("mCount").textContent = total;
   $("mEmpty").hidden = total > 0; $("mClear").hidden = !total;
@@ -2540,13 +2809,13 @@ function showImplant(imp) {
   selectImplant(imp); syncPaneUI(); requestRender();
 }
 function openDrawer(id) { $(id).hidden = false; $("scrim").hidden = false; }
-function closeDrawers() { ["drawerMeasures", "drawerSettings", "drawerLib", "drawerLearn", "drawerShare"].forEach((id) => ($(id).hidden = true)); $("scrim").hidden = true; }
+function closeDrawers() { ["drawerMeasures", "drawerSettings", "drawerLib", "drawerLearn", "drawerShare", "drawerPeer"].forEach((id) => ($(id).hidden = true)); $("scrim").hidden = true; }
 
 /* ============================================================
    ١٠) ربط الواجهة
    ============================================================ */
-$("qFull").onclick = () => setQuality("full");
-$("qHalf").onclick = () => setQuality("half");
+$("qFull").onclick = () => { setQuality("full"); try { localStorage.setItem("cbct.quality", "full"); } catch (_) {} };
+$("qHalf").onclick = () => { setQuality("half"); try { localStorage.setItem("cbct.quality", "half"); } catch (_) {} };
 $("btnOpen").onclick = () => $("inFile").click();
 $("btnFolder").onclick = () => $("inFolder").click();
 $("inFile").onchange = (e) => { const f = e.target.files[0]; e.target.value = ""; openFile(f); };
@@ -2603,6 +2872,7 @@ $("nerveAuto").onclick = () => smartTrace();
 $("safeIn").onchange = (e) => { const v = parseFloat(e.target.value); if (v > 0 && v <= 5) { S.safety = v; updateSheet(); requestRender(); } };
 $("layoutSeg").querySelectorAll("button").forEach((b) => (b.onclick = () => { buildPanes(+b.dataset.n); assignDefaultViews(); }));
 initShare();
+initPeer();
 /* ===== التثبيت كتطبيق ويب ===== */
 const INST = { evt: null };
 const isStandalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
@@ -2677,8 +2947,8 @@ addEventListener("resize", () => { if (!S.vol) return; const n = defaultPaneCoun
 function applyLang() {
   const en = S.lang === "en";
   document.querySelectorAll("[data-en]").forEach((el) => { if (el.dataset.ar === undefined) el.dataset.ar = el.innerHTML; el.innerHTML = en ? el.dataset.en : el.dataset.ar; });
-  [$("app"), $("drawerMeasures"), $("drawerSettings"), $("drawerLib"), $("drawerLearn"), $("drawerShare")].forEach((el) => { el.dir = en ? "ltr" : "rtl"; el.lang = en ? "en" : "ar"; });
-  fillSysSelect(); if (typeof renderInstall === "function") renderInstall(); if (!$("drawerLib").hidden) renderLib(); if (!$("drawerLearn").hidden) renderLearn(); if (!$("drawerShare").hidden) refreshShare(); S.panes.forEach((p) => p.tipCard && (p.tipCard.hidden = true));
+  [$("app"), $("drawerMeasures"), $("drawerSettings"), $("drawerLib"), $("drawerLearn"), $("drawerShare"), $("drawerPeer")].forEach((el) => { el.dir = en ? "ltr" : "rtl"; el.lang = en ? "en" : "ar"; });
+  fillSysSelect(); if (typeof renderInstall === "function") renderInstall(); if (!$("drawerLib").hidden) renderLib(); if (!$("drawerLearn").hidden) renderLearn(); if (!$("drawerShare").hidden) refreshShare(); renderCaseList(); showPendingBanner(); S.panes.forEach((p) => p.tipCard && (p.tipCard.hidden = true));
   { const sel = S.implants.find((m) => m.id === S.sel); if (sel) fillSizeSelects(sel); }
   document.documentElement.lang = en ? "en" : "ar";
   document.querySelectorAll(".langSeg button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.lang === S.lang));
