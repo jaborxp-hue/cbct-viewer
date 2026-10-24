@@ -755,6 +755,12 @@ class Assembler {
     const m = path.match(/\.a(\d{3,4})$/i);
     if (m && u8.length > 0x15 && String.fromCharCode(...u8.slice(6, 13)) === "CNNTImg") { this.addNNT(+m[1], buf); this.studyName(path); return; }
     if (u8.length >= 132 && u8[128] === 68 && u8[129] === 73 && u8[130] === 67 && u8[131] === 77) { this.addDicom(buf); return; }
+    // DICOM بلا المقدمة القياسية (128 بايت + DICM): تصدّره بعض الأجهزة مثل Alliage Eagle و OnDemand3D.
+    // يبدأ الملف مباشرة بعنصر من المجموعة 0002 أو 0008، فنضيف المقدمة ثم نقرؤه كالمعتاد.
+    if (u8.length > 8 && (u8[0] === 2 || u8[0] === 8) && u8[1] === 0 && u8[3] === 0 && /^[A-Z]{2}$/.test(String.fromCharCode(u8[4], u8[5]))) {
+      const full = new Uint8Array(132 + buf.byteLength); full.set([68, 73, 67, 77], 128); full.set(new Uint8Array(buf), 132);
+      this.addDicom(full.buffer); return;
+    }
   }
   studyName(path) {
     if (this.meta.scanDate) return;
