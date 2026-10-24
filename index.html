@@ -802,10 +802,10 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
   <p class="fine" id="fuMsg" style="margin:0"></p>
   <div class="fuList" id="fuList"></div>
   <details class="fuTips"><summary data-en="How do I benefit from the fusion?">كيف أستفيد من الدمج؟</summary><ul>
-    <li data-en="In the &lt;b&gt;cross-section&lt;/b&gt;, the gap between the scan line and the bone is the gum thickness.">في <b>المقطع العرضي</b>: المسافة بين خط الطبعة والعظم هي سماكة اللثة.</li>
-    <li data-en="Place the implant under the &lt;b&gt;crown position&lt;/b&gt; shown by the scan, then check the bone around it.">ضع الزرعة تحت <b>مكان التاج</b> الذي تُظهره الطبعة، ثم تحقق من العظم حولها.</li>
-    <li data-en="Near metal restorations, rely on the scan line for the true crown shape.">قرب الحشوات المعدنية: اعتمد على خط الطبعة لشكل التاج الحقيقي.</li>
-    <li data-en="Scroll the cross-section along the arch: the line should hug the enamel everywhere.">مرّر المقطع العرضي على طول القوس: يجب أن يلاصق الخط المينا في كل مكان.</li>
+    <li data-en="In the &lt;b&gt;cross-section&lt;/b&gt;, the gap between the scan line and the bone is the gum thickness.">في <bdi class="tm">Cross-section</bdi>: المسافة بين خط الطبعة والعظم هي <bdi class="tm">Soft tissue thickness</bdi>.</li>
+    <li data-en="Place the implant under the &lt;b&gt;crown position&lt;/b&gt; shown by the scan, then check the bone around it.">ضع <bdi class="tm">Implant</bdi> تحت مكان <bdi class="tm">Crown</bdi> الذي تُظهره الطبعة، ثم تحقق من العظم حولها.</li>
+    <li data-en="Near metal restorations, rely on the scan line for the true crown shape.">قرب <bdi class="tm">Metal artifacts</bdi>: اعتمد على خط الطبعة لشكل <bdi class="tm">Crown</bdi> الحقيقي.</li>
+    <li data-en="Scroll the cross-section along the arch: the line should hug the enamel everywhere.">مرّر <bdi class="tm">Cross-section</bdi> على طول القوس: يجب أن يلاصق الخط <bdi class="tm">Enamel</bdi> في كل مكان.</li>
   </ul></details>
   <label class="mini" id="fuShowRow" hidden><input type="checkbox" id="fuShow" checked> <span data-en="Show scan outlines on the slices">إظهار حدود الطبعة على المقاطع</span></label>
   <div class="wlAct">
@@ -824,17 +824,17 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
       <span class="ring sm" aria-hidden="true"></span>
       <div>
         <h2 id="wTitle" data-en="Welcome to the Almanasa Viewer">أهلاً بك في عارض المنصة</h2>
-        <p class="fine" data-en="A CBCT and intraoral-scan viewer for phone, tablet and computer. Your files never leave your device.">عارض لأشعة CBCT والطبعات الرقمية على الهاتف والتابلت والحاسوب. ملفاتك لا تغادر جهازك أبداً.</p>
+        <p class="fine" data-en="A CBCT and intraoral-scan viewer for phone, tablet and computer. Your files never leave your device.">عارض لأشعة <bdi class="tm">CBCT</bdi> والطبعات الرقمية <bdi class="tm">Intraoral scans</bdi> على الهاتف والتابلت والحاسوب. ملفاتك لا تغادر جهازك أبداً.</p>
       </div>
       <div class="seg langSeg wLang" role="group" aria-label="Language"><button type="button" data-lang="ar">عربي</button><button type="button" data-lang="en">English</button></div>
     </div>
     <div class="wGrid">
-      <section><b data-en="Read the whole scan">اقرأ الأشعة كاملة</b><p data-en="Axial, coronal, sagittal and panoramic, with the dental arch drawn automatically. &lt;em&gt;Why it matters:&lt;/em&gt; read a case anywhere, without the imaging center's software.">محوري وتاجي وسهمي وبانوراما، والقوس يُرسم تلقائياً. <em>فائدته:</em> تقرأ الحالة أينما كنت دون برنامج مركز الأشعة.</p></section>
-      <section><b data-en="Plan implants and the canal">خطّط الزرعات والقناة</b><p data-en="Real implant sizes from the libraries, smart canal tracing, and a warning when an implant gets too close. &lt;em&gt;Why:&lt;/em&gt; safer surgical decisions.">زرعات بمقاسات الشركات الحقيقية، وتتبّع ذكي للقناة السنية، وتحذير حين تقترب الزرعة منها. <em>فائدته:</em> قرار جراحي أكثر أماناً.</p></section>
-      <section><b data-en="Digital impressions">الطبعات الرقمية</b><p data-en="STL, PLY and OBJ, even inside a ZIP. Upper, lower and bite scans are recognised automatically, with the scan's true colours. &lt;em&gt;Why:&lt;/em&gt; review the lab's work and the scanner's files on your phone.">STL و PLY و OBJ ولو داخل ملف مضغوط. يتعرّف على العلوي والسفلي وطبعات الإطباق تلقائياً، بألوان الطبعة الحقيقية. <em>فائدته:</em> تراجع ملفات الماسح والمختبر من هاتفك.</p></section>
-      <section><b data-en="True occlusion">الإطباق الحقيقي</b><p data-en="The bite scans place the jaws exactly, with a contact-point map. &lt;em&gt;Why:&lt;/em&gt; check high spots and contacts before and after a restoration.">طبعات الإطباق تضع الفكين في مكانهما بدقة، مع خريطة نقاط التلامس. <em>فائدته:</em> ترى نقاط التلامس العالية قبل التعويض وبعده.</p></section>
-      <section class="wNew"><b><span data-en="Scan + CBCT fusion">دمج الطبعة مع الأشعة</span> <i data-en="New">جديد</i></b><p data-en="Add the intraoral scan to the CBCT and it is matched to the teeth automatically; its outline appears on every slice. &lt;em&gt;Why:&lt;/em&gt; see the real gum and crown over the bone.">أضف الطبعة إلى الأشعة فتُطابق على الأسنان تلقائياً، ويظهر حدّها على كل المقاطع. <em>فائدته:</em> ترى اللثة والتاج الحقيقيين فوق العظم.</p></section>
-      <section><b data-en="Share in one tap">شارك بضغطة</b><p data-en="A snapshot with a ready prompt for AI tools or WhatsApp, or a link that carries your plan to a colleague. &lt;em&gt;Why:&lt;/em&gt; a second opinion within minutes.">لقطة مع طلب جاهز لأدوات الذكاء الاصطناعي أو واتساب، أو رابط يحمل خطتك إلى زميل. <em>فائدته:</em> رأي ثانٍ خلال دقائق.</p></section>
+      <section><b data-en="Read the whole scan">اقرأ الأشعة كاملة</b><p data-en="Axial, coronal, sagittal and panoramic, with the dental arch drawn automatically. &lt;em&gt;Why it matters:&lt;/em&gt; read a case anywhere, without the imaging center's software.">محوري <bdi class="tm">Axial</bdi> وتاجي <bdi class="tm">Coronal</bdi> وسهمي <bdi class="tm">Sagittal</bdi> و<bdi class="tm">Panoramic</bdi>، و<bdi class="tm">Dental arch</bdi> يُرسم تلقائياً. <em>فائدته:</em> تقرأ الحالة أينما كنت دون برنامج مركز الأشعة.</p></section>
+      <section><b data-en="Plan implants and the canal">خطّط الزرعات والقناة</b><p data-en="Real implant sizes from the libraries, smart canal tracing, and a warning when an implant gets too close. &lt;em&gt;Why:&lt;/em&gt; safer surgical decisions.">زرعات <bdi class="tm">Implant</bdi> بمقاسات الشركات الحقيقية، وتتبّع ذكي لـ <bdi class="tm">Mandibular canal</bdi>، وتحذير حين تقترب الزرعة منها. <em>فائدته:</em> قرار جراحي أكثر أماناً.</p></section>
+      <section><b data-en="Digital impressions">الطبعات الرقمية</b><p data-en="STL, PLY and OBJ, even inside a ZIP. Upper, lower and bite scans are recognised automatically, with the scan's true colours. &lt;em&gt;Why:&lt;/em&gt; review the lab's work and the scanner's files on your phone.">STL و PLY و OBJ ولو داخل ملف مضغوط. يتعرّف على <bdi class="tm">Upper jaw</bdi> و<bdi class="tm">Lower jaw</bdi> و<bdi class="tm">Bite registration</bdi> تلقائياً، بألوان الطبعة الحقيقية. <em>فائدته:</em> تراجع ملفات الماسح والمختبر من هاتفك.</p></section>
+      <section><b data-en="True occlusion">الإطباق الحقيقي</b><p data-en="The bite scans place the jaws exactly, with a contact-point map. &lt;em&gt;Why:&lt;/em&gt; check high spots and contacts before and after a restoration.">طبعات <bdi class="tm">Bite registration</bdi> تضع الفكين في <bdi class="tm">Occlusion</bdi> الصحيح، مع <bdi class="tm">Contact map</bdi>. <em>فائدته:</em> ترى <bdi class="tm">Occlusal contacts</bdi> العالية قبل <bdi class="tm">Restoration</bdi> وبعده.</p></section>
+      <section class="wNew"><b><span data-en="Scan + CBCT fusion">دمج الطبعة مع الأشعة</span> <i data-en="New">جديد</i></b><p data-en="Add the intraoral scan to the CBCT and it is matched to the teeth automatically; its outline appears on every slice. &lt;em&gt;Why:&lt;/em&gt; see the real gum and crown over the bone.">أضف الطبعة إلى <bdi class="tm">CBCT</bdi> فتُطابق على الأسنان تلقائياً (<bdi class="tm">Registration</bdi>)، ويظهر حدّها على كل المقاطع. <em>فائدته:</em> ترى <bdi class="tm">Gingiva</bdi> و<bdi class="tm">Crown</bdi> الحقيقيين فوق العظم.</p></section>
+      <section><b data-en="Share in one tap">شارك بضغطة</b><p data-en="A snapshot with a ready prompt for AI tools or WhatsApp, or a link that carries your plan to a colleague. &lt;em&gt;Why:&lt;/em&gt; a second opinion within minutes.">لقطة مع <bdi class="tm">Prompt</bdi> جاهز لأدوات <bdi class="tm">AI</bdi> أو واتساب، أو رابط يحمل خطتك إلى زميل. <em>فائدته:</em> رأي ثانٍ خلال دقائق.</p></section>
     </div>
 
     <p class="wHint" data-en="Tip: the &lt;span class=&quot;wQ&quot;&gt;?&lt;/span&gt; in the corner of every view explains how to control it (tap, drag, zoom, slices).">نصيحة: علامة <span class="wQ">؟</span> في زاوية كل نافذة تشرح لك كيف تتحكم بها (النقر، السحب، التكبير، التنقل بين الشرائح).</p>
@@ -869,23 +869,23 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
 
     <h3 data-en="What does fusing the scan with the CBCT give you?">ماذا يقدّم لك دمج الطبعة مع الأشعة؟</h3>
     <ul class="wList">
-      <li data-en="&lt;b&gt;Restoration-driven implant planning:&lt;/b&gt; place the implant under the real crown position, not only where the bone is."><b>تخطيط الزرعة من التاج النهائي:</b> تضع الزرعة تحت مكان التاج الحقيقي، لا حيث يوجد العظم فقط.</li>
-      <li data-en="&lt;b&gt;Gum thickness over the bone:&lt;/b&gt; the distance between the scan line and the bone in the cross-section is the soft-tissue thickness, useful for choosing the abutment height and the flap."><b>سماكة اللثة فوق العظم:</b> المسافة بين خط الطبعة والعظم في المقطع العرضي هي سماكة النسيج الرخو، وتفيدك في اختيار ارتفاع الدعامة وطريقة الشريحة.</li>
-      <li data-en="&lt;b&gt;Clear crowns despite metal:&lt;/b&gt; fillings and crowns cause streaks in the CBCT; the scan shows the true tooth surface."><b>تيجان واضحة رغم المعادن:</b> الحشوات والتيجان المعدنية تسبب خطوطاً في الأشعة، والطبعة تُظهر سطح السن الحقيقي.</li>
-      <li data-en="&lt;b&gt;Orthodontics:&lt;/b&gt; see the roots under each crown, root parallelism, and how impacted teeth relate to the erupted ones."><b>التقويم:</b> ترى الجذور تحت كل تاج، وتوازي الجذور، وعلاقة الأسنان المنطمرة بالأسنان الظاهرة.</li>
-      <li data-en="&lt;b&gt;Lab designs over the bone:&lt;/b&gt; crowns, abutments and scan bodies designed on the scan move with it onto the CBCT."><b>تصاميم المختبر فوق العظم:</b> التيجان والدعامات وقطع المسح المصممة على الطبعة تنتقل معها إلى الأشعة.</li>
-      <li data-en="&lt;b&gt;The first step towards a surgical guide:&lt;/b&gt; guided implant surgery always starts by fusing the scan with the CBCT."><b>الخطوة الأولى نحو الدليل الجراحي:</b> الجراحة الموجّهة للزرعات تبدأ دائماً بدمج الطبعة مع الأشعة.</li>
+      <li data-en="&lt;b&gt;Restoration-driven implant planning:&lt;/b&gt; place the implant under the real crown position, not only where the bone is."><b><bdi class="tm">Prosthetically driven planning</bdi>:</b> تضع <bdi class="tm">Implant</bdi> تحت مكان <bdi class="tm">Crown</bdi> النهائي، لا حيث يوجد العظم فقط.</li>
+      <li data-en="&lt;b&gt;Gum thickness over the bone:&lt;/b&gt; the distance between the scan line and the bone in the cross-section is the soft-tissue thickness, useful for choosing the abutment height and the flap."><b><bdi class="tm">Soft tissue thickness</bdi>:</b> المسافة بين خط الطبعة والعظم في <bdi class="tm">Cross-section</bdi> هي سماكة اللثة، وتفيدك في اختيار ارتفاع <bdi class="tm">Abutment</bdi> وتصميم <bdi class="tm">Flap</bdi>.</li>
+      <li data-en="&lt;b&gt;Clear crowns despite metal:&lt;/b&gt; fillings and crowns cause streaks in the CBCT; the scan shows the true tooth surface."><b>تيجان واضحة رغم <bdi class="tm">Metal artifacts</bdi>:</b> الحشوات والتيجان المعدنية تسبب <bdi class="tm">Streak artifacts</bdi> في الأشعة، والطبعة تُظهر سطح السن الحقيقي.</li>
+      <li data-en="&lt;b&gt;Orthodontics:&lt;/b&gt; see the roots under each crown, root parallelism, and how impacted teeth relate to the erupted ones."><b><bdi class="tm">Orthodontics</bdi>:</b> ترى <bdi class="tm">Roots</bdi> تحت كل <bdi class="tm">Crown</bdi>، و<bdi class="tm">Root parallelism</bdi>، وعلاقة <bdi class="tm">Impacted teeth</bdi> بالأسنان الظاهرة.</li>
+      <li data-en="&lt;b&gt;Lab designs over the bone:&lt;/b&gt; crowns, abutments and scan bodies designed on the scan move with it onto the CBCT."><b>تصاميم المختبر فوق العظم:</b> <bdi class="tm">Crown</bdi> و<bdi class="tm">Abutment</bdi> و<bdi class="tm">Scan body</bdi> المصممة على الطبعة تنتقل معها إلى <bdi class="tm">CBCT</bdi>.</li>
+      <li data-en="&lt;b&gt;The first step towards a surgical guide:&lt;/b&gt; guided implant surgery always starts by fusing the scan with the CBCT."><b>الخطوة الأولى نحو <bdi class="tm">Surgical guide</bdi>:</b> <bdi class="tm">Guided implant surgery</bdi> تبدأ دائماً بدمج الطبعة مع الأشعة.</li>
       <li data-en="&lt;b&gt;Explaining to the patient:&lt;/b&gt; the patient sees their own teeth and gums over the bone, which makes the plan easier to understand."><b>الشرح للمريض:</b> يرى المريض أسنانه ولثته فوق العظم، فيفهم الخطة أسهل.</li>
     </ul>
 
     <h3 data-en="Tips for an accurate fusion">نصائح لدمج دقيق</h3>
     <ol class="wList">
       <li data-en="Use a scan and a CBCT of the &lt;b&gt;same patient taken close together&lt;/b&gt;, with no extraction or new crown in between.">استعمل طبعة وأشعة <b>لنفس المريض وفي وقت متقارب</b>، دون خلع أو تاج جديد بينهما.</li>
-      <li data-en="&lt;b&gt;Full-arch scans&lt;/b&gt; fuse more accurately than a partial scan.">الطبعة <b>الكاملة للقوس</b> أدق في الدمج من الطبعة الجزئية.</li>
-      <li data-en="Send the &lt;b&gt;colour version&lt;/b&gt; (PLY or OBJ) if you have it: colour lets the viewer separate teeth from gums.">أرسل <b>النسخة الملوّنة</b> (PLY أو OBJ) إن وُجدت، فالألوان تساعد البرنامج على فصل الأسنان عن اللثة.</li>
-      <li data-en="Ask for the CBCT with the &lt;b&gt;teeth slightly apart&lt;/b&gt; (a cotton roll or bite block) so the tooth surfaces show clearly.">اطلب الأشعة <b>والأسنان مفتوحة قليلاً</b> (قطنة أو حاجز عضّ)، لتظهر أسطح الأسنان واضحة.</li>
-      <li data-en="&lt;b&gt;Always check visually:&lt;/b&gt; scroll the cross-section along the arch; the line should hug the enamel. A median error under 0.3 mm is excellent; above 0.5 mm, check carefully."><b>تحقق بعينك دائماً:</b> مرّر المقطع العرضي على طول القوس، والخط يجب أن يلاصق المينا. الخطأ الوسيط أقل من 0.3 ملم ممتاز، وأكثر من 0.5 ملم يحتاج تدقيقاً.</li>
-      <li data-en="Many metal restorations can reduce accuracy; check those areas more closely.">كثرة المعادن في الفم قد تقلل الدقة، فدقق تلك المناطق أكثر.</li>
+      <li data-en="&lt;b&gt;Full-arch scans&lt;/b&gt; fuse more accurately than a partial scan.">الطبعة <b>الكاملة للقوس</b> <bdi class="tm">Full-arch scan</bdi> أدق في الدمج من الطبعة الجزئية.</li>
+      <li data-en="Send the &lt;b&gt;colour version&lt;/b&gt; (PLY or OBJ) if you have it: colour lets the viewer separate teeth from gums.">أرسل <b>النسخة الملوّنة</b> (<bdi class="tm">PLY</bdi> أو <bdi class="tm">OBJ</bdi>) إن وُجدت، فالألوان تساعد البرنامج على فصل الأسنان عن <bdi class="tm">Gingiva</bdi>.</li>
+      <li data-en="Ask for the CBCT with the &lt;b&gt;teeth slightly apart&lt;/b&gt; (a cotton roll or bite block) so the tooth surfaces show clearly.">اطلب الأشعة <b>والأسنان مفتوحة قليلاً</b> (قطنة أو <bdi class="tm">Bite block</bdi>)، لتظهر أسطح الأسنان واضحة.</li>
+      <li data-en="&lt;b&gt;Always check visually:&lt;/b&gt; scroll the cross-section along the arch; the line should hug the enamel. A median error under 0.3 mm is excellent; above 0.5 mm, check carefully."><b>تحقق بعينك دائماً:</b> مرّر <bdi class="tm">Cross-section</bdi> على طول القوس، والخط يجب أن يلاصق <bdi class="tm">Enamel</bdi>. <bdi class="tm">Median error</bdi> أقل من 0.3 ملم ممتاز، وأكثر من 0.5 ملم يحتاج تدقيقاً.</li>
+      <li data-en="Many metal restorations can reduce accuracy; check those areas more closely.">كثرة <bdi class="tm">Metal restorations</bdi> قد تقلل الدقة، فدقق تلك المناطق أكثر.</li>
     </ol>
     <p class="fine" data-en="&lt;b&gt;How:&lt;/b&gt; open the CBCT ← tap “◐ Scan fusion” ← “Add scan files” ← wait a few seconds."><b>الطريقة:</b> افتح الأشعة ← اضغط «◐ دمج الطبعة» ← «أضف ملفات الطبعة» ← انتظر ثوانيَ.</p>
     <div class="wAct">
@@ -2028,19 +2028,19 @@ function buildLearn() {
 <dt>على الهاتف والتابلت</dt><dd><ul>
 <li><b>الشريط</b> أسفل كل نافذة أو <b>‹ ›</b>: التنقل بين الشرائح.</li>
 <li><b>إصبعان (تقريب/تبعيد):</b> تكبير وتصغير. <b>سحب بإصبع:</b> تحريك الصورة، وفي ${TM("3D")} تدوير.</li>
-<li><b>نقرة:</b> تنقل النوافذ الأخرى إلى نفس النقطة. في البانوراما تفتح المقطع العرضي للسن.</li>
+<li><b>نقرة:</b> تنقل النوافذ الأخرى إلى نفس النقطة. في ${TM("Panoramic")} تفتح ${TM("Cross-section")} للسن.</li>
 <li><b>نقرتان</b> أو <b>⤢</b>: تكبير النافذة على الشاشة كلها والعودة.</li>
-<li>أزرار أسفل الشاشة تبدّل نوع النافذة النشطة (المحاطة بالأحمر).</li></ul></dd>
+<li>أزرار أسفل الشاشة تبدّل نوع النافذة النشطة (المحاطة بالأحمر): ${TM("Axial")}، ${TM("Coronal")}، ${TM("Sagittal")}، ${TM("Panoramic")}، ${TM("Cross-section")}، ${TM("3D")}.</li></ul></dd>
 <dt>على الحاسوب</dt><dd><ul>
 <li><b>عجلة الفأرة:</b> التنقل بين الشرائح (مع Shift خمس شرائح). <b>Ctrl + العجلة:</b> تكبير.</li>
 <li><b>سحب:</b> تحريك الصورة، وفي ${TM("3D")} تدوير. <b>نقر مزدوج:</b> ملء الشاشة. <b>Ctrl+Z:</b> تراجع.</li></ul></dd>
 <dt>الأدوات (الشريط العلوي)</dt><dd><ul>
 <li>${UI("تصفح", "Browse")}: الوضع العادي.</li>
-<li>${UI("قياس", "Measure")}: نقطتان فتظهر المسافة بالملم.</li>
-<li>${UI("زرعة", "Implant")}: انقر على ${TM("Cross-section")} لوضعها، اسحب وسطها لتحريكها وطرفها لتغيير الميلان، ومن اللوحة السفلية غيّر النظام والمقاس.</li>
+<li>${UI("قياس", "Measure")}: نقطتان فتظهر المسافة بالملم (${TM("Linear measurement")}).</li>
+<li>${UI("زرعة", "Implant")}: انقر على ${TM("Cross-section")} لوضع ${TM("Implant")}، اسحب وسطها لتحريكها وطرفها لتغيير ${TM("Angulation")}، ومن اللوحة السفلية غيّر ${TM("Implant system")} والمقاس (${TM("Diameter")} و${TM("Length")}).</li>
 <li>${UI("قناة", "Canal")}: نقاط على مسار ${TM("Mandibular canal")} في البانوراما، ثم ${UI("تتبّع ذكي", "Smart trace")}.</li>
 <li>${UI("☀︎ السطوع", "☀︎ Brightness")} و${UI("◐ دمج الطبعة", "◐ Scan fusion")} و${UI("الخطة", "Plan")} (كل القياسات والزرعات) و${UI("↶ تراجع", "↶ Undo")}.</li></ul></dd>
-<dt>عارض النماذج (${TM("STL")})</dt><dd>سحب بإصبع للتدوير وإصبعان للتكبير والتحريك، ولوحة الأسهم ودائرة الاتجاهات للزوايا، والأزرار السريعة (العلوي، السفلي، الفكان، الكل) في الأعلى، والطبقات للإظهار والشفافية والألوان.</dd>
+<dt>عارض النماذج (${TM("STL")})</dt><dd>سحب بإصبع للتدوير وإصبعان للتكبير والتحريك، ولوحة الأسهم ودائرة الاتجاهات للزوايا، والأزرار السريعة (${TM("Upper jaw")}، ${TM("Lower jaw")}، الفكان، الكل) في الأعلى، والطبقات للإظهار و${TM("Opacity")} والألوان.</dd>
 </dl>`],
     en: ["How to control the viewer", `<p>The ? in the corner of each view explains how to control that particular view, and its “What you see” tab explains the content.</p>
 <dl>
@@ -2216,17 +2216,17 @@ function buildLearn() {
 <li><b>${TM("Prosthetically driven planning")}:</b> تضع الزرعة تحت مكان التاج النهائي، لا حيث يوجد العظم فقط.</li>
 <li><b>${TM("Soft tissue thickness")}:</b> المسافة بين خط الطبعة والعظم في المقطع العرضي، تفيدك في اختيار ارتفاع الدعامة وتصميم الشريحة.</li>
 <li><b>${TM("Metal artifacts")}:</b> الطبعة تُظهر سطح التاج الحقيقي حيث تشوّه المعادن صورة الأشعة.</li>
-<li><b>التقويم:</b> الجذور تحت كل تاج، وتوازيها، وعلاقة ${TM("Impacted teeth")} بالأسنان الظاهرة.</li>
+<li><b>${TM("Orthodontics")}:</b> ${TM("Roots")} تحت كل ${TM("Crown")}، و${TM("Root parallelism")}، وعلاقة ${TM("Impacted teeth")} بالأسنان الظاهرة.</li>
 <li><b>تصاميم المختبر:</b> ${TM("Crown")} و${TM("Abutment")} و${TM("Scan body")} المصممة على الطبعة تنتقل معها فوق العظم.</li>
 <li><b>الشرح للمريض:</b> يرى أسنانه ولثته فوق العظم فيفهم الخطة.</li>
 </ul>
 <h4>نصائح لدمج دقيق</h4>
 <ul>
 <li>طبعة وأشعة لنفس المريض وفي وقت متقارب، دون خلع أو تاج جديد بينهما.</li>
-<li>الطبعة الكاملة للقوس أدق من الجزئية، والنسخة الملوّنة تساعد على فصل الأسنان عن اللثة.</li>
+<li>${TM("Full-arch scan")} أدق من الطبعة الجزئية، والنسخة الملوّنة (${TM("PLY")}) تساعد على فصل الأسنان عن ${TM("Gingiva")}.</li>
 <li>أشعة والأسنان مفتوحة قليلاً (قطنة أو ${TM("Bite block")}) تُظهر أسطح الأسنان أوضح.</li>
 <li>تحقق دائماً: مرّر ${TM("Cross-section")} على طول القوس، ويجب أن يلاصق الخط المينا.</li>
-<li>كثرة المعادن قد تقلل الدقة، فدقق مناطقها أكثر.</li>
+<li>كثرة ${TM("Metal restorations")} قد تقلل الدقة، فدقق مناطقها أكثر.</li>
 </ul>
 <p class="fine">هذه أداة للتخطيط المبدئي؛ الدليل الجراحي النهائي يُصمَّم ويُتحقق منه في برنامج معتمد.</p>`],
     en: ["Fusing the intraoral scan with the CBCT", `<p>Places the patient's intraoral scan over their CBCT, so every slice shows the bone from the CBCT and the gum and true crown shape from the scan. This is called registration or fusion, and it is the basis of guided implant surgery.</p>
@@ -2298,24 +2298,24 @@ const isTouchUI = () => matchMedia("(pointer: coarse)").matches;
 function howTo(view) {
   const t = isTouchUI(), A = [], E = [], add = (ar, en) => { A.push(ar); E.push(en); };
   if (view === "3d") {
-    add(t ? "<b>اسحب بإصبع</b> لتدوير المجسم في كل الاتجاهات." : "<b>اسحب بالفأرة</b> لتدوير المجسم في كل الاتجاهات.", t ? "<b>Drag one finger</b> to rotate the model." : "<b>Drag with the mouse</b> to rotate the model.");
+    add(t ? "<b>اسحب بإصبع</b> لتدوير <bdi class=\"tm\">3D model</bdi> في كل الاتجاهات." : "<b>اسحب بالفأرة</b> لتدوير المجسم في كل الاتجاهات.", t ? "<b>Drag one finger</b> to rotate the model." : "<b>Drag with the mouse</b> to rotate the model.");
     add(t ? "<b>قرّب أو باعد إصبعين</b> للتكبير والتصغير." : "<b>عجلة الفأرة</b> للتكبير والتصغير.", t ? "<b>Pinch</b> to zoom." : "<b>Mouse wheel</b> to zoom.");
-    add("القائمة أسفل النافذة تختار ما يظهر (عظم، أسنان…)، والشريط <b>«٪ قطع»</b> يقطع المجسم لترى الداخل.", "The menu below picks what is shown (bone, teeth…), and the <b>“% cut”</b> slider cuts into the model.");
+    add("القائمة أسفل النافذة تختار ما يظهر (عظم، أسنان…)، والشريط <b>«٪ قطع»</b> يقطع المجسم لترى الداخل (<bdi class=\"tm\">Clipping</bdi>).", "The menu below picks what is shown (bone, teeth…), and the <b>“% cut”</b> slider cuts into the model.");
   } else {
     add(t ? "<b>الشريط أسفل النافذة</b> أو الزران <b>‹ ›</b> للتنقل بين الشرائح، شريحة بعد شريحة." : "<b>عجلة الفأرة</b> أو الشريط أسفل النافذة للتنقل بين الشرائح (مع Shift: خمس شرائح دفعة واحدة).",
       t ? "<b>The slider below the view</b> or the <b>‹ ›</b> buttons move through the slices one by one." : "<b>Mouse wheel</b> or the slider below the view moves through the slices (hold Shift for five at a time).");
     add(t ? "<b>قرّب أو باعد إصبعين</b> للتكبير، و<b>اسحب بإصبع</b> لتحريك الصورة." : "<b>Ctrl + عجلة الفأرة</b> للتكبير، و<b>اسحب</b> لتحريك الصورة.", t ? "<b>Pinch</b> to zoom and <b>drag one finger</b> to move the image." : "<b>Ctrl + wheel</b> to zoom and <b>drag</b> to move the image.");
-    if (view === "pano") add("<b>انقر على أي سن</b> فيظهر مقطعه العرضي في نافذة «مقطع عرضي». زر <b>«تعديل القوس»</b> أسفلها يصحح مسار البانوراما.", "<b>Tap any tooth</b> to show its cross-section. <b>“Edit arch”</b> below corrects the panoramic path.");
-    else if (view === "cross") add("الشريط أسفلها <b>يمشي على طول القوس</b> من سن إلى سن. انقر على البانوراما للقفز مباشرة إلى سن معين.", "Its slider <b>walks along the arch</b> tooth by tooth. Tap the panoramic to jump to a tooth.");
+    if (view === "pano") add("<b>انقر على أي سن</b> فيظهر <bdi class=\"tm\">Cross-section</bdi> له. زر <b>«تعديل القوس»</b> أسفلها يصحح مسار <bdi class=\"tm\">Dental arch</bdi>.", "<b>Tap any tooth</b> to show its cross-section. <b>“Edit arch”</b> below corrects the panoramic path.");
+    else if (view === "cross") add("الشريط أسفلها <b>يمشي على طول <bdi class=\"tm\">Dental arch</bdi></b> من سن إلى سن. انقر على <bdi class=\"tm\">Panoramic</bdi> للقفز مباشرة إلى سن معين.", "Its slider <b>walks along the arch</b> tooth by tooth. Tap the panoramic to jump to a tooth.");
     else add("<b>انقر على أي نقطة</b> فتنتقل النوافذ الأخرى إلى نفس الموضع (الخطوط المتقطعة تُظهر مكانه).", "<b>Tap any point</b> and the other views jump to the same spot (the dashed lines show where).");
   }
   add(t ? "<b>انقر مرتين</b> أو اضغط <b>⤢</b> لتكبير النافذة على الشاشة كلها، ومرة أخرى للرجوع." : "<b>انقر مرتين</b> أو <b>⤢</b> لتكبير النافذة على الشاشة كلها، ومرة أخرى للرجوع.", "<b>Double-tap</b> or <b>⤢</b> to fill the screen with this view; again to go back.");
   add("القائمة أعلى النافذة تغيّر نوعها (محوري، بانوراما، مقطع عرضي…). النافذة الحمراء هي النشطة.", "The menu at the top changes the view type (axial, panoramic, cross-section…). The red-framed view is the active one.");
   // الأداة الحالية
   const tool = { measure: ["<b>أداة القياس:</b> انقر نقطتين فتظهر المسافة بالملم.", "<b>Measure tool:</b> tap two points to get the distance in mm."],
-    implant: ["<b>أداة الزرعة:</b> انقر على المقطع العرضي لوضع زرعة، اسحب وسطها لتحريكها، واسحب طرفها لتغيير الميلان.", "<b>Implant tool:</b> tap the cross-section to place an implant, drag its middle to move it and its tip to tilt it."],
-    nerve: ["<b>أداة القناة:</b> انقر نقاطاً على مسار القناة في البانوراما، ثم «تتبّع ذكي» يكمل المسار.", "<b>Canal tool:</b> tap points along the canal on the panoramic, then “Smart trace” completes it."],
-    wl: ["<b>ضبط السطوع:</b> اسحب أفقياً للتباين وعمودياً للسطوع.", "<b>Brightness drag:</b> drag sideways for contrast and up/down for brightness."] }[S.tool];
+    implant: ["<b>أداة الزرعة:</b> انقر على <bdi class=\"tm\">Cross-section</bdi> لوضع <bdi class=\"tm\">Implant</bdi>، اسحب وسطها لتحريكها، واسحب طرفها لتغيير <bdi class=\"tm\">Angulation</bdi>.", "<b>Implant tool:</b> tap the cross-section to place an implant, drag its middle to move it and its tip to tilt it."],
+    nerve: ["<b>أداة القناة:</b> انقر نقاطاً على مسار <bdi class=\"tm\">Mandibular canal</bdi> في <bdi class=\"tm\">Panoramic</bdi>، ثم «تتبّع ذكي» يكمل المسار.", "<b>Canal tool:</b> tap points along the canal on the panoramic, then “Smart trace” completes it."],
+    wl: ["<b>ضبط السطوع:</b> اسحب أفقياً للتباين <bdi class=\"tm\">Window width</bdi> وعمودياً للسطوع <bdi class=\"tm\">Window level</bdi>.", "<b>Brightness drag:</b> drag sideways for contrast and up/down for brightness."] }[S.tool];
   if (tool) add(tool[0], tool[1]);
   else add("الأدوات في الشريط العلوي: <b>تصفح، قياس، زرعة، قناة</b>، و<b>☀︎ السطوع</b> و<b>◐ دمج الطبعة</b>. و<b>↶ تراجع</b> يلغي آخر خطوة.", "Tools are in the top bar: <b>Browse, Measure, Implant, Canal</b>, plus <b>☀︎ Brightness</b> and <b>◐ Scan fusion</b>. <b>↶ Undo</b> reverts the last step.");
   return [A, E];
@@ -3199,9 +3199,9 @@ function showModelTip() {
     [t ? "<b>اسحب بإصبع</b> لتدوير النموذج، و<b>إصبعان</b> للتكبير والتحريك." : "<b>اسحب بالفأرة</b> للتدوير، و<b>العجلة</b> للتكبير، و<b>الزر الأيمن</b> للتحريك.", t ? "<b>Drag one finger</b> to rotate; <b>two fingers</b> to zoom and move." : "<b>Drag</b> to rotate, <b>wheel</b> to zoom, <b>right button</b> to move."],
     ["<b>لوحة الأسهم:</b> ▲▼◀▶ تدوير بخطوات، ⌂ يعيد الزاوية، + و− للتكبير، و⟳ يبدّل بين التدوير والتحريك.", "<b>Arrow pad:</b> ▲▼◀▶ rotate in steps, ⌂ resets, + and − zoom, ⟳ switches between rotate and move."],
     ["<b>دائرة الاتجاهات:</b> أ = أمام، ع = أعلى، ي = يمين المريض. انقر حرفاً لتنظر من تلك الجهة.", "<b>Direction gizmo:</b> F = front, T = top, R = patient's right. Tap a letter to look from that side."],
-    ["<b>الأزرار السريعة</b> في الأعلى: العلوي فقط، السفلي فقط، الفكان، أو الكل.", "<b>Quick buttons</b> at the top: upper only, lower only, both jaws, or all."],
-    ["<b>الطبقات:</b> ◉ إظهار وإخفاء، «وحدها» لطبعة واحدة، الشريط للشفافية، الدائرة للون، وشريط «الألوان» لقوة الألوان الحقيقية. صحّح نوع الطبعة من القائمة إن أخطأ.", "<b>Layers:</b> ◉ show/hide, “Solo” for one scan, slider for opacity, circle for colour, “Colour” slider for true-colour strength. Fix a scan's type from its menu if needed."],
-    ["<b>أسفل الشاشة:</b> الزوايا الجاهزة، و«قياس» (نقطتان على السطح)، و«مقطع» لرؤية الداخل، و«الإطباق» لخريطة التلامس.", "<b>Bottom bar:</b> preset angles, “Measure” (two points on the surface), “Section” to see inside, and “Occlusion” for the contact map."],
+    ["<b>الأزرار السريعة</b> في الأعلى: <bdi class=\"tm\">Upper jaw</bdi> فقط، <bdi class=\"tm\">Lower jaw</bdi> فقط، الفكان، أو الكل.", "<b>Quick buttons</b> at the top: upper only, lower only, both jaws, or all."],
+    ["<b>الطبقات <bdi class=\"tm\">Layers</bdi>:</b> ◉ إظهار وإخفاء، «وحدها» لطبعة واحدة، الشريط لـ <bdi class=\"tm\">Opacity</bdi>، الدائرة للون، وشريط «الألوان» لقوة <bdi class=\"tm\">True colour</bdi>. صحّح نوع الطبعة من القائمة إن أخطأ.", "<b>Layers:</b> ◉ show/hide, “Solo” for one scan, slider for opacity, circle for colour, “Colour” slider for true-colour strength. Fix a scan's type from its menu if needed."],
+    ["<b>أسفل الشاشة:</b> الزوايا الجاهزة، و«قياس» (نقطتان على السطح)، و«مقطع» لرؤية الداخل، و«الإطباق» لـ <bdi class=\"tm\">Occlusion</bdi> و<bdi class=\"tm\">Contact map</bdi>.", "<b>Bottom bar:</b> preset angles, “Measure” (two points on the surface), “Section” to see inside, and “Occlusion” for the contact map."],
   ];
   c.innerHTML = `<b>${ltr("كيف تتحكم بعارض النماذج", "How to use the model viewer")}</b><ul class="tipHow">${L.map((x) => `<li>${en ? x[1] : x[0]}</li>`).join("")}</ul><div class="row"><button class="paneact" type="button" data-more>${ltr("المزيد في الدليل", "More in the guide")}</button><button class="paneact" type="button" data-x>${ltr("إغلاق", "Close")}</button></div>`;
   c.querySelector("[data-more]").onclick = () => { c.hidden = true; openLearn("models"); };
@@ -3664,7 +3664,7 @@ async function runFusion() {
   try {
     const jaws = M.items.filter((i) => !i.merged && !i.dup && (i.type === "upper" || i.type === "lower" || i.type === "jaw"));
     if (!jaws.length) { fuMsg(tr("لم أجد فكاً علوياً أو سفلياً في ملفات الطبعة.", "No upper or lower jaw found in the scan files."), "err"); return; }
-    fuMsg(tr("استخراج سطح الأسنان من الأشعة…", "Extracting the tooth surface from the CBCT…")); await fuTick();
+    fuMsg(tr("استخراج سطح الأسنان (Enamel) من الأشعة…", "Extracting the tooth surface from the CBCT…")); await fuTick();
     const surf = fuSurface();
     if (!surf || surf.pts.length < 3000) { fuMsg(tr("لم أجد أسناناً واضحة في هذه الأشعة.", "No clear teeth were found in this CBCT."), "err"); return; }
     let T = fuTarget(surf.pts, surf.ext, surf.box); await fuTick();
@@ -3713,7 +3713,7 @@ async function runFusion() {
     jaws.forEach((j) => (j.sp = null));
     FU.ver++; FU.show = true; FU.mirror = mirror;
     const worst = Math.max(...jaws.map((j) => res.get(j).med)), good = jaws.every((j) => res.get(j).score > 0.45 && res.get(j).med < 0.4);
-    fuMsg((good ? "✓ " : "⚠ ") + tr("دُمجت الطبعة مع الأشعة · الخطأ الوسيط ", "Scan fused with the CBCT · median error ") + worst.toFixed(2) + tr(" ملم", " mm") + (good ? "" : tr(" — تحقق بالعين، وقد تحتاج أشعة أوضح أو طبعة كاملة.", " — check visually; a clearer CBCT or a complete scan may be needed.")), good ? "ok" : "warn");
+    fuMsg((good ? "✓ " : "⚠ ") + tr("دُمجت الطبعة مع الأشعة · Median error ", "Scan fused with the CBCT · median error ") + worst.toFixed(2) + tr(" ملم", " mm") + (good ? "" : tr(" — تحقق بالعين، وقد تحتاج أشعة أوضح أو طبعة كاملة.", " — check visually; a clearer CBCT or a complete scan may be needed.")), good ? "ok" : "warn");
     requestRender();
   } catch (e) { console.error(e); fuMsg(tr("تعذّر الدمج: ", "Fusion failed: ") + (e.message || e), "err"); }
   finally { FU.busy = false; renderFuse(); }
@@ -3826,7 +3826,7 @@ function renderFuse() {
   $("fuShow").checked = FU.show;
   $("fuList").innerHTML = FU.items.map((F, i) => `<button type="button" data-fi="${i}" aria-pressed="${F.visible}" style="--c:${F.col}"><i></i>${esc(F.name)}${F.med != null && (F.type === "upper" || F.type === "lower") ? ` <span class="num">${F.med.toFixed(2)}</span>` : ""}</button>`).join("");
   $("fuList").querySelectorAll("[data-fi]").forEach((x) => (x.onclick = () => { const F = FU.items[+x.dataset.fi]; F.visible = !F.visible; renderFuse(); requestRender(); }));
-  if (!has && !FU.busy && !$("fuMsg").textContent) fuMsg(tr("أضف ملفات الطبعة الرقمية (STL أو PLY أو OBJ، أو ملف مضغوط فيه الطبعات) لنفس المريض، وسأطابقها على الأسنان في الأشعة تلقائياً.", "Add the patient's intraoral scan files (STL, PLY, OBJ, or a ZIP of them) and they will be matched to the teeth in the CBCT automatically."));
+  if (!has && !FU.busy && !$("fuMsg").textContent) fuMsg(tr("أضف ملفات Intraoral scan (STL أو PLY أو OBJ، أو ملف مضغوط فيه الطبعات) لنفس المريض، وستُطابق على الأسنان في CBCT تلقائياً.", "Add the patient's intraoral scan files (STL, PLY, OBJ, or a ZIP of them) and they will be matched to the teeth in the CBCT automatically."));
 }
 function fuReset() { FU.items = []; FU.ver++; FU.files = null; $("fuMsg").textContent = ""; renderFuse(); requestRender(); }
 function initFuse() {
