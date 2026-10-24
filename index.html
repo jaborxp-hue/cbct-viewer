@@ -252,14 +252,14 @@ html[data-dev="tablet"] .pane footer .step{width:36px;height:34px}
 .mTitleBox small{color:var(--fg-dim);font-size:12px}
 .mStage{flex:1;min-height:0;position:relative;overflow:hidden;background:radial-gradient(120% 90% at 50% 35%,#1d2430 0%,#0d1117 60%,#07090c 100%)}
 .mStage canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
-.mPanel{position:absolute;top:12px;inset-inline-start:12px;z-index:2;width:min(300px,calc(100% - 24px));background:rgba(17,22,29,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.mPanel{position:absolute;top:12px;inset-inline-start:12px;z-index:2;width:min(340px,calc(100% - 24px));background:rgba(17,22,29,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .mPanelHead{width:100%;display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:none;border:0;color:var(--fg);font-weight:600}
 .mLayers{list-style:none;margin:0;padding:0 8px 8px;display:flex;flex-direction:column;gap:4px;max-height:45vh;overflow:auto}
-.mLayers li{display:grid;grid-template-columns:26px 16px 1fr auto;grid-template-areas:"eye sw name solo" ". . type op";align-items:center;column-gap:8px;row-gap:4px;padding:7px 6px;border-radius:8px;background:rgba(255,255,255,.03)}
+.mLayers li{display:grid;grid-template-columns:26px 16px minmax(0,1fr) auto;grid-template-areas:"eye sw name solo" ". . type op";align-items:center;column-gap:8px;row-gap:4px;padding:7px 6px;border-radius:8px;background:rgba(255,255,255,.03)}
 .mLayers .mEye{grid-area:eye}.mLayers .mSw{grid-area:sw}.mLayers .mName{grid-area:name}.mLayers .mSolo{grid-area:solo}.mLayers .mType{grid-area:type}.mLayers input[type=range]{grid-area:op}
 .mSolo{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg-dim);font-size:11.5px;padding:2px 7px}
 .mSolo:hover{color:var(--fg)}
-.mType{background:var(--ink-2);border:1px solid var(--line);border-radius:6px;color:var(--fg);font-size:12px;padding:2px 4px;max-width:100%}
+.mType{background:var(--ink-2);border:1px solid var(--line);border-radius:6px;color:var(--fg);font-size:12px;padding:2px 4px;width:100%;max-width:100%}
 .mSw{position:relative;cursor:pointer}
 .mSw input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
 .mBadges{display:flex;gap:4px;flex-wrap:wrap;margin-top:2px}
@@ -298,8 +298,8 @@ html[data-dev="tablet"] .pane footer .step{width:36px;height:34px}
 .mLayers li.off{opacity:.5}
 .mEye{background:none;border:0;color:var(--fg);font-size:16px;padding:0}
 .mSw{width:12px;height:12px;border-radius:50%;border:1px solid rgba(255,255,255,.3)}
-.mName{display:flex;flex-direction:column;min-width:0}
-.mName b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mName{display:flex;flex-direction:column;min-width:0;overflow-wrap:anywhere}
+.mName b{font-size:13px;white-space:normal;line-height:1.35}
 .mName small{font-size:11px;color:var(--fg-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;direction:ltr;text-align:start}
 .mLayers input[type=range]{width:100%;accent-color:var(--accent)}
 .mQuick{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:2px;padding:3px;border-radius:999px;background:rgba(17,22,29,.88);border:1px solid var(--line);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
@@ -546,11 +546,11 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
         </div>
       </div>
       <section class="mOccl" id="mOccl" hidden>
-        <b data-en="Occlusion">الإطباق</b>
+        <b data-en="Occlusion">Occlusion</b>
         <p class="fine" id="mOcclMsg"></p>
-        <button class="btn primary" type="button" id="mOcclRun" data-en="Compute occlusion from bite scans">احسب الإطباق من طبعات الإطباق</button>
-        <label class="mini"><input type="checkbox" id="mOcclOn" hidden> <span data-en="Apply computed occlusion">تطبيق الإطباق المحسوب</span></label>
-        <label class="mini"><input type="checkbox" id="mContact"> <span data-en="Contact map">خريطة التلامس</span></label>
+        <button class="btn primary" type="button" id="mOcclRun" data-en="Compute occlusion from bite scans">احسب Occlusion من Bite scans</button>
+        <label class="mini"><input type="checkbox" id="mOcclOn" hidden> <span data-en="Apply computed occlusion">تطبيق Occlusion المحسوب</span></label>
+        <label class="mini"><input type="checkbox" id="mContact"> <span data-en="Contact map">Contact map</span></label>
         <div class="mLegend" id="mLegend" hidden><span style="--c:#f21f1f" data-en="&lt; 0.1 mm">أقل من ٠٫١ ملم</span><span style="--c:#ff731a" data-en="0.1–0.3">٠٫١–٠٫٣</span><span style="--c:#ffd926" data-en="0.3–0.6">٠٫٣–٠٫٦</span><span style="--c:#59cc73" data-en="0.6–1 mm">٠٫٦–١ ملم</span></div>
       </section>
     </div>
@@ -570,7 +570,7 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
       <button class="iconbtn" type="button" id="mMeasure" aria-pressed="false" data-en="Measure">قياس</button>
       <button class="iconbtn quiet" type="button" id="mClearMeas" hidden data-en="Clear measurements">مسح القياسات</button>
       <button class="iconbtn" type="button" id="mClipBtn" aria-pressed="false" data-en="Section">مقطع</button>
-      <button class="iconbtn" type="button" id="mOcclBtn" aria-pressed="false" data-en="Occlusion">الإطباق</button>
+      <button class="iconbtn" type="button" id="mOcclBtn" aria-pressed="false" data-en="Occlusion">Occlusion</button>
     </div>
     <div class="mShot" id="mShot" hidden><img id="mShotImg" alt=""><p class="fine" data-en="Long-press the image to save or share it.">اضغط مطولاً على الصورة لحفظها أو مشاركتها.</p><button class="btn" type="button" id="mShotX" data-en="Close">إغلاق</button></div>
   </main>
@@ -590,15 +590,15 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
       <div class="seg" role="group" aria-label="الأداة" id="toolSeg">
         <button type="button" data-tool="browse" aria-pressed="true" data-en="Browse">تصفح</button>
         <button type="button" data-tool="measure" aria-pressed="false" data-en="Measure">قياس</button>
-        <button type="button" data-tool="implant" aria-pressed="false" data-en="Implant">زرعة</button>
-        <button type="button" data-tool="nerve" aria-pressed="false" data-en="Canal">قناة</button>
+        <button type="button" data-tool="implant" aria-pressed="false" data-en="Implant">Implant</button>
+        <button type="button" data-tool="nerve" aria-pressed="false" data-en="Canal">Canal</button>
       </div>
       <span class="sep"></span>
       <select id="presetSel" aria-label="نافذة العرض">
         <option value="dent" data-en="Teeth &amp; bone">أسنان وعظم</option>
-        <option value="bone" data-en="Bone">عظم</option>
-        <option value="soft" data-en="Soft tissue">أنسجة رخوة</option>
-        <option value="metal" data-en="Metal &amp; implants">معادن وزرعات</option>
+        <option value="bone" data-en="Bone">Bone</option>
+        <option value="soft" data-en="Soft tissue">Soft tissue</option>
+        <option value="metal" data-en="Metal &amp; implants">Metal و Implants</option>
         <option value="manual" data-en="Manual (drag)">ضبط يدوي بالسحب</option>
       </select>
       <button class="iconbtn" type="button" id="btnWL" aria-expanded="false" title="السطوع والتباين"><span aria-hidden="true">☀︎</span><span class="hide-phone" data-en=" Brightness"> السطوع</span></button>
@@ -616,13 +616,13 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
       <button class="iconbtn" type="button" id="archAuto" data-en="Auto-detect">اكتشاف تلقائي</button>
       <button class="iconbtn" type="button" id="archUndo" data-en="Remove last point">حذف آخر نقطة</button>
       <button class="iconbtn" type="button" id="archClear" data-en="Clear">مسح</button>
-      <button class="btn primary" type="button" id="archDone" style="padding:6px 14px" data-en="Generate panoramic">توليد البانوراما</button>
+      <button class="btn primary" type="button" id="archDone" style="padding:6px 14px" data-en="Generate panoramic">توليد Panoramic</button>
     </div>
     <div class="archbar" id="nerveBar" hidden>
       <p id="nerveMsg">انقر على مسار القناة في البانوراما، من الثقبة الذقنية إلى الخلف.</p>
       <button class="iconbtn danger" type="button" id="nerveDelPt" hidden data-en="Delete point">حذف النقطة</button>
       <button class="iconbtn" type="button" id="nerveAuto" data-en="Smart trace">تتبّع ذكي</button>
-      <button class="iconbtn" type="button" id="nerveNew" data-en="Other side canal">قناة الجهة الأخرى</button>
+      <button class="iconbtn" type="button" id="nerveNew" data-en="Other side canal">Canal الجهة الأخرى</button>
       <button class="btn primary" type="button" id="nerveDone" style="padding:6px 14px" data-en="Done">تم</button>
     </div>
     <nav class="viewtabs" id="viewTabs" aria-label="نوع العرض"></nav>
@@ -636,14 +636,14 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
         <button class="iconbtn quiet" type="button" id="impClose" data-en="Close">إغلاق</button>
       </div>
       <div class="row">
-        <label for="impSys"><span data-en="System">النظام</span>
+        <label for="impSys"><span data-en="System">Implant system</span>
           <select id="impSys" class="sys"></select></label>
         <button class="paneact" type="button" id="btnLib" data-en="Library">المكتبة</button>
       </div>
       <div class="row">
-        <label for="impD"><span data-en="Diameter">القطر</span>
+        <label for="impD"><span data-en="Diameter">Diameter</span>
           <select id="impD"></select></label>
-        <label for="impL"><span data-en="Length">الطول</span>
+        <label for="impL"><span data-en="Length">Length</span>
           <select id="impL"></select></label>
         <span class="fine" data-en="mm">ملم</span>
         <span class="spacer"></span>
@@ -658,7 +658,7 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
 <aside class="drawer" id="drawerMeasures" hidden aria-label="الخطة" dir="rtl">
   <header><h3 data-en="Case plan">خطة الحالة</h3><button class="iconbtn" type="button" data-close data-en="Close">إغلاق</button></header>
   <div class="body">
-    <p class="fine" id="mEmpty" data-en="The plan is empty. Use Implant, Canal or Measure to add items.">الخطة فارغة. استخدم «زرعة» أو «قناة» أو «قياس» لإضافة عناصر.</p>
+    <p class="fine" id="mEmpty" data-en="The plan is empty. Use Implant, Canal or Measure to add items.">الخطة فارغة. استخدم «Implant» أو «Canal» أو «قياس» لإضافة عناصر.</p>
     <h4 class="plan-h" id="hImp" hidden data-en="Implants">الزرعات</h4>
     <ul class="mlist" id="impList"></ul>
     <h4 class="plan-h" id="hNrv" hidden data-en="Canals">القنوات</h4>
@@ -928,7 +928,7 @@ S.lang = (() => { try { const v = localStorage.getItem("cbct.lang"); if (v === "
 function tr(ar, en) { return S.lang === "en" ? en : ar; }
 const VIEWS_AR = { axial: "محوري", coronal: "تاجي", sagittal: "سهمي", pano: "بانوراما", cross: "مقطع عرضي", "3d": "ثلاثي الأبعاد" };
 const VIEWS_EN = { axial: "Axial", coronal: "Coronal", sagittal: "Sagittal", pano: "Panoramic", cross: "Cross-section", "3d": "3D" };
-const VN = (k) => (S.lang === "en" ? VIEWS_EN : VIEWS_AR)[k];
+const VN = (k) => VIEWS_EN[k]; // أسماء الاتجاهات مصطلحات علمية: تبقى بالإنجليزية حتى في الواجهة العربية
 const VIEW_LIST = () => Object.keys(VIEWS_AR).map((k) => [k, VN(k)]);
 
 function toast(msg, ms = 2600) {
@@ -1417,8 +1417,8 @@ function startViewer(vol) {
   // محاولة اكتشاف القوس تلقائياً
   setTimeout(() => {
     const ok = autoArch(true);
-    if (ok) { setStatus(tr("اكتُشف قوس الأسنان تلقائياً وولّدت البانوراما. يمكنك تعديله من زر «تعديل القوس» أسفل البانوراما.", "Dental arch detected automatically and the panoramic generated. Adjust it with “Edit arch” below the panoramic.")); }
-    else setStatus(tr("لم يُكتشف القوس تلقائياً. افتح البانوراما واضغط «ارسم القوس».", "The arch was not detected automatically. Open the panoramic and tap “Draw arch”."));
+    if (ok) { setStatus(tr("اكتُشف قوس الأسنان تلقائياً وولّدت البانوراما. يمكنك تعديله من زر «تعديل Arch» أسفل Panoramic.", "Dental arch detected automatically and the panoramic generated. Adjust it with “Edit arch” below the panoramic.")); }
+    else setStatus(tr("لم يُكتشف القوس تلقائياً. افتح Panoramic واضغط «ارسم Arch».", "The arch was not detected automatically. Open the panoramic and tap “Draw arch”."));
     requestRender();
     afterScanOpened();
   }, 50);
@@ -1795,7 +1795,7 @@ function autoArch(quiet) {
    ============================================================ */
 const G3 = { ok: null, gl: null, canvas: null, prog: null, tex: null, texVer: -1, dims: null, norm: null,
   yaw: 0, pitch: 0.18, mode: "bone", clip: 0, busy: false, hiTimer: 0, interacting: false, lastKey: "", status: "" };
-const V3_MODES = { bone: ["عظم", "Bone"], glass: ["عظم شفاف", "See-through bone"], teeth: ["أسنان ومعادن", "Teeth & metal"], mip: ["أقصى كثافة", "Max intensity"] };
+const V3_MODES = { bone: ["Bone", "Bone"], glass: ["Bone شفاف", "See-through bone"], teeth: ["أسنان و Metal", "Teeth & metal"], mip: ["MIP", "Max intensity"] };
 const VS3 = `#version 300 es
 in vec2 aP; out vec2 vUv; void main(){ vUv = aP * 0.5 + 0.5; gl_Position = vec4(aP, 0.0, 1.0); }`;
 const FS3 = `#version 300 es
@@ -2037,8 +2037,8 @@ function buildLearn() {
 <dt>الأدوات (الشريط العلوي)</dt><dd><ul>
 <li>${UI("تصفح", "Browse")}: الوضع العادي.</li>
 <li>${UI("قياس", "Measure")}: نقطتان فتظهر المسافة بالملم (${TM("Linear measurement")}).</li>
-<li>${UI("زرعة", "Implant")}: انقر على ${TM("Cross-section")} لوضع ${TM("Implant")}، اسحب وسطها لتحريكها وطرفها لتغيير ${TM("Angulation")}، ومن اللوحة السفلية غيّر ${TM("Implant system")} والمقاس (${TM("Diameter")} و${TM("Length")}).</li>
-<li>${UI("قناة", "Canal")}: نقاط على مسار ${TM("Mandibular canal")} في البانوراما، ثم ${UI("تتبّع ذكي", "Smart trace")}.</li>
+<li>${UI("Implant", "Implant")}: انقر على ${TM("Cross-section")} لوضع ${TM("Implant")}، اسحب وسطها لتحريكها وطرفها لتغيير ${TM("Angulation")}، ومن اللوحة السفلية غيّر ${TM("Implant system")} والمقاس (${TM("Diameter")} و${TM("Length")}).</li>
+<li>${UI("Canal", "Canal")}: نقاط على مسار ${TM("Mandibular canal")} في البانوراما، ثم ${UI("تتبّع ذكي", "Smart trace")}.</li>
 <li>${UI("☀︎ السطوع", "☀︎ Brightness")} و${UI("◐ دمج الطبعة", "◐ Scan fusion")} و${UI("الخطة", "Plan")} (كل القياسات والزرعات) و${UI("↶ تراجع", "↶ Undo")}.</li></ul></dd>
 <dt>عارض النماذج (${TM("STL")})</dt><dd>سحب بإصبع للتدوير وإصبعان للتكبير والتحريك، ولوحة الأسهم ودائرة الاتجاهات للزوايا، والأزرار السريعة (${TM("Upper jaw")}، ${TM("Lower jaw")}، الفكان، الكل) في الأعلى، والطبقات للإظهار و${TM("Opacity")} والألوان.</dd>
 </dl>`],
@@ -2068,20 +2068,20 @@ function buildLearn() {
   { id: "tools", ar: ["الأدوات", `<dl>
 <dt>${B("تصفح", "Browse")}</dt><dd>اسحب لـ ${TM("Pan")}، وقرّب بإصبعين (${TM("Zoom")})، وانقر لتحديد نقطة. النقر المزدوج يكبّر النافذة لملء الشاشة ويرجعها.</dd>
 <dt>${B("قياس", "Measure")}</dt><dd>انقر نقطتين على أي صورة، فيظهر الطول بالملم (${TM("mm")}). القياس محسوب من ${TM("Voxel size")} الحقيقي للمسح.</dd>
-<dt>${B("زرعة", "Implant")}</dt><dd>اختر الموضع على ${TM("Panoramic")}، ثم انقر على ${TM("Cross-section")} عند ${TM("Alveolar crest")}. اسحب ${TM("Implant")} لتحريكها، واسحب النقطة البيضاء عند ${TM("Apex")} لتغيير ${TM("Angulation")}. اختر الشركة و${TM("Diameter")} و${TM("Length")} من البطاقة أسفل الشاشة.</dd>
-<dt>${B("قناة", "Canal")}</dt><dd>انقر على بداية ${TM("Inferior alveolar canal")} قرب ${TM("Mental foramen")} وعلى نهايتها نحو ${TM("Ramus")}، ثم اضغط ${B("تتبّع ذكي", "Smart trace")} ليتبع البرنامج المسار الداكن بينهما في المقاطع العرضية. أو انقر نقاطاً على طول المسار يدوياً. راجع النتيجة دائماً في ${TM("Cross-section")}.</dd>
-<dt>${B("القوس", "Arch")}</dt><dd>${TM("Dental arch")} يُكتشف تلقائياً عند الفتح. إن كانت ${TM("Panoramic")} ضبابية، اضغط ${B("تعديل القوس", "Edit arch")} وانقر نقاطاً على منتصف الأسنان في ${TM("Axial")}.</dd>
-<dt>${B("النافذة", "Window")}</dt><dd>تغيّر ${TM("Window / Level")} أي السطوع والتباين: ${B("أسنان وعظم", "Teeth & bone")} للقراءة العامة، ${B("عظم", "Bone")} لتفاصيل العظم، ${B("أنسجة رخوة", "Soft tissue")} للشفاه و${TM("Sinus")}، ${B("ضبط يدوي", "Manual")} بالسحب.</dd>
+<dt>${B("Implant", "Implant")}</dt><dd>اختر الموضع على ${TM("Panoramic")}، ثم انقر على ${TM("Cross-section")} عند ${TM("Alveolar crest")}. اسحب ${TM("Implant")} لتحريكها، واسحب النقطة البيضاء عند ${TM("Apex")} لتغيير ${TM("Angulation")}. اختر الشركة و${TM("Diameter")} و${TM("Length")} من البطاقة أسفل الشاشة.</dd>
+<dt>${B("Canal", "Canal")}</dt><dd>انقر على بداية ${TM("Inferior alveolar canal")} قرب ${TM("Mental foramen")} وعلى نهايتها نحو ${TM("Ramus")}، ثم اضغط ${B("تتبّع ذكي", "Smart trace")} ليتبع البرنامج المسار الداكن بينهما في المقاطع العرضية. أو انقر نقاطاً على طول المسار يدوياً. راجع النتيجة دائماً في ${TM("Cross-section")}.</dd>
+<dt>${B("القوس", "Arch")}</dt><dd>${TM("Dental arch")} يُكتشف تلقائياً عند الفتح. إن كانت ${TM("Panoramic")} ضبابية، اضغط ${B("تعديل Arch", "Edit arch")} وانقر نقاطاً على منتصف الأسنان في ${TM("Axial")}.</dd>
+<dt>${B("النافذة", "Window")}</dt><dd>تغيّر ${TM("Window / Level")} أي السطوع والتباين: ${B("أسنان وعظم", "Teeth & bone")} للقراءة العامة، ${B("Bone", "Bone")} لتفاصيل العظم، ${B("Soft tissue", "Soft tissue")} للشفاه و${TM("Sinus")}، ${B("ضبط يدوي", "Manual")} بالسحب.</dd>
 <dt>١ · ٢ · ٤</dt><dd>عدد النوافذ على الشاشة. الزر ⤢ أسفل كل نافذة يكبّرها.</dd>
 <dt>${B("الخطة", "Plan")}</dt><dd>قائمة بكل ${TM("Implants")} و${TM("Canals")} و${TM("Measurements")}، مع الانتقال إلى أي منها أو حذفه.</dd>
 <dt>${B("تراجع", "Undo")}</dt><dd>يلغي آخر تغيير في الخطة، خطوة بخطوة.</dd></dl>`],
     en: ["Tools", `<dl>
 <dt>${B("تصفح", "Browse")}</dt><dd>Drag to pan, pinch to zoom, tap to pick a point. Double-tap maximizes a pane and restores it.</dd>
 <dt>${B("قياس", "Measure")}</dt><dd>Tap two points on any image to get the length in mm, calculated from the true voxel size.</dd>
-<dt>${B("زرعة", "Implant")}</dt><dd>Pick the site on the panoramic, then tap the cross-section at the bone crest. Drag the implant to move it; drag the white dot at its apex to change the tilt. Choose manufacturer, diameter and length in the card below.</dd>
-<dt>${B("قناة", "Canal")}</dt><dd>Tap the start of the canal near the mental foramen and its end toward the ramus, then press ${B("تتبّع ذكي", "Smart trace")} to follow the dark path between them through the cross-sections. Or tap points along the path manually. Always review the result on the cross-sections.</dd>
-<dt>${B("القوس", "Arch")}</dt><dd>Detected automatically on opening. If the panoramic looks blurred, tap ${B("تعديل القوس", "Edit arch")} and tap points along the middle of the teeth on the axial view.</dd>
-<dt>${B("النافذة", "Window")}</dt><dd>Changes brightness and contrast: ${B("أسنان وعظم", "Teeth & bone")} for general reading, ${B("عظم", "Bone")} for bone detail, ${B("أنسجة رخوة", "Soft tissue")} for lips and sinuses, ${B("ضبط يدوي", "Manual")} by dragging.</dd>
+<dt>${B("Implant", "Implant")}</dt><dd>Pick the site on the panoramic, then tap the cross-section at the bone crest. Drag the implant to move it; drag the white dot at its apex to change the tilt. Choose manufacturer, diameter and length in the card below.</dd>
+<dt>${B("Canal", "Canal")}</dt><dd>Tap the start of the canal near the mental foramen and its end toward the ramus, then press ${B("تتبّع ذكي", "Smart trace")} to follow the dark path between them through the cross-sections. Or tap points along the path manually. Always review the result on the cross-sections.</dd>
+<dt>${B("القوس", "Arch")}</dt><dd>Detected automatically on opening. If the panoramic looks blurred, tap ${B("تعديل Arch", "Edit arch")} and tap points along the middle of the teeth on the axial view.</dd>
+<dt>${B("النافذة", "Window")}</dt><dd>Changes brightness and contrast: ${B("أسنان وعظم", "Teeth & bone")} for general reading, ${B("Bone", "Bone")} for bone detail, ${B("Soft tissue", "Soft tissue")} for lips and sinuses, ${B("ضبط يدوي", "Manual")} by dragging.</dd>
 <dt>1 · 2 · 4</dt><dd>Number of panes on screen. The ⤢ button under each pane maximizes it.</dd>
 <dt>${B("الخطة", "Plan")}</dt><dd>Lists all implants, canals and measurements; jump to or delete any of them.</dd>
 <dt>${B("تراجع", "Undo")}</dt><dd>Reverses the last change to the plan, step by step.</dd></dl>`] },
@@ -2158,7 +2158,7 @@ function buildLearn() {
 <li>Bone density on CBCT is relative and is read together with clinical feel.</li></ul>
 <p class="fine">These are commonly cited figures; they vary with the case, the system and the surgeon. The clinical decision belongs to the clinician.</p>`] },
   { id: "pitfalls", ar: ["تشويشات وأخطاء شائعة", `<dl>
-<dt>${TM("Metal streak artifacts")} / ${TM("Beam hardening")}</dt><dd>خطوط بيضاء وسوداء تخرج من الحشوات والتيجان والزرعات، قد تخفي آفة أو تحاكيها. جرّب نافذة ${B("معادن وزرعات", "Metal & implants")} وانظر من اتجاه آخر.</dd>
+<dt>${TM("Metal streak artifacts")} / ${TM("Beam hardening")}</dt><dd>خطوط بيضاء وسوداء تخرج من الحشوات والتيجان والزرعات، قد تخفي آفة أو تحاكيها. جرّب نافذة ${B("Metal و Implants", "Metal & implants")} وانظر من اتجاه آخر.</dd>
 <dt>${TM("Motion artifact")}</dt><dd>حركة المريض أثناء المسح: حواف مزدوجة أو ضبابية في كل الصورة. القياسات الدقيقة في مسح متحرك غير موثوقة.</dd>
 <dt>${TM("Partial volume effect")}</dt><dd>الصفائح الرقيقة جداً (مثل ${TM("Buccal bone")} فوق الأسنان الأمامية) قد لا تظهر، فلا تعتبرها غائبة بالضرورة.</dd>
 <dt>${TM("Gray values")}</dt><dd>ليست ${TM("Hounsfield units (HU)")}، وتختلف بين الأجهزة وحتى بين مسحين على نفس الجهاز.</dd>
@@ -2166,7 +2166,7 @@ function buildLearn() {
 <dt>${TM("3D rendering")}</dt><dd>قد يُظهر ثقوباً وهمية في العظم الرقيق بسبب ${TM("Threshold")}. للتوضيح وليس للتشخيص.</dd>
 <dt>${TM("Window / Level")}</dt><dd>السطوع والتباين يغيّران ما تراه. لا تحكم على وجود العظم أو غيابه من نافذة واحدة.</dd></dl>`],
     en: ["Common artefacts and pitfalls", `<dl>
-<dt>Metal streaks</dt><dd>White and black streaks from fillings, crowns and implants can hide or mimic lesions. Try the ${B("معادن وزرعات", "Metal & implants")} window and look from another view.</dd>
+<dt>Metal streaks</dt><dd>White and black streaks from fillings, crowns and implants can hide or mimic lesions. Try the ${B("Metal و Implants", "Metal & implants")} window and look from another view.</dd>
 <dt>Patient motion</dt><dd>Doubled or blurred edges throughout. Fine measurements on a moving scan are unreliable.</dd>
 <dt>Partial volume</dt><dd>Very thin plates (such as buccal bone over anterior teeth) may not show, so do not assume they are absent.</dd>
 <dt>Gray values</dt><dd>They are not Hounsfield units and differ between machines and even between scans on the same machine.</dd>
@@ -2177,11 +2177,11 @@ function buildLearn() {
 <dl>
 <dt>كيف يتعرّف على كل طبعة</dt><dd>من اسم الملف أولاً (أسماء exocad و 3Shape و Medit و iTero الشائعة)، ثم من الشكل والموضع: الطبعة الأعلى ${TM("Upper jaw")} والأسفل ${TM("Lower jaw")}، والطبعات الصغيرة بين الفكين ${TM("Bite registration")}، وجهتها (يمين أو يسار المريض أو أمامي) من موقعها. ما حُدد من الشكل تظهر عليه علامة «تلقائي»، صحّحه من القائمة بجانبه إن لزم.</dd>
 <dt>${TM("Upper / Lower jaw")}</dt><dd>طبعة القوس كاملاً. إن وصلت نسختان (ملوّنة وغير ملوّنة) تظهر الملوّنة وتُخفى المكررة.</dd>
-<dt>${TM("Bite registration")} (${TM("Buccal bite")})</dt><dd>طبعات صغيرة من الجانب تسجّل علاقة الفكين في الإطباق. تُخفى تلقائياً حين يكون الفكان ظاهرين، وتظهر من زر «الإطباق».</dd>
+<dt>${TM("Bite registration")} (${TM("Buccal bite")})</dt><dd>طبعات صغيرة من الجانب تسجّل علاقة الفكين في الإطباق. تُخفى تلقائياً حين يكون الفكان ظاهرين، وتظهر من زر «Bite scans».</dd>
 <dt>${TM("Preparation")}، ${TM("Restoration")}، ${TM("Abutment")} و${TM("Scan body")}</dt><dd>السن المحضَّر، والتاج أو الجسر المصمَّم، والدعامة أو قطعة المسح فوق الزرعة. خفّف شفافية التعويض لترى التحضير تحته.</dd>
 </dl>
 <ul>
-<li><b>الطبقات:</b> ${UI("◉", "◉")} إظهار وإخفاء، ${UI("وحدها", "Solo")} لعرض طبعة واحدة فقط، والشريط للشفافية، والدائرة لتغيير اللون. أزرار المجموعات (الفكوك، الإطباق، التعويضات) تُظهر أو تُخفي المجموعة كاملة.</li>
+<li><b>الطبقات:</b> ${UI("◉", "◉")} إظهار وإخفاء، ${UI("وحدها", "Solo")} لعرض طبعة واحدة فقط، والشريط للشفافية، والدائرة لتغيير اللون. أزرار المجموعات (Jaws، Bite scans، Restorations) تُظهر أو تُخفي المجموعة كاملة.</li>
 <li><b>الزوايا:</b> أمام، علوي (${TM("Occlusal view")} للفك السفلي)، سفلي (للفك العلوي)، يمين ويسار المريض، ومائل.</li>
 <li><b>${UI("قياس", "Measure")}:</b> انقر نقطتين على السطح لتظهر المسافة بالملم.</li>
 <li><b>${UI("مقطع", "Section")}:</b> يقطع النموذج جانبياً أو أمامياً أو أفقياً لرؤية الداخل.</li>
@@ -2300,24 +2300,24 @@ function howTo(view) {
   if (view === "3d") {
     add(t ? "<b>اسحب بإصبع</b> لتدوير <bdi class=\"tm\">3D model</bdi> في كل الاتجاهات." : "<b>اسحب بالفأرة</b> لتدوير المجسم في كل الاتجاهات.", t ? "<b>Drag one finger</b> to rotate the model." : "<b>Drag with the mouse</b> to rotate the model.");
     add(t ? "<b>قرّب أو باعد إصبعين</b> للتكبير والتصغير." : "<b>عجلة الفأرة</b> للتكبير والتصغير.", t ? "<b>Pinch</b> to zoom." : "<b>Mouse wheel</b> to zoom.");
-    add("القائمة أسفل النافذة تختار ما يظهر (عظم، أسنان…)، والشريط <b>«٪ قطع»</b> يقطع المجسم لترى الداخل (<bdi class=\"tm\">Clipping</bdi>).", "The menu below picks what is shown (bone, teeth…), and the <b>“% cut”</b> slider cuts into the model.");
+    add("القائمة أسفل النافذة تختار ما يظهر (Bone، أسنان و Metal، MIP)، والشريط <b>«٪ قطع»</b> يقطع المجسم لترى الداخل (<bdi class=\"tm\">Clipping</bdi>).", "The menu below picks what is shown (bone, teeth…), and the <b>“% cut”</b> slider cuts into the model.");
   } else {
     add(t ? "<b>الشريط أسفل النافذة</b> أو الزران <b>‹ ›</b> للتنقل بين الشرائح، شريحة بعد شريحة." : "<b>عجلة الفأرة</b> أو الشريط أسفل النافذة للتنقل بين الشرائح (مع Shift: خمس شرائح دفعة واحدة).",
       t ? "<b>The slider below the view</b> or the <b>‹ ›</b> buttons move through the slices one by one." : "<b>Mouse wheel</b> or the slider below the view moves through the slices (hold Shift for five at a time).");
     add(t ? "<b>قرّب أو باعد إصبعين</b> للتكبير، و<b>اسحب بإصبع</b> لتحريك الصورة." : "<b>Ctrl + عجلة الفأرة</b> للتكبير، و<b>اسحب</b> لتحريك الصورة.", t ? "<b>Pinch</b> to zoom and <b>drag one finger</b> to move the image." : "<b>Ctrl + wheel</b> to zoom and <b>drag</b> to move the image.");
-    if (view === "pano") add("<b>انقر على أي سن</b> فيظهر <bdi class=\"tm\">Cross-section</bdi> له. زر <b>«تعديل القوس»</b> أسفلها يصحح مسار <bdi class=\"tm\">Dental arch</bdi>.", "<b>Tap any tooth</b> to show its cross-section. <b>“Edit arch”</b> below corrects the panoramic path.");
+    if (view === "pano") add("<b>انقر على أي سن</b> فيظهر <bdi class=\"tm\">Cross-section</bdi> له. زر <b>«تعديل Arch»</b> أسفلها يصحح مسار <bdi class=\"tm\">Dental arch</bdi>.", "<b>Tap any tooth</b> to show its cross-section. <b>“Edit arch”</b> below corrects the panoramic path.");
     else if (view === "cross") add("الشريط أسفلها <b>يمشي على طول <bdi class=\"tm\">Dental arch</bdi></b> من سن إلى سن. انقر على <bdi class=\"tm\">Panoramic</bdi> للقفز مباشرة إلى سن معين.", "Its slider <b>walks along the arch</b> tooth by tooth. Tap the panoramic to jump to a tooth.");
     else add("<b>انقر على أي نقطة</b> فتنتقل النوافذ الأخرى إلى نفس الموضع (الخطوط المتقطعة تُظهر مكانه).", "<b>Tap any point</b> and the other views jump to the same spot (the dashed lines show where).");
   }
   add(t ? "<b>انقر مرتين</b> أو اضغط <b>⤢</b> لتكبير النافذة على الشاشة كلها، ومرة أخرى للرجوع." : "<b>انقر مرتين</b> أو <b>⤢</b> لتكبير النافذة على الشاشة كلها، ومرة أخرى للرجوع.", "<b>Double-tap</b> or <b>⤢</b> to fill the screen with this view; again to go back.");
-  add("القائمة أعلى النافذة تغيّر نوعها (محوري، بانوراما، مقطع عرضي…). النافذة الحمراء هي النشطة.", "The menu at the top changes the view type (axial, panoramic, cross-section…). The red-framed view is the active one.");
+  add("القائمة أعلى النافذة تغيّر نوعها (Axial، Panoramic، Cross-section…). النافذة الحمراء هي النشطة.", "The menu at the top changes the view type (axial, panoramic, cross-section…). The red-framed view is the active one.");
   // الأداة الحالية
   const tool = { measure: ["<b>أداة القياس:</b> انقر نقطتين فتظهر المسافة بالملم.", "<b>Measure tool:</b> tap two points to get the distance in mm."],
     implant: ["<b>أداة الزرعة:</b> انقر على <bdi class=\"tm\">Cross-section</bdi> لوضع <bdi class=\"tm\">Implant</bdi>، اسحب وسطها لتحريكها، واسحب طرفها لتغيير <bdi class=\"tm\">Angulation</bdi>.", "<b>Implant tool:</b> tap the cross-section to place an implant, drag its middle to move it and its tip to tilt it."],
     nerve: ["<b>أداة القناة:</b> انقر نقاطاً على مسار <bdi class=\"tm\">Mandibular canal</bdi> في <bdi class=\"tm\">Panoramic</bdi>، ثم «تتبّع ذكي» يكمل المسار.", "<b>Canal tool:</b> tap points along the canal on the panoramic, then “Smart trace” completes it."],
     wl: ["<b>ضبط السطوع:</b> اسحب أفقياً للتباين <bdi class=\"tm\">Window width</bdi> وعمودياً للسطوع <bdi class=\"tm\">Window level</bdi>.", "<b>Brightness drag:</b> drag sideways for contrast and up/down for brightness."] }[S.tool];
   if (tool) add(tool[0], tool[1]);
-  else add("الأدوات في الشريط العلوي: <b>تصفح، قياس، زرعة، قناة</b>، و<b>☀︎ السطوع</b> و<b>◐ دمج الطبعة</b>. و<b>↶ تراجع</b> يلغي آخر خطوة.", "Tools are in the top bar: <b>Browse, Measure, Implant, Canal</b>, plus <b>☀︎ Brightness</b> and <b>◐ Scan fusion</b>. <b>↶ Undo</b> reverts the last step.");
+  else add("الأدوات في الشريط العلوي: <b>تصفح، قياس، Implant، Canal</b>، و<b>☀︎ السطوع</b> و<b>◐ دمج الطبعة</b>. و<b>↶ تراجع</b> يلغي آخر خطوة.", "Tools are in the top bar: <b>Browse, Measure, Implant, Canal</b>, plus <b>☀︎ Brightness</b> and <b>◐ Scan fusion</b>. <b>↶ Undo</b> reverts the last step.");
   return [A, E];
 }
 function showTip(p) {
@@ -2779,19 +2779,19 @@ async function loadThree() {
 }
 /* ---------- أنواع الطبعات ---------- */
 const MT = {
-  upper: { ar: "الفك العلوي", en: "Upper jaw", col: 0xe9dfcc, g: "jaw" },
-  lower: { ar: "الفك السفلي", en: "Lower jaw", col: 0xe2d6bf, g: "jaw" },
-  jaw: { ar: "فك (غير محدد)", en: "Jaw (unspecified)", col: 0xe6dac6, g: "jaw" },
-  bite: { ar: "تسجيل الإطباق", en: "Bite scan", col: 0x9fd2c9, g: "bite" },
-  prep: { ar: "سن محضَّر", en: "Preparation", col: 0xd9c4a3, g: "resto" },
-  resto: { ar: "تعويض (تاج / جسر)", en: "Restoration", col: 0xf6f3ec, g: "resto" },
-  implant: { ar: "زرعة / دعامة", en: "Implant / abutment", col: 0xa9b7c6, g: "resto", metal: true },
-  gingiva: { ar: "لثة", en: "Gingiva", col: 0xe39a9a, g: "other" },
+  upper: { ar: "Upper jaw", en: "Upper jaw", col: 0xe9dfcc, g: "jaw" },
+  lower: { ar: "Lower jaw", en: "Lower jaw", col: 0xe2d6bf, g: "jaw" },
+  jaw: { ar: "Jaw (غير محدد)", en: "Jaw (unspecified)", col: 0xe6dac6, g: "jaw" },
+  bite: { ar: "Bite registration", en: "Bite scan", col: 0x9fd2c9, g: "bite" },
+  prep: { ar: "Preparation", en: "Preparation", col: 0xd9c4a3, g: "resto" },
+  resto: { ar: "Restoration (Crown / Bridge)", en: "Restoration", col: 0xf6f3ec, g: "resto" },
+  implant: { ar: "Implant / Abutment", en: "Implant / abutment", col: 0xa9b7c6, g: "resto", metal: true },
+  gingiva: { ar: "Gingiva", en: "Gingiva", col: 0xe39a9a, g: "other" },
   face: { ar: "الوجه", en: "Face", col: 0xd9b59b, g: "other" },
   other: { ar: "نموذج", en: "Model", col: 0x8fb3ff, g: "other" },
 };
 const SIDE = { right: ["يمين", "right"], left: ["يسار", "left"], front: ["أمامي", "front"] };
-const GROUPS = { jaw: ["الفكوك", "Jaws"], bite: ["الإطباق", "Bites"], resto: ["التعويضات", "Restorations"], other: ["أخرى", "Other"] };
+const GROUPS = { jaw: ["Jaws", "Jaws"], bite: ["Bite scans", "Bite scans"], resto: ["Restorations", "Restorations"], other: ["أخرى", "Other"] };
 const PALETTE = [0x8fb3ff, 0xffc94a, 0x7ed6a5, 0xff9f7a, 0xc9a7ff, 0x6fd3e8];
 const fileBase = (n) => n.split("/").pop().replace(/\.[^.]+$/, "");
 const hexStr = (c) => "#" + c.toString(16).padStart(6, "0");
@@ -3080,7 +3080,7 @@ function renderQuick() { // أزرار سريعة: العلوي فقط، الس�
   if (live.length < 2 || !(has("upper") || has("lower"))) { el.innerHTML = ""; return; }
   const vis = (t) => live.filter((i) => i.type === t).some((i) => i.visible), others = live.filter((i) => i.type !== "upper" && i.type !== "lower").some((i) => i.visible);
   const st = !others && vis("upper") && !vis("lower") ? "upper" : !others && vis("lower") && !vis("upper") ? "lower" : !others && vis("upper") && vis("lower") ? "both" : live.every((i) => i.visible) ? "all" : "";
-  const B = [["upper", tr("العلوي", "Upper"), has("upper")], ["lower", tr("السفلي", "Lower"), has("lower")], ["both", tr("الفكان", "Both"), has("upper") && has("lower")], ["all", tr("الكل", "All"), live.some((i) => i.type !== "upper" && i.type !== "lower")]];
+  const B = [["upper", "Upper", has("upper")], ["lower", "Lower", has("lower")], ["both", tr("الفكان", "Both"), has("upper") && has("lower")], ["all", tr("الكل", "All"), live.some((i) => i.type !== "upper" && i.type !== "lower")]];
   el.innerHTML = B.filter((b) => b[2]).map(([k, l]) => `<button type="button" data-q="${k}" aria-pressed="${st === k}">${l}</button>`).join("");
   el.querySelectorAll("[data-q]").forEach((b) => (b.onclick = () => {
     const q = b.dataset.q;
@@ -3152,7 +3152,7 @@ async function openModels(files, add) {
   OC.applied = false; OC.result = null; OC.contact = false;
   renderLayers(); mResize(); fitAll("front"); if (M.panMode) setPanMode(false);
   const F = M.frame, nU = M.items.filter((i) => i.type === "upper").length, nL = M.items.filter((i) => i.type === "lower").length, nB = M.items.filter((i) => i.type === "bite").length;
-  $("mHint").textContent = tr(`تعرّفت على: ${nU ? "الفك العلوي، " : ""}${nL ? "الفك السفلي، " : ""}${nB ? plural(nB, "طبعة إطباق واحدة", "طبعتي إطباق", "طبعات إطباق", "طبعة إطباق") + " (مخفية، أظهرها من «الإطباق»)، " : ""}والمجموع ${plural(M.items.length, "طبعة واحدة", "طبعتان", "طبعات", "طبعة")}.${!F.upSure || !F.antSure ? " بعض الاتجاهات تقديرية." : ""}`,
+  $("mHint").textContent = tr(`تعرّفت على: ${nU ? "الفك العلوي، " : ""}${nL ? "الفك السفلي، " : ""}${nB ? plural(nB, "طبعة إطباق واحدة", "طبعتي إطباق", "طبعات إطباق", "طبعة إطباق") + " (مخفية، أظهرها من «Bite scans»)، " : ""}والمجموع ${plural(M.items.length, "طبعة واحدة", "طبعتان", "طبعات", "طبعة")}.${!F.upSure || !F.antSure ? " بعض الاتجاهات تقديرية." : ""}`,
     `Detected: ${nU ? "upper jaw, " : ""}${nL ? "lower jaw, " : ""}${nB ? nB + " bite scan(s) (hidden, show them from “Bites”), " : ""}${M.items.length} scans in total.${!F.upSure || !F.antSure ? " Some directions are estimated." : ""}`);
   if (canOcclude()) await runOcclusion(true);
   if (typeof afterModelsOpened === "function") afterModelsOpened();
@@ -3199,9 +3199,9 @@ function showModelTip() {
     [t ? "<b>اسحب بإصبع</b> لتدوير النموذج، و<b>إصبعان</b> للتكبير والتحريك." : "<b>اسحب بالفأرة</b> للتدوير، و<b>العجلة</b> للتكبير، و<b>الزر الأيمن</b> للتحريك.", t ? "<b>Drag one finger</b> to rotate; <b>two fingers</b> to zoom and move." : "<b>Drag</b> to rotate, <b>wheel</b> to zoom, <b>right button</b> to move."],
     ["<b>لوحة الأسهم:</b> ▲▼◀▶ تدوير بخطوات، ⌂ يعيد الزاوية، + و− للتكبير، و⟳ يبدّل بين التدوير والتحريك.", "<b>Arrow pad:</b> ▲▼◀▶ rotate in steps, ⌂ resets, + and − zoom, ⟳ switches between rotate and move."],
     ["<b>دائرة الاتجاهات:</b> أ = أمام، ع = أعلى، ي = يمين المريض. انقر حرفاً لتنظر من تلك الجهة.", "<b>Direction gizmo:</b> F = front, T = top, R = patient's right. Tap a letter to look from that side."],
-    ["<b>الأزرار السريعة</b> في الأعلى: <bdi class=\"tm\">Upper jaw</bdi> فقط، <bdi class=\"tm\">Lower jaw</bdi> فقط، الفكان، أو الكل.", "<b>Quick buttons</b> at the top: upper only, lower only, both jaws, or all."],
+    ["<b>الأزرار السريعة</b> في الأعلى: «Upper» فقط، «Lower» فقط، «الفكان»، أو «الكل».", "<b>Quick buttons</b> at the top: upper only, lower only, both jaws, or all."],
     ["<b>الطبقات <bdi class=\"tm\">Layers</bdi>:</b> ◉ إظهار وإخفاء، «وحدها» لطبعة واحدة، الشريط لـ <bdi class=\"tm\">Opacity</bdi>، الدائرة للون، وشريط «الألوان» لقوة <bdi class=\"tm\">True colour</bdi>. صحّح نوع الطبعة من القائمة إن أخطأ.", "<b>Layers:</b> ◉ show/hide, “Solo” for one scan, slider for opacity, circle for colour, “Colour” slider for true-colour strength. Fix a scan's type from its menu if needed."],
-    ["<b>أسفل الشاشة:</b> الزوايا الجاهزة، و«قياس» (نقطتان على السطح)، و«مقطع» لرؤية الداخل، و«الإطباق» لـ <bdi class=\"tm\">Occlusion</bdi> و<bdi class=\"tm\">Contact map</bdi>.", "<b>Bottom bar:</b> preset angles, “Measure” (two points on the surface), “Section” to see inside, and “Occlusion” for the contact map."],
+    ["<b>أسفل الشاشة:</b> الزوايا الجاهزة، و«قياس» (نقطتان على السطح)، و«مقطع» لرؤية الداخل، و«Occlusion» لـ <bdi class=\"tm\">Contact map</bdi>.", "<b>Bottom bar:</b> preset angles, “Measure” (two points on the surface), “Section” to see inside, and “Occlusion” for the contact map."],
   ];
   c.innerHTML = `<b>${ltr("كيف تتحكم بعارض النماذج", "How to use the model viewer")}</b><ul class="tipHow">${L.map((x) => `<li>${en ? x[1] : x[0]}</li>`).join("")}</ul><div class="row"><button class="paneact" type="button" data-more>${ltr("المزيد في الدليل", "More in the guide")}</button><button class="paneact" type="button" data-x>${ltr("إغلاق", "Close")}</button></div>`;
   c.querySelector("[data-more]").onclick = () => { c.hidden = true; openLearn("models"); };
@@ -3996,7 +3996,7 @@ function buildPanes(n) {
     const el = document.createElement("section"); el.className = "pane"; el.dataset.i = i;
     el.innerHTML = `<header><select aria-label="${tr("نوع العرض", "View")}">${VIEW_LIST().map(([k, t]) => `<option value="${k}">${t}</option>`).join("")}</select><span class="info"></span></header>
       <div class="stage"><canvas></canvas><div class="empty" hidden></div><button class="tipBtn" type="button" hidden aria-label="${tr("ما هذا؟", "What is this?")}">؟</button><div class="tipCard" hidden></div></div>
-      <footer dir="ltr"><button class="step" type="button" data-d="-1" aria-label="${tr("السابق", "Previous")}">‹</button><input type="range" min="0" max="1" value="0" aria-label="${tr("الشريحة", "Slice")}"><button class="step" type="button" data-d="1" aria-label="${tr("التالي", "Next")}">›</button><span class="lbl num"></span><select class="thick" aria-label="${tr("سماكة البانوراما", "Panoramic thickness")}" hidden><option value="5">5 ملم</option><option value="8">8 ملم</option><option value="12">12 ملم</option><option value="18">18 ملم</option></select><select class="m3" hidden aria-label="${tr("نمط العرض ثلاثي الأبعاد", "3D mode")}">${Object.keys(V3_MODES).map((k) => `<option value="${k}">${tr(...V3_MODES[k])}</option>`).join("")}</select><span style="flex:1"></span><button class="paneact archEdit" type="button" hidden>تعديل القوس</button><button class="paneact maxBtn" type="button" aria-label="${tr("تكبير النافذة", "Maximize pane")}">⤢</button></footer>`;
+      <footer dir="ltr"><button class="step" type="button" data-d="-1" aria-label="${tr("السابق", "Previous")}">‹</button><input type="range" min="0" max="1" value="0" aria-label="${tr("الشريحة", "Slice")}"><button class="step" type="button" data-d="1" aria-label="${tr("التالي", "Next")}">›</button><span class="lbl num"></span><select class="thick" aria-label="${tr("سماكة البانوراما", "Panoramic thickness")}" hidden><option value="5">5 ملم</option><option value="8">8 ملم</option><option value="12">12 ملم</option><option value="18">18 ملم</option></select><select class="m3" hidden aria-label="${tr("نمط العرض ثلاثي الأبعاد", "3D mode")}">${Object.keys(V3_MODES).map((k) => `<option value="${k}">${tr(...V3_MODES[k])}</option>`).join("")}</select><span style="flex:1"></span><button class="paneact archEdit" type="button" hidden>تعديل Arch</button><button class="paneact maxBtn" type="button" aria-label="${tr("تكبير النافذة", "Maximize pane")}">⤢</button></footer>`;
     host.appendChild(el);
     p.el = el; p.canvas = el.querySelector("canvas"); p.ctx = p.canvas.getContext("2d"); p.off = document.createElement("canvas");
     p.sel = el.querySelector("header select"); p.info = el.querySelector(".info"); p.slider = el.querySelector("input[type=range]"); p.lbl = el.querySelector(".lbl"); p.empty = el.querySelector(".empty"); p.thick = el.querySelector(".thick");
@@ -4054,13 +4054,13 @@ function syncPaneUI() {
   for (const p of S.panes) {
     [...p.sel.options].forEach((o) => (o.textContent = VN(o.value)));
     [...p.thick.options].forEach((o) => (o.textContent = o.value + " " + tr("ملم", "mm")));
-    p.archEdit.textContent = tr("تعديل القوس", "Edit arch");
+    p.archEdit.textContent = tr("تعديل Arch", "Edit arch");
     [...p.m3.options].forEach((o) => (o.textContent = tr(...V3_MODES[o.value]))); p.m3.value = G3.mode; p.m3.hidden = p.view !== "3d";
     p.maxBtn.hidden = S.nPanes < 2; p.maxBtn.textContent = p.el.classList.contains("max") ? "⤡" : "⤢";
     p.sel.value = p.view; p.el.classList.toggle("active", p.i === S.active && S.nPanes > 1);
     const needCurve = (p.view === "pano" || p.view === "cross") && !S.curve;
     p.empty.hidden = !needCurve;
-    if (needCurve) p.empty.innerHTML = `<div>${tr("لم يُرسم قوس الأسنان بعد.", "The dental arch has not been drawn yet.")}</div><button class="btn" type="button" data-act="arch">${tr("ارسم القوس", "Draw arch")}</button>`;
+    if (needCurve) p.empty.innerHTML = `<div>${tr("لم يُرسم قوس الأسنان بعد.", "The dental arch has not been drawn yet.")}</div><button class="btn" type="button" data-act="arch">${tr("ارسم Arch", "Draw arch")}</button>`;
     const b = p.empty.querySelector("[data-act=arch]"); if (b) b.onclick = () => { switchToAxialForArch(); setTool("arch"); };
     let max = 0, val = 0;
     if (p.view === "axial") { max = v.nz - 1; val = S.cur.z; }
@@ -4201,7 +4201,7 @@ function drawOverlays(p) {
   if (p.view === "cross" && S.curve) {
     const hw = m.img.hw; line(ctx, [T(hw + .5, 0), T(hw + .5, m.h)], "rgba(227,52,60,.45)", 1, [2, 4]);
     ctx.save(); ctx.font = "500 12px 'IBM Plex Sans Arabic', sans-serif"; ctx.fillStyle = "rgba(232,236,242,.8)"; ctx.textBaseline = "top"; ctx.direction = S.lang === "en" ? "ltr" : "rtl";
-    ctx.textAlign = "left"; ctx.fillText(tr("داخل القوس ◀", "◀ Lingual / palatal"), 10, 10); ctx.textAlign = "right"; ctx.fillText(tr("▶ خارج القوس", "Buccal ▶"), p.cw - 10, 10); ctx.restore();
+    ctx.direction = "ltr"; ctx.textAlign = "left"; ctx.fillText("◀ Lingual / Palatal", 10, 10); ctx.textAlign = "right"; ctx.fillText("Buccal ▶", p.cw - 10, 10); ctx.restore();
   }
   // القنوات
   if (S.curve) for (const n of S.nerves) {
