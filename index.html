@@ -438,6 +438,7 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
     </div>
     <div class="archbar" id="nerveBar" hidden>
       <p id="nerveMsg">انقر على مسار القناة في البانوراما، من الثقبة الذقنية إلى الخلف.</p>
+      <button class="iconbtn danger" type="button" id="nerveDelPt" hidden data-en="Delete point">حذف النقطة</button>
       <button class="iconbtn" type="button" id="nerveAuto" data-en="Smart trace">تتبّع ذكي</button>
       <button class="iconbtn" type="button" id="nerveNew" data-en="Other side canal">قناة الجهة الأخرى</button>
       <button class="btn primary" type="button" id="nerveDone" style="padding:6px 14px" data-en="Done">تم</button>
@@ -2272,6 +2273,38 @@ function initPeer() {
    بين كل نقطتين متتاليتين نبحث في المقاطع العرضية عن «ثقب داكن تحيطه حلقة بيضاء»،
    ونصل أفضل المواقع بمسار ناعم يبدأ وينتهي عند نقطتي الطبيب، ولا يبتعد عنهما أكثر من بضعة ملم.
    ============================================================ */
+function canalProbe() { // feat(s، o بالملم، z بالملم): كم يشبه هذا الموضع مقطع قناة
+  const v = S.vol, c = S.curve, sx = v.sx, sz = v.sz, P = percentiles(v);
+  const air = P(25), scale = Math.max(1, P(99) - P(50)), R = 2.0, r0 = 0.6;
+  const ring = [...Array(10).keys()].map((k) => [Math.cos(k * Math.PI / 5) * R, Math.sin(k * Math.PI / 5) * R]), vals = new Float32Array(10);
+  const sample = (s, o, zmm) => {
+    const zi = zmm / sz, z0 = Math.floor(zi); if (z0 < 0 || z0 >= v.nz - 1 || s < 0 || s >= c.L) return 0;
+    const ov = o / sx, x = c.X[s] + c.NX[s] * ov, y = c.Y[s] + c.NY[s] * ov, f = zi - z0;
+    return bil(v.slices[z0], v.nx, v.ny, x, y) * (1 - f) + bil(v.slices[z0 + 1], v.nx, v.ny, x, y) * f;
+  };
+  return (s, o, z) => {
+    const cen = (sample(s, o, z) * 2 + sample(s, o + r0, z) + sample(s, o - r0, z) + sample(s, o, z + r0) + sample(s, o, z - r0)) / 6;
+    if (cen < air) return 0;
+    for (let k = 0; k < 10; k++) vals[k] = sample(s, o + ring[k][0], z + ring[k][1]);
+    const sorted = Array.from(vals).sort((a, b) => a - b);
+    return Math.max(0, (sorted[2] - cen) / scale);
+  };
+}
+// يبحث حول النقطة عن مركز القناة: يرجع {o, z} بالملم أو null إن لم تكن القناة واضحة
+function snapCanalPoint(s, o0, z0, oWin, zWin) {
+  const feat = canalProbe(); let best = 0, bo = o0, bz = z0;
+  for (let z = z0 - zWin; z <= z0 + zWin + 1e-6; z += 0.25) for (let o = o0 - oWin; o <= o0 + oWin + 1e-6; o += 0.25) { const f = feat(s, o, z); if (f > best) { best = f; bo = o; bz = z; } }
+  return best > 0.05 ? { o: bo, z: bz, score: best } : null;
+}
+// إدخال نقطة في مكانها الصحيح على المسار (وليس في آخره) حتى لا يلتف الخط
+function insertCanalPoint(n, q) {
+  const v = S.vol, d = (a, b) => Math.hypot((a[0] - b[0]) * v.sx, (a[1] - b[1]) * v.sy, (a[2] - b[2]) * v.sz), P = n.pts;
+  if (P.length < 2) { P.push(q); return P.length - 1; }
+  let bi = 0, bc = d(q, P[0]);
+  const ce = d(P[P.length - 1], q); if (ce < bc) { bc = ce; bi = P.length; }
+  for (let k = 1; k < P.length; k++) { const c = d(P[k - 1], q) + d(q, P[k]) - d(P[k - 1], P[k]); if (c < bc) { bc = c; bi = k; } }
+  P.splice(bi, 0, q); return bi;
+}
 function snapNerve(n) {
   const v = S.vol, c = S.curve, sx = v.sx, sz = v.sz, P = percentiles(v);
   const air = P(25), scale = Math.max(1, P(99) - P(50)), R = 2.0, r0 = 0.6;
@@ -2569,7 +2602,7 @@ function drawOverlays(p) {
         ctx.strokeStyle = `rgba(${NRV},.32)`; ctx.lineWidth = Math.max(4, 2 * CANAL_R * m.sc); ctx.beginPath(); sp.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y))); ctx.stroke();
         ctx.strokeStyle = `rgba(${NRV},.95)`; ctx.lineWidth = 1.25; ctx.stroke(); ctx.restore();
       }
-      if (editing) n.pts.forEach((q) => { const r = nearestOnCurve(q[0], q[1]); const [X, Y] = T(r.s + .5, v.nz - 1 - q[2] + .5); ctx.fillStyle = `rgb(${NRV})`; ctx.beginPath(); ctx.arc(X, Y, 4.5, 0, 7); ctx.fill(); });
+      if (editing) n.pts.forEach((q, k) => { const r = nearestOnCurve(q[0], q[1]); const [X, Y] = T(r.s + .5, v.nz - 1 - q[2] + .5); drawCanalHandle(ctx, X, Y, k === S.nervePt); });
     } else if (p.view === "cross") {
       let bi = -1, bd = 1e9; const cs0 = S.crossS;
       for (let k = 0; k < pc.length; k++) { const d = Math.abs(pc[k][0] - cs0); if (d < bd) { bd = d; bi = k; } }
@@ -2577,6 +2610,7 @@ function drawOverlays(p) {
         const [, o, z] = pc[bi], [X, Y] = T(m.img.hw + o + .5, v.nz - 1 - z + .5), R = Math.max(3, CANAL_R * m.sc);
         ctx.save(); ctx.fillStyle = `rgba(${NRV},.28)`; ctx.strokeStyle = `rgb(${NRV})`; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(X, Y, R, 0, 7); ctx.fill(); ctx.stroke(); ctx.restore();
       }
+      if (editing) n.pts.forEach((q, k) => { const r = nearestOnCurve(q[0], q[1]); if (Math.abs(r.s - cs0) * v.sx > 1.5) return; const [X, Y] = T(m.img.hw + r.o + .5, v.nz - 1 - q[2] + .5); drawCanalHandle(ctx, X, Y, k === S.nervePt); });
     } else if (p.view === "axial") {
       ctx.save(); ctx.fillStyle = `rgb(${NRV})`;
       for (const q of n._dense) if (Math.abs(q[2] - c.z) * v.sz < 0.7) { const [X, Y] = T(q[0] + .5, q[1] + .5); ctx.beginPath(); ctx.arc(X, Y, Math.max(2, CANAL_R * m.sc), 0, 7); ctx.fill(); }
@@ -2637,6 +2671,10 @@ function attachPointer(p) {
     if (S.active !== p.i) { S.active = p.i; syncPaneUI(); }
     if (pts.size === 1) {
       g = { start: pos(e), last: pos(e), moved: false, t: performance.now(), win: { ...(p.view === "pano" ? S.winPano : S.win) } };
+      if (S.tool === "nerve" && p.map && S.curve) {
+        const hit = hitCanalPoint(p, pos(e));
+        if (hit) g.ndrag = { n: hit.n, idx: hit.idx, o0: nearestOnCurve(hit.n.pts[hit.idx][0], hit.n.pts[hit.idx][1]).o };
+      }
       if (S.tool === "implant" && p.view === "cross" && p.map && S.curve) {
         const hit = hitImplantCross(p, pos(e));
         if (hit) { g.drag = { imp: hit.imp, mode: hit.mode, o0: hit.imp.o, z0: hit.imp.z, pf: implantPlatform(hit.imp) }; if (S.sel !== hit.imp.id) selectImplant(hit.imp); }
@@ -2662,6 +2700,15 @@ function attachPointer(p) {
     g.last = P;
     if (!g.moved) return;
     if (p.view === "3d") { G3.yaw -= dx * 0.01; G3.pitch = clamp(G3.pitch + dy * 0.008, -1.45, 1.45); G3.interacting = true; requestRender(); return; }
+    if (g.ndrag) { // سحب نقطة قناة: في البانوراما يتغير الموضع والارتفاع، وفي المقطع العرضي العمق والارتفاع
+      const nd = g.ndrag, v = S.vol, c = S.curve, [u, vv] = toImage(p, P[0], P[1]);
+      if (!nd.pushed) { pushUndo("تحريك نقطة القناة", "moving a canal point"); nd.pushed = true; S.nervePt = nd.idx; updateNerveBar(); }
+      const zz = clamp(v.nz - 1 - vv + .5, 0, v.nz - 1);
+      if (p.view === "pano") { const i = curveIdx(u); nd.n.pts[nd.idx] = [c.X[i] + c.NX[i] * nd.o0, c.Y[i] + c.NY[i] * nd.o0, zz]; }
+      else if (p.view === "cross") { const i = curveIdx(S.crossS), o = u - p.map.img.hw - .5; nd.n.pts[nd.idx] = [c.X[i] + c.NX[i] * o, c.Y[i] + c.NY[i] * o, zz]; }
+      else if (p.view === "axial") nd.n.pts[nd.idx] = [u - .5, vv - .5, nd.n.pts[nd.idx][2]];
+      nd.n._dense = null; nd.n.traced = false; requestRender(); return;
+    }
     if (g.drag) {
       const imp = g.drag.imp, sc = p.map.sc;
       if (!g.drag.pushed) { const mv = g.drag.mode === "move"; pushUndo(mv ? "تحريك الزرعة" : "تغيير الميلان", mv ? "moving the implant" : "changing the tilt"); g.drag.pushed = true; }
@@ -2684,6 +2731,7 @@ function attachPointer(p) {
   const end = (e) => {
     const P = pts.get(e.pointerId); pts.delete(e.pointerId);
     if (g && g.drag && g.moved) updatePlan();
+    if (g && g.ndrag && g.moved) { updatePlan(); updateSheet(); updateNerveBar(); }
     if (g && !g.moved && !g.pinch && P) {
       const now = performance.now();
       if ((S.tool === "browse" || p.view === "3d") && p.lastTap && now - p.lastTap < 300) { toggleMax(p); p.lastTap = 0; }
@@ -2732,13 +2780,25 @@ function onTap(p, P) {
   }
   if (S.tool === "nerve") {
     const n = S.nerves[S.curNerve]; if (!n) return;
-    let q = null;
-    if (p.view === "pano" && S.curve) { const i = curveIdx(u); q = [S.curve.X[i], S.curve.Y[i], v.nz - 1 - vv + .5]; }
-    else if (p.view === "cross" && S.curve) { const i = curveIdx(S.crossS), o = u - p.map.img.hw - .5; q = [S.curve.X[i] + S.curve.NX[i] * o, S.curve.Y[i] + S.curve.NY[i] * o, v.nz - 1 - vv + .5]; }
+    const hit = hitCanalPoint(p, P);
+    if (hit) { S.nervePt = S.nervePt === hit.idx ? -1 : hit.idx; updateNerveBar(); requestRender(); return; } // نقر على نقطة موجودة = اختيارها
+    let q = null, snapped = false;
+    if (p.view === "pano" && S.curve) {
+      // البانوراما لا تُظهر عمق القناة (داخل/خارج القوس)، فنبحث في المقطع العرضي عن مركزها عند هذا الموضع
+      const i = curveIdx(u), z = (v.nz - 1 - vv + .5) * v.sz, sn = snapCanalPoint(i, 0, z, 6, 1.0);
+      const o = sn ? sn.o / v.sx : 0, zz = sn ? sn.z / v.sz : z / v.sz; snapped = !!sn;
+      q = [S.curve.X[i] + S.curve.NX[i] * o, S.curve.Y[i] + S.curve.NY[i] * o, zz];
+    } else if (p.view === "cross" && S.curve) {
+      const i = curveIdx(S.crossS), o = (u - p.map.img.hw - .5) * v.sx, z = (v.nz - 1 - vv + .5) * v.sz, sn = snapCanalPoint(i, o, z, 1.2, 1.2);
+      const oo = (sn ? sn.o : o) / v.sx, zz = (sn ? sn.z : z) / v.sz; snapped = !!sn;
+      q = [S.curve.X[i] + S.curve.NX[i] * oo, S.curve.Y[i] + S.curve.NY[i] * oo, zz];
+    }
     else if (p.view === "axial") q = [u - .5, vv - .5, S.cur.z];
     if (!q) { toast(tr("ارسم القناة على البانوراما أو المقطع العرضي", "Trace the canal on the panoramic or the cross-section")); return; }
     pushUndo("نقطة على القناة", "a canal point");
-    n.pts.push(q); n._dense = null; updateNerveBar(); updatePlan(); updateSheet(); requestRender(); return;
+    insertCanalPoint(n, q); S.nervePt = -1; n._dense = null; n.traced = false;
+    if (p.view === "pano" && !snapped) setStatus(tr("لم تظهر القناة بوضوح هنا، فوُضعت النقطة على منتصف القوس. صحّح عمقها بسحبها في المقطع العرضي.", "The canal isn't clear here, so the point was placed on the arch centre. Fix its depth by dragging it on the cross-section."));
+    updateNerveBar(); updatePlan(); updateSheet(); requestRender(); return;
   }
   if (S.sel !== null) selectImplant(null);
   // تصفح: انقل نقطة التقاطع
@@ -2817,7 +2877,7 @@ function setTool(t) {
   if (t !== "wl") $("presetSel").value = S.preset;
   $("archBar").hidden = t !== "arch";
   $("nerveBar").hidden = t !== "nerve";
-  if (prev === "nerve" && t !== "nerve") { S.nerves = S.nerves.filter((n) => n.pts.length >= 2); S.curNerve = -1; updatePlan(); }
+  if (prev === "nerve" && t !== "nerve") { S.nerves = S.nerves.filter((n) => n.pts.length >= 2); S.curNerve = -1; S.nervePt = -1; updatePlan(); }
   if (t === "arch") { S.archDraft = S.curve ? S.curve.ctrl.map((q) => q.slice()) : []; switchToAxialForArch(); updateArchBar(); }
   if (t === "nerve") {
     if (S.curNerve < 0 || !S.nerves[S.curNerve]) startNerve();
@@ -2875,12 +2935,39 @@ function undo() {
 function startNerve() {
   const n = S.nerves.reduce((m, q) => Math.max(m, q.n), 0) + 1;
   S.nerves = S.nerves.filter((q) => q.pts.length >= 2);
-  S.nerves.push({ id: Date.now(), n, pts: [] }); S.curNerve = S.nerves.length - 1;
+  S.nerves.push({ id: Date.now(), n, pts: [] }); S.curNerve = S.nerves.length - 1; S.nervePt = -1;
+}
+// نقطة قناة تحت الإصبع (البانوراما، أو المقطع العرضي إن كانت النقطة على هذا المقطع، أو المحوري على نفس الشريحة)
+function hitCanalPoint(p, P) {
+  const n = S.nerves[S.curNerve]; if (!n || !p.map || !S.curve) return null;
+  const v = S.vol, T = (a, b) => toScreen(p, a, b), R = matchMedia("(pointer:coarse)").matches ? 22 : 12; let best = null, bd = R * R; // الإصبع يحتاج مساحة أكبر من الفأرة
+  n.pts.forEach((q, idx) => {
+    let X, Y;
+    if (p.view === "pano") { const r = nearestOnCurve(q[0], q[1]); [X, Y] = T(r.s + .5, v.nz - 1 - q[2] + .5); }
+    else if (p.view === "cross") { const r = nearestOnCurve(q[0], q[1]); if (Math.abs(r.s - S.crossS) * v.sx > 1.5) return; [X, Y] = T(p.map.img.hw + r.o + .5, v.nz - 1 - q[2] + .5); }
+    else if (p.view === "axial") { if (Math.abs(q[2] - S.cur.z) * v.sz > 1) return; [X, Y] = T(q[0] + .5, q[1] + .5); }
+    else return;
+    const d = (X - P[0]) ** 2 + (Y - P[1]) ** 2; if (d < bd) { bd = d; best = { n, idx }; }
+  });
+  return best;
+}
+function deleteCanalPoint() {
+  const n = S.nerves[S.curNerve]; if (!n || S.nervePt < 0 || S.nervePt >= n.pts.length) return;
+  pushUndo("حذف نقطة القناة", "deleting a canal point");
+  n.pts.splice(S.nervePt, 1); S.nervePt = -1; n._dense = null; n.traced = false;
+  updateNerveBar(); updatePlan(); updateSheet(); requestRender();
+}
+function drawCanalHandle(ctx, X, Y, sel) {
+  ctx.save(); ctx.fillStyle = `rgb(${NRV})`; ctx.strokeStyle = sel ? "#fff" : "rgba(0,0,0,.6)"; ctx.lineWidth = sel ? 2.5 : 1;
+  ctx.beginPath(); ctx.arc(X, Y, sel ? 6.5 : 4.5, 0, 7); ctx.fill(); ctx.stroke(); ctx.restore();
 }
 function updateNerveBar() {
   const n = S.nerves[S.curNerve], k = n ? n.pts.length : 0, cnt = plural(k, "نقطة واحدة", "نقطتان", "نقاط", "نقطة");
   $("nerveMsg").textContent = !S.curve ? tr("ارسم قوس الأسنان أولاً، ثم عد إلى هنا.", "Draw the dental arch first, then come back here.") : k === 0 ? tr("انقر على بداية القناة قرب الثقبة الذقنية، ثم على نهايتها نحو الفرع، ثم اضغط «تتبّع ذكي». أو انقر نقاطاً على طول المسار يدوياً.", "Tap the start of the canal near the mental foramen, then its end toward the ramus, then press “Smart trace”. Or tap points along the path manually.") : k < 3 ? tr("القناة ", "Canal ") + arNum(n.n) + ": " + cnt + tr(". أضف نقاطاً على طول المسار.", ". Add points along the path.") : tr("القناة ", "Canal ") + arNum(n.n) + ": " + cnt + tr(". يمكنك تصحيحها من المقطع العرضي أيضاً.", ". You can refine it on the cross-section too.");
   $("nerveNew").disabled = k < 2; $("nerveAuto").disabled = k < 2;
+  if (!(S.nervePt >= 0 && S.nervePt < k)) S.nervePt = -1;
+  $("nerveDelPt").hidden = S.nervePt < 0;
+  if (S.nervePt >= 0) $("nerveMsg").textContent = tr("اخترت نقطة: اسحبها لتحريكها، أو اضغط «حذف النقطة». انقر عليها مرة أخرى لإلغاء الاختيار.", "Point selected: drag it to move it, or press “Delete point”. Tap it again to deselect.");
 }
 function switchToAxialForArch() {
   if (!S.panes.some((p) => p.view === "axial")) { const p = S.panes[S.active] || S.panes[0]; p.view = "axial"; resetView(p); }
@@ -2976,6 +3063,7 @@ $("impClose").onclick = () => selectImplant(null);
 $("nerveNew").onclick = () => { startNerve(); updateNerveBar(); requestRender(); toast(tr("ابدأ القناة الثانية", "Start the second canal")); };
 $("nerveDone").onclick = () => setTool("browse");
 $("nerveAuto").onclick = () => smartTrace();
+$("nerveDelPt").onclick = () => deleteCanalPoint();
 $("safeIn").onchange = (e) => { const v = parseFloat(e.target.value); if (v > 0 && v <= 5) { S.safety = v; updateSheet(); requestRender(); } };
 $("layoutSeg").querySelectorAll("button").forEach((b) => (b.onclick = () => { buildPanes(+b.dataset.n); assignDefaultViews(); }));
 initShare();
