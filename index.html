@@ -2417,7 +2417,7 @@ function buildPanes(n) {
     p.tipBtn = el.querySelector(".tipBtn"); p.tipCard = el.querySelector(".tipCard"); p.tipBtn.onclick = () => showTip(p);
     p.thick.onchange = () => { S.panoThick = +p.thick.value; if (S.curve) { buildPano(); syncPaneUI(); requestRender(); } };
     attachPointer(p);
-    new ResizeObserver(() => { sizeCanvas(p); requestRender(); }).observe(el.querySelector(".stage"));
+    new ResizeObserver(() => { if (sizeCanvas(p) && S.vol && p.view !== "3d") { if (lutBuilt !== S.lutVer) buildLUTs(); drawPane(p); } requestRender(); }).observe(el.querySelector(".stage"));
     S.panes.push(p);
   }
   S.active = Math.min(S.active, n - 1);
@@ -2429,7 +2429,23 @@ function sizeCanvas(p) {
   const r = p.canvas.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
   p.dpr = dpr; p.cw = r.width; p.ch = r.height;
   const W = Math.max(1, Math.round(r.width * dpr)), H = Math.max(1, Math.round(r.height * dpr));
-  if (p.canvas.width !== W || p.canvas.height !== H) { p.canvas.width = W; p.canvas.height = H; }
+  if (p.canvas.width !== W || p.canvas.height !== H) {
+    // تغيير حجم اللوحة يمسحها، فنحتفظ بالصورة الحالية ونعيد رسمها فوراً بالحجم الجديد حتى لا تختفي الصور لحظة
+    let snap = null;
+    if (p.drawn && p.canvas.width > 1 && p.canvas.height > 1) { snap = document.createElement("canvas"); snap.width = p.canvas.width; snap.height = p.canvas.height; snap.getContext("2d").drawImage(p.canvas, 0, 0); }
+    p.canvas.width = W; p.canvas.height = H;
+    if (snap) { const k = Math.min(W / snap.width, H / snap.height), dw = snap.width * k, dh = snap.height * k; p.ctx.fillStyle = "#000"; p.ctx.fillRect(0, 0, W, H); p.ctx.drawImage(snap, (W - dw) / 2, (H - dh) / 2, dw, dh); }
+    return true;
+  }
+  return false;
+}
+// رسم فوري (بدل انتظار الإطار التالي) بعد تغيير ترتيب النوافذ، حتى لا تظهر نوافذ فارغة
+function flushRender() {
+  if (!S.vol) return;
+  S.panes.forEach((p) => sizeCanvas(p));
+  if (lutBuilt !== S.lutVer) buildLUTs();
+  S.panes.forEach((p) => { if (p.view !== "3d") drawPane(p); }); // الصور فوراً، وثلاثي الأبعاد (الأثقل) في الإطار التالي
+  requestRender();
 }
 function resetView(p) { p.zoom = 1; p.panX = 0; p.panY = 0; }
 function toggleMax(p) { // نافذة واحدة تملأ الشاشة، ونقرة ثانية ترجع الكل
@@ -2520,6 +2536,7 @@ function renderAll() {
 }
 function drawPane(p) {
   if (!p.cw) sizeCanvas(p);
+  p.drawn = true;
   if (p.view === "3d") { draw3D(p); return; }
   const ctx = p.ctx, dpr = p.dpr || 1;
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = "#000"; ctx.fillRect(0, 0, p.canvas.width, p.canvas.height);
@@ -2886,8 +2903,8 @@ function setTool(t) {
   // على الهاتف: التخطيط يعرض البانوراما فوق والمقطع العرضي تحت
   const planning = t === "implant" || t === "nerve";
   if (innerWidth < 720 && S.curve) {
-    if (planning && !S._phoneLayout) { S._phoneLayout = { n: S.nPanes, views: S.panes.map((q) => q.view), active: S.active }; buildPanes(2); S.panes[0].view = "pano"; S.panes[1].view = "cross"; S.active = 1; S.panes.forEach(resetView); syncPaneUI(); }
-    else if (!planning && t !== "arch" && S._phoneLayout) { const L0 = S._phoneLayout; S._phoneLayout = null; buildPanes(L0.n); S.panes.forEach((q, i) => { q.view = L0.views[i] || q.view; resetView(q); }); S.active = Math.min(L0.active, L0.n - 1); syncPaneUI(); }
+    if (planning && !S._phoneLayout) { S._phoneLayout = { n: S.nPanes, views: S.panes.map((q) => q.view), active: S.active }; buildPanes(2); S.panes[0].view = "pano"; S.panes[1].view = "cross"; S.active = 1; S.panes.forEach(resetView); syncPaneUI(); flushRender(); }
+    else if (!planning && t !== "arch" && S._phoneLayout) { const L0 = S._phoneLayout; S._phoneLayout = null; buildPanes(L0.n); S.panes.forEach((q, i) => { q.view = L0.views[i] || q.view; resetView(q); }); S.active = Math.min(L0.active, L0.n - 1); syncPaneUI(); flushRender(); }
   }
   updateSheet();
   setStatus(hintFor(t)); requestRender();
