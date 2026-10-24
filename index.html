@@ -3208,5 +3208,7 @@ if ("serviceWorker" in navigator && location.protocol === "https:") {
   addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 }
 </script>
+<!-- Cloudflare Web Analytics: عدد الزيارات فقط، بلا كوكيز ولا بيانات شخصية، ولا يرى ملفات الأشعة -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "9a322d0191aa4e7d97336d58baf8b5ab", "spa": false}'></script>
 </body>
 </html>
