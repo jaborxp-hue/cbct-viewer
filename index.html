@@ -14,6 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="عارض المنصة">
 <style>[hidden]{display:none!important}body{margin:0}</style>
 <title>عارض المنصة CBCT</title>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
@@ -245,6 +246,113 @@ html[data-dev="tablet"] .pane footer .step{width:36px;height:34px}
 .sw{width:14px;height:14px;border-radius:3px;flex:none;display:inline-block;transform:translateY(2px);border:1px solid rgba(255,255,255,.25)}
 .check li::marker{content:"☐  "}
 #learnBody{display:flex;flex-direction:column;gap:8px}
+.mScreen{flex:1;display:flex;flex-direction:column;min-height:0;background:var(--ink-0)}
+.mTitleBox{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.mTitleBox b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46vw}
+.mTitleBox small{color:var(--fg-dim);font-size:12px}
+.mStage{flex:1;min-height:0;position:relative;overflow:hidden;background:radial-gradient(120% 90% at 50% 35%,#1d2430 0%,#0d1117 60%,#07090c 100%)}
+.mStage canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+.mPanel{position:absolute;top:12px;inset-inline-start:12px;z-index:2;width:min(300px,calc(100% - 24px));background:rgba(17,22,29,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.mPanelHead{width:100%;display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:none;border:0;color:var(--fg);font-weight:600}
+.mLayers{list-style:none;margin:0;padding:0 8px 8px;display:flex;flex-direction:column;gap:4px;max-height:45vh;overflow:auto}
+.mLayers li{display:grid;grid-template-columns:26px 16px 1fr auto;grid-template-areas:"eye sw name solo" ". . type op";align-items:center;column-gap:8px;row-gap:4px;padding:7px 6px;border-radius:8px;background:rgba(255,255,255,.03)}
+.mLayers .mEye{grid-area:eye}.mLayers .mSw{grid-area:sw}.mLayers .mName{grid-area:name}.mLayers .mSolo{grid-area:solo}.mLayers .mType{grid-area:type}.mLayers input[type=range]{grid-area:op}
+.mSolo{background:none;border:1px solid var(--line);border-radius:6px;color:var(--fg-dim);font-size:11.5px;padding:2px 7px}
+.mSolo:hover{color:var(--fg)}
+.mType{background:var(--ink-2);border:1px solid var(--line);border-radius:6px;color:var(--fg);font-size:12px;padding:2px 4px;max-width:100%}
+.mSw{position:relative;cursor:pointer}
+.mSw input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
+.mBadges{display:flex;gap:4px;flex-wrap:wrap;margin-top:2px}
+.mBadges em{font-style:normal;font-size:10.5px;padding:0 6px;border-radius:999px;border:1px solid var(--line);color:var(--fg-dim)}
+.mBadges .b-col{border-color:rgba(126,214,165,.5);color:#9be3bd}
+.mBadges .b-auto{border-color:rgba(255,201,74,.5);color:#ffd77a}
+.mChips{display:flex;gap:6px;flex-wrap:wrap;padding:0 10px 8px}
+.mChips button{background:var(--ink-2);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:12px;color:var(--fg-dim)}
+.mChips button[aria-pressed="true"]{border-color:var(--accent);color:var(--fg);background:var(--accent-soft)}
+.mTip{right:auto;inset-inline-end:12px;bottom:12px}
+.mColK{grid-column:3 / span 2;display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--fg-dim)}
+.mColK input{flex:1;accent-color:#7ed6a5}
+.mStage canvas.mGizmo{position:absolute;inset:auto;top:12px;inset-inline-end:12px;width:72px;height:72px;z-index:2;cursor:pointer;touch-action:manipulation}
+.mNav{position:absolute;bottom:40px;inset-inline-end:12px;z-index:2;display:flex;gap:8px;align-items:center}
+.mNav button{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:rgba(17,22,29,.85);color:var(--fg);font-size:14px;line-height:1;display:grid;place-items:center;padding:0;touch-action:none;-webkit-user-select:none;user-select:none}
+.mNav button:active{background:var(--accent-soft);border-color:var(--accent)}
+.mNav button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.mNav .pad{display:grid;grid-template-columns:34px 34px 34px;grid-template-rows:34px 34px 34px;gap:2px}
+.mNav .u{grid-area:1/2}.mNav .l{grid-area:2/1}.mNav .c{grid-area:2/2;font-size:16px}.mNav .r{grid-area:2/3}.mNav .d{grid-area:3/2}
+.mNav .zoom{display:flex;flex-direction:column;gap:6px}
+.mOccl{position:absolute;bottom:40px;inset-inline-start:12px;z-index:3;width:min(300px,calc(100% - 24px));background:rgba(17,22,29,.94);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.mOccl .mini{display:flex;gap:8px;align-items:center;font-size:13px}
+.mOccl p{margin:0}
+.mLegend{display:flex;flex-wrap:wrap;gap:6px}
+.mLegend span{font-size:11.5px;display:flex;align-items:center;gap:4px;color:var(--fg-dim)}
+.mLegend span::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--c)}
+@media (max-width:719px){
+  .mNav{bottom:auto;top:44px;inset-inline-end:auto;inset-inline-start:8px;flex-direction:column}
+  .mNav button{width:30px;height:30px;font-size:12px}
+  .mNav .pad{grid-template-columns:30px 30px 30px;grid-template-rows:30px 30px 30px}
+  .mNav .zoom{flex-direction:row}
+  .mStage canvas.mGizmo{width:60px;height:60px;top:76px;inset-inline-end:auto;inset-inline-start:auto;right:8px;left:auto}
+  .mOccl{bottom:96px;top:auto;inset-inline:8px;width:auto;z-index:4}
+}
+@media (max-width:719px){.mPanel:not(.open) .mChips{display:none}}
+.mLayers li.off{opacity:.5}
+.mEye{background:none;border:0;color:var(--fg);font-size:16px;padding:0}
+.mSw{width:12px;height:12px;border-radius:50%;border:1px solid rgba(255,255,255,.3)}
+.mName{display:flex;flex-direction:column;min-width:0}
+.mName b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mName small{font-size:11px;color:var(--fg-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;direction:ltr;text-align:start}
+.mLayers input[type=range]{width:100%;accent-color:var(--accent)}
+.mQuick{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:2px;padding:3px;border-radius:999px;background:rgba(17,22,29,.88);border:1px solid var(--line);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.mQuick:empty{display:none}
+.mQuick button{border:0;background:none;color:var(--fg-dim);font-size:12.5px;padding:5px 12px;border-radius:999px;white-space:nowrap}
+.mQuick button[aria-pressed="true"]{background:var(--accent);color:#fff}
+@media (max-width:719px){.mHint{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mQuick{top:32px}.mQuick button{padding:5px 9px;font-size:12px}}
+.mHint{position:absolute;bottom:10px;inset-inline:12px;margin:0;text-align:center;color:var(--fg-dim);font-size:12.5px;pointer-events:none;text-shadow:0 1px 3px #000}
+.mLabel{position:absolute;transform:translate(-50%,-130%);background:rgba(10,13,17,.9);border:1px solid #ffc94a;color:#ffc94a;border-radius:6px;padding:1px 7px;font-size:12.5px;pointer-events:none;white-space:nowrap;z-index:1}
+.mClipBar{display:flex;align-items:center;gap:10px;padding:6px 16px;background:var(--ink-1);border-top:1px solid var(--line)}
+.mClipBar input{flex:1;accent-color:var(--accent)}
+.mTools{border-top:1px solid var(--line);border-bottom:0}
+.mTools .seg button{padding:6px 10px}
+.mShot{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.85);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:16px}
+.mShot img{max-width:100%;max-height:75vh;border-radius:8px;-webkit-touch-callout:default}
+@media (max-width:719px){
+  .mPanel{top:auto;bottom:38px;inset-inline:8px;width:auto}
+  .mPanel:not(.open) .mLayers{display:none}
+  .mHint{bottom:auto;top:8px}
+  .mTools{overflow-x:auto}
+}
+@media (min-width:720px){.mPanel .mLayers{display:flex}}
+.fusePop .wlAct{flex-wrap:wrap}
+.fuList{display:flex;flex-wrap:wrap;gap:6px}
+.fuList:empty{display:none}
+.fuList button{display:inline-flex;align-items:center;gap:6px;background:var(--ink-2);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12.5px;color:var(--fg-dim)}
+.fuList button i{width:10px;height:10px;border-radius:50%;background:var(--c);opacity:.35}
+.fuList button[aria-pressed="true"]{color:var(--fg);border-color:var(--c)}
+.fuList button[aria-pressed="true"] i{opacity:1}
+.fusePop .mini{display:flex;gap:8px;align-items:center;font-size:13px}
+#fuMsg.ok{color:var(--ok,#7ed6a5)}#fuMsg.warn{color:var(--warn,#ffc94a)}#fuMsg.err{color:#ff7b7b}
+.welcome{position:fixed;inset:0;z-index:40;background:rgba(5,7,10,.72);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding:max(16px,env(safe-area-inset-top,0px)) 16px 24px}
+.welcome[hidden]{display:none}
+.wBox{width:min(820px,100%);background:var(--ink-1);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.wHead{display:flex;gap:12px;align-items:center}.wHead h2{margin:0;font-size:20px}.wHead p{margin:4px 0 0}
+.wGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.wGrid section{background:var(--ink-2);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.wGrid b{font-size:14px}.wGrid p{margin:0;color:var(--fg-dim);font-size:13px;line-height:1.75}.wGrid em{font-style:normal;color:var(--fg)}
+.wGrid .wNew{border-color:var(--accent);background:var(--accent-soft)}
+.wGrid i{font-style:normal;font-size:11px;background:var(--accent);color:#fff;border-radius:999px;padding:1px 8px;margin-inline-start:4px;vertical-align:2px}
+.wBox h3{margin:4px 0 0;font-size:15.5px}
+.wHead .wLang{margin-inline-start:auto;align-self:flex-start}
+.wInst{background:var(--ink-2);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.wInst h3{margin:0}.wInst p{margin:0}.wInst .wTabs{align-self:flex-start}
+.wDone{color:#7ed6a5;font-size:14px}
+.wHint{margin:0;font-size:13.5px;color:var(--fg-dim)}.wQ{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1.5px solid #ffc94a;color:#ffc94a;font-weight:700;font-size:12px;vertical-align:-4px}
+.wSteps[hidden]{display:none}
+.wInst #wInstNow{align-self:flex-start}
+.wList{margin:0;padding-inline-start:20px;display:flex;flex-direction:column;gap:6px;font-size:13.5px;line-height:1.8;color:var(--fg-dim)}.wList b{color:var(--fg)}
+.wAct{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.fuTips{font-size:12.5px;color:var(--fg-dim);line-height:1.75}.fuTips summary{cursor:pointer;color:var(--fg)}.fuTips ul{margin:6px 0 0;padding-inline-start:18px}
+@media (max-width:719px){.wGrid{grid-template-columns:1fr 1fr}.wBox{padding:14px}}
+@media (max-width:460px){.wGrid{grid-template-columns:1fr}}
 .wlPop{position:fixed;inset-inline:0;margin:0 auto;top:calc(110px + env(safe-area-inset-top,0px));width:min(380px,calc(100% - 24px));background:rgba(17,22,29,.97);border:1px solid var(--line);border-radius:12px;padding:12px 14px;z-index:24;box-shadow:0 12px 40px rgba(0,0,0,.55);display:flex;flex-direction:column;gap:10px}
 .wlRow{display:grid;grid-template-columns:64px 1fr 48px;align-items:center;gap:10px}
 .wlRow input{accent-color:var(--accent);width:100%}
@@ -291,6 +399,10 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
 .tipBtn{position:absolute;right:8px;bottom:8px;width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,201,74,.6);background:rgba(17,22,29,.85);color:#ffc94a;font-weight:700;font-size:15px;line-height:1;z-index:2}
 .tipCard{position:fixed;left:16px;right:16px;bottom:calc(96px + env(safe-area-inset-bottom,0px));max-width:440px;margin:0 auto;background:rgba(17,22,29,.96);border:1px solid var(--line);border-radius:10px;padding:10px 12px;z-index:3;font-size:13px;line-height:1.7;box-shadow:0 10px 30px rgba(0,0,0,.5)}
 .tipCard p{margin:.3em 0 .6em;color:var(--fg-dim)}
+.tipCard{max-height:min(60vh,460px);overflow-y:auto}
+.mTipCard{position:absolute;bottom:56px;z-index:6}
+.tipHead{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.tipHead .tipSeg{margin-inline-start:auto}.tipSeg button{font-size:12px;padding:3px 10px}
+.tipHow{margin:.5em 0 .6em;padding-inline-start:18px;color:var(--fg-dim);display:flex;flex-direction:column;gap:5px}.tipHow b{color:var(--fg)}
 .ok-box{background:rgba(63,207,142,.1);border:1px solid rgba(63,207,142,.35);color:#c9f5df;border-radius:8px;padding:10px 12px}
 .toast{position:fixed;inset-inline:0;bottom:calc(56px + env(safe-area-inset-bottom,0px));margin:0 auto;width:max-content;max-width:calc(100% - 32px);background:var(--ink-3);border:1px solid var(--line);border-radius:10px;padding:9px 14px;z-index:30;font-size:13px;box-shadow:0 8px 30px rgba(0,0,0,.4)}
 
@@ -368,10 +480,12 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
             <span class="chip" data-en="&lt;b&gt;DICOM&lt;/b&gt; all common types"><b>DICOM</b> بأنواعه الشائعة</span>
             <span class="chip">JPEG 2000 · JPEG-LS · Lossless · RLE</span>
             <span class="chip">RAR · ZIP · 7z · ISO</span>
+            <span class="chip" data-en="&lt;b&gt;Scans&lt;/b&gt; STL · PLY · OBJ"><b>مسح ضوئي</b> STL · PLY · OBJ</span>
           </div>
+          <button class="btn" type="button" id="btnWhat" data-en="What can this viewer do? (incl. scan fusion)">ماذا يقدّم العارض؟ (ومنه دمج الطبعة مع الأشعة)</button>
           <button class="btn" type="button" id="btnLearnStart" data-en="New to CBCT? Read the beginner's guide">جديد على CBCT؟ اقرأ دليل المبتدئ</button>
       <div id="startErr" hidden></div>
-          <input type="file" id="inFile" hidden>
+          <input type="file" id="inFile" hidden multiple>
           <input type="file" id="inFolder" hidden webkitdirectory multiple>
         </section>
       </div>
@@ -392,6 +506,73 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
       <div class="row" style="justify-content:space-between"><span id="loadMsg">…</span><span class="num fine" id="loadTime"></span></div>
       <p class="fine" id="loadFile"></p>
     </div>
+  </main>
+
+  <!-- ===== عارض النماذج ثلاثية الأبعاد ===== -->
+  <main class="mScreen" id="modelScreen" hidden>
+    <div class="topbar">
+      <span class="ring sm" aria-hidden="true"></span>
+      <div class="mTitleBox"><b id="mTitle">نماذج</b><small data-en="3D scans &amp; designs">المسح الضوئي والتصاميم</small></div>
+      <span style="flex:1"></span>
+      <button class="iconbtn" type="button" id="mAdd"><span aria-hidden="true">＋</span><span class="hide-phone" data-en=" Add file"> إضافة ملف</span></button>
+      <button class="iconbtn" type="button" id="mShareBtn"><span aria-hidden="true">⇪</span><span class="hide-phone" data-en=" Share"> مشاركة</span></button>
+      <button class="iconbtn" type="button" id="mLearn"><span aria-hidden="true">؟</span><span class="hide-phone" data-en=" Learn"> تعلّم</span></button>
+      <button class="iconbtn" type="button" id="mBack" data-en="Back">رجوع</button>
+      <input type="file" id="mAddIn" hidden multiple accept=".stl,.ply,.obj,.mtl,.off,.jpg,.jpeg,.png">
+    </div>
+    <div class="mStage" id="mStage">
+      <aside class="mPanel" id="mPanel">
+        <button class="mPanelHead" type="button" id="mLayersBtn"><span data-en="Layers">الطبقات</span> <span class="num" id="mCount">0</span></button>
+        <div class="mChips" id="mChips"></div>
+        <ul class="mLayers" id="mLayers"></ul>
+      </aside>
+      <p class="mHint" id="mHint"></p>
+      <div class="mQuick" id="mQuick" role="group" aria-label="إظهار سريع"></div>
+      <button class="tipBtn mTip" type="button" id="mTipBtn" hidden aria-label="ما هذا؟">؟</button>
+      <div class="tipCard mTipCard" id="mTipCard" hidden></div>
+      <canvas class="mGizmo" id="mGizmo" width="160" height="160" aria-label="الاتجاهات: أ أمام، ع أعلى، ي يمين المريض"></canvas>
+      <div class="mNav" id="mNav" dir="ltr">
+        <div class="pad">
+          <button type="button" id="mNavU" class="u" aria-label="تدوير للأعلى">▲</button>
+          <button type="button" id="mNavL" class="l" aria-label="تدوير لليسار">◀</button>
+          <button type="button" id="mNavC" class="c" aria-label="إعادة الزاوية" title="إعادة الزاوية">⌂</button>
+          <button type="button" id="mNavR" class="r" aria-label="تدوير لليمين">▶</button>
+          <button type="button" id="mNavD" class="d" aria-label="تدوير للأسفل">▼</button>
+        </div>
+        <div class="zoom">
+          <button type="button" id="mZin" aria-label="تكبير">＋</button>
+          <button type="button" id="mPan" aria-pressed="false" title="وضع التدوير: اسحب للتدوير">⟳</button>
+          <button type="button" id="mZout" aria-label="تصغير">−</button>
+        </div>
+      </div>
+      <section class="mOccl" id="mOccl" hidden>
+        <b data-en="Occlusion">الإطباق</b>
+        <p class="fine" id="mOcclMsg"></p>
+        <button class="btn primary" type="button" id="mOcclRun" data-en="Compute occlusion from bite scans">احسب الإطباق من طبعات الإطباق</button>
+        <label class="mini"><input type="checkbox" id="mOcclOn" hidden> <span data-en="Apply computed occlusion">تطبيق الإطباق المحسوب</span></label>
+        <label class="mini"><input type="checkbox" id="mContact"> <span data-en="Contact map">خريطة التلامس</span></label>
+        <div class="mLegend" id="mLegend" hidden><span style="--c:#f21f1f" data-en="&lt; 0.1 mm">أقل من ٠٫١ ملم</span><span style="--c:#ff731a" data-en="0.1–0.3">٠٫١–٠٫٣</span><span style="--c:#ffd926" data-en="0.3–0.6">٠٫٣–٠٫٦</span><span style="--c:#59cc73" data-en="0.6–1 mm">٠٫٦–١ ملم</span></div>
+      </section>
+    </div>
+    <div class="mClipBar" id="mClipBar" hidden>
+      <div class="seg" role="group" id="mClipAx"><button type="button" data-ax="sag" aria-pressed="true" data-en="Side">جانبي</button><button type="button" data-ax="cor" data-en="Front">أمامي</button><button type="button" data-ax="h" data-en="Horizontal">أفقي</button></div>
+      <input type="range" id="mClipT" min="0" max="100" value="50" aria-label="موضع المقطع">
+    </div>
+    <div class="toolbar mTools">
+      <div class="seg" role="group" id="mViews">
+        <button type="button" data-v="front" data-en="Front">أمام</button>
+        <button type="button" data-v="top" data-en="Top">علوي</button>
+        <button type="button" data-v="bottom" data-en="Bottom">سفلي</button>
+        <button type="button" data-v="right" data-en="Right">يمين</button>
+        <button type="button" data-v="left" data-en="Left">يسار</button>
+        <button type="button" data-v="iso" data-en="3/4">مائل</button>
+      </div>
+      <button class="iconbtn" type="button" id="mMeasure" aria-pressed="false" data-en="Measure">قياس</button>
+      <button class="iconbtn quiet" type="button" id="mClearMeas" hidden data-en="Clear measurements">مسح القياسات</button>
+      <button class="iconbtn" type="button" id="mClipBtn" aria-pressed="false" data-en="Section">مقطع</button>
+      <button class="iconbtn" type="button" id="mOcclBtn" aria-pressed="false" data-en="Occlusion">الإطباق</button>
+    </div>
+    <div class="mShot" id="mShot" hidden><img id="mShotImg" alt=""><p class="fine" data-en="Long-press the image to save or share it.">اضغط مطولاً على الصورة لحفظها أو مشاركتها.</p><button class="btn" type="button" id="mShotX" data-en="Close">إغلاق</button></div>
   </main>
 
   <!-- ===== العارض ===== -->
@@ -421,6 +602,7 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
         <option value="manual" data-en="Manual (drag)">ضبط يدوي بالسحب</option>
       </select>
       <button class="iconbtn" type="button" id="btnWL" aria-expanded="false" title="السطوع والتباين"><span aria-hidden="true">☀︎</span><span class="hide-phone" data-en=" Brightness"> السطوع</span></button>
+      <button class="iconbtn" type="button" id="btnFuse" aria-pressed="false" aria-expanded="false" title="دمج الطبعة الرقمية مع الأشعة"><span aria-hidden="true">◐</span><span class="hide-phone" data-en=" Scan fusion"> دمج الطبعة</span></button>
       <button class="iconbtn" type="button" id="btnMeasures"><span data-en="Plan">الخطة</span> <span class="num" id="mCount">0</span></button>
       <span class="sep layoutSeg"></span>
       <div class="seg layoutSeg" role="group" aria-label="عدد النوافذ" id="layoutSeg">
@@ -614,6 +796,103 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
     <button class="iconbtn" type="button" id="wlClose" data-en="Done">تم</button>
   </div>
   <p class="fine" style="margin:0" data-en="Applies to all views. Pick a preset from the list (Teeth &amp; bone, Bone…) and fine-tune here.">يُطبّق على كل النوافذ. اختر من القائمة (أسنان وعظم، عظم…) ثم اضبط هنا بدقة.</p>
+</div>
+<div class="wlPop fusePop" id="fusePop" hidden role="dialog" aria-label="دمج الطبعة مع الأشعة">
+  <b data-en="Fuse the intraoral scan with the CBCT">دمج الطبعة الرقمية مع الأشعة</b>
+  <p class="fine" id="fuMsg" style="margin:0"></p>
+  <div class="fuList" id="fuList"></div>
+  <details class="fuTips"><summary data-en="How do I benefit from the fusion?">كيف أستفيد من الدمج؟</summary><ul>
+    <li data-en="In the &lt;b&gt;cross-section&lt;/b&gt;, the gap between the scan line and the bone is the gum thickness.">في <b>المقطع العرضي</b>: المسافة بين خط الطبعة والعظم هي سماكة اللثة.</li>
+    <li data-en="Place the implant under the &lt;b&gt;crown position&lt;/b&gt; shown by the scan, then check the bone around it.">ضع الزرعة تحت <b>مكان التاج</b> الذي تُظهره الطبعة، ثم تحقق من العظم حولها.</li>
+    <li data-en="Near metal restorations, rely on the scan line for the true crown shape.">قرب الحشوات المعدنية: اعتمد على خط الطبعة لشكل التاج الحقيقي.</li>
+    <li data-en="Scroll the cross-section along the arch: the line should hug the enamel everywhere.">مرّر المقطع العرضي على طول القوس: يجب أن يلاصق الخط المينا في كل مكان.</li>
+  </ul></details>
+  <label class="mini" id="fuShowRow" hidden><input type="checkbox" id="fuShow" checked> <span data-en="Show scan outlines on the slices">إظهار حدود الطبعة على المقاطع</span></label>
+  <div class="wlAct">
+    <button class="btn primary" type="button" id="fuAdd" style="padding:6px 12px" data-en="Add scan files">أضف ملفات الطبعة</button>
+    <button class="iconbtn" type="button" id="fuArchive" hidden data-en="Use the scans in this file">استعمل الطبعات الموجودة في الملف</button>
+    <button class="iconbtn" type="button" id="fuRerun" hidden data-en="Re-run">أعد الدمج</button>
+    <button class="iconbtn danger" type="button" id="fuClear" hidden data-en="Remove">إزالة</button>
+    <span style="flex:1"></span>
+    <button class="iconbtn" type="button" id="fuClose" data-en="Done">تم</button>
+  </div>
+  <input type="file" id="fuIn" hidden multiple accept=".stl,.ply,.obj,.off,.mtl,.png,.jpg,.jpeg,.zip,.rar,.7z">
+</div>
+<div class="welcome" id="welcome" hidden role="dialog" aria-modal="true" aria-labelledby="wTitle">
+  <div class="wBox">
+    <div class="wHead">
+      <span class="ring sm" aria-hidden="true"></span>
+      <div>
+        <h2 id="wTitle" data-en="Welcome to the Almanasa Viewer">أهلاً بك في عارض المنصة</h2>
+        <p class="fine" data-en="A CBCT and intraoral-scan viewer for phone, tablet and computer. Your files never leave your device.">عارض لأشعة CBCT والطبعات الرقمية على الهاتف والتابلت والحاسوب. ملفاتك لا تغادر جهازك أبداً.</p>
+      </div>
+      <div class="seg langSeg wLang" role="group" aria-label="Language"><button type="button" data-lang="ar">عربي</button><button type="button" data-lang="en">English</button></div>
+    </div>
+    <div class="wGrid">
+      <section><b data-en="Read the whole scan">اقرأ الأشعة كاملة</b><p data-en="Axial, coronal, sagittal and panoramic, with the dental arch drawn automatically. &lt;em&gt;Why it matters:&lt;/em&gt; read a case anywhere, without the imaging center's software.">محوري وتاجي وسهمي وبانوراما، والقوس يُرسم تلقائياً. <em>فائدته:</em> تقرأ الحالة أينما كنت دون برنامج مركز الأشعة.</p></section>
+      <section><b data-en="Plan implants and the canal">خطّط الزرعات والقناة</b><p data-en="Real implant sizes from the libraries, smart canal tracing, and a warning when an implant gets too close. &lt;em&gt;Why:&lt;/em&gt; safer surgical decisions.">زرعات بمقاسات الشركات الحقيقية، وتتبّع ذكي للقناة السنية، وتحذير حين تقترب الزرعة منها. <em>فائدته:</em> قرار جراحي أكثر أماناً.</p></section>
+      <section><b data-en="Digital impressions">الطبعات الرقمية</b><p data-en="STL, PLY and OBJ, even inside a ZIP. Upper, lower and bite scans are recognised automatically, with the scan's true colours. &lt;em&gt;Why:&lt;/em&gt; review the lab's work and the scanner's files on your phone.">STL و PLY و OBJ ولو داخل ملف مضغوط. يتعرّف على العلوي والسفلي وطبعات الإطباق تلقائياً، بألوان الطبعة الحقيقية. <em>فائدته:</em> تراجع ملفات الماسح والمختبر من هاتفك.</p></section>
+      <section><b data-en="True occlusion">الإطباق الحقيقي</b><p data-en="The bite scans place the jaws exactly, with a contact-point map. &lt;em&gt;Why:&lt;/em&gt; check high spots and contacts before and after a restoration.">طبعات الإطباق تضع الفكين في مكانهما بدقة، مع خريطة نقاط التلامس. <em>فائدته:</em> ترى نقاط التلامس العالية قبل التعويض وبعده.</p></section>
+      <section class="wNew"><b><span data-en="Scan + CBCT fusion">دمج الطبعة مع الأشعة</span> <i data-en="New">جديد</i></b><p data-en="Add the intraoral scan to the CBCT and it is matched to the teeth automatically; its outline appears on every slice. &lt;em&gt;Why:&lt;/em&gt; see the real gum and crown over the bone.">أضف الطبعة إلى الأشعة فتُطابق على الأسنان تلقائياً، ويظهر حدّها على كل المقاطع. <em>فائدته:</em> ترى اللثة والتاج الحقيقيين فوق العظم.</p></section>
+      <section><b data-en="Share in one tap">شارك بضغطة</b><p data-en="A snapshot with a ready prompt for AI tools or WhatsApp, or a link that carries your plan to a colleague. &lt;em&gt;Why:&lt;/em&gt; a second opinion within minutes.">لقطة مع طلب جاهز لأدوات الذكاء الاصطناعي أو واتساب، أو رابط يحمل خطتك إلى زميل. <em>فائدته:</em> رأي ثانٍ خلال دقائق.</p></section>
+    </div>
+
+    <p class="wHint" data-en="Tip: the &lt;span class=&quot;wQ&quot;&gt;?&lt;/span&gt; in the corner of every view explains how to control it (tap, drag, zoom, slices).">نصيحة: علامة <span class="wQ">؟</span> في زاوية كل نافذة تشرح لك كيف تتحكم بها (النقر، السحب، التكبير، التنقل بين الشرائح).</p>
+    <section class="wInst" id="wInst">
+      <h3 data-en="Install it on your phone like an app">ثبّته على هاتفك كتطبيق</h3>
+      <p class="fine" data-en="Why: an icon on your home screen, opens full screen in one tap, works &lt;b&gt;without internet&lt;/b&gt; after the first visit, and updates itself. No app store and no account needed.">لماذا؟ أيقونة على الشاشة الرئيسية، يفتح بملء الشاشة بضغطة، ويعمل <b>بدون إنترنت</b> بعد أول فتح، ويتحدّث وحده. لا يحتاج متجر تطبيقات ولا حساباً.</p>
+      <p class="wDone" id="wInstDone" hidden data-en="✓ The viewer is already installed on this device.">✓ العارض مثبّت على هذا الجهاز.</p>
+      <button class="btn primary" type="button" id="wInstNow" hidden data-en="Install now">ثبّت الآن</button>
+      <div class="seg wTabs" role="tablist" id="wTabs">
+        <button type="button" data-dev="ios" data-en="iPhone / iPad">آيفون / آيباد</button>
+        <button type="button" data-dev="android" data-en="Android">أندرويد</button>
+        <button type="button" data-dev="pc" data-en="Computer">الحاسوب</button>
+      </div>
+      <ol class="wList wSteps" data-dev="ios">
+        <li data-en="Open &lt;b&gt;cbct.thepf.net&lt;/b&gt; in &lt;b&gt;Safari&lt;/b&gt; (not inside WhatsApp or Instagram).">افتح <b>cbct.thepf.net</b> في متصفح <b>Safari</b> (وليس من داخل واتساب أو إنستغرام).</li>
+        <li data-en="Tap the &lt;b&gt;Share&lt;/b&gt; button &lt;span class=&quot;kbd&quot;&gt;⬆︎&lt;/span&gt; at the bottom of the screen.">اضغط زر <b>المشاركة</b> <span class="kbd">⬆︎</span> أسفل الشاشة.</li>
+        <li data-en="Scroll down and choose &lt;span class=&quot;kbd&quot;&gt;Add to Home Screen ⊞&lt;/span&gt;.">مرّر للأسفل واختر <span class="kbd">إضافة إلى الشاشة الرئيسية ⊞</span>.</li>
+        <li data-en="Tap &lt;span class=&quot;kbd&quot;&gt;Add&lt;/span&gt;. The red ring icon appears with your apps.">اضغط <span class="kbd">إضافة</span>. ستظهر أيقونة الحلقة الحمراء بين تطبيقاتك.</li>
+      </ol>
+      <ol class="wList wSteps" data-dev="android" hidden>
+        <li data-en="Open &lt;b&gt;cbct.thepf.net&lt;/b&gt; in &lt;b&gt;Chrome&lt;/b&gt;. If you opened it from WhatsApp, tap ⋮ then “Open in Chrome”.">افتح <b>cbct.thepf.net</b> في متصفح <b>Chrome</b>. إن فتحته من واتساب اضغط ⋮ ثم «فتح في Chrome».</li>
+        <li data-en="Tap &lt;b&gt;Install now&lt;/b&gt; above if it appears; otherwise tap the menu &lt;span class=&quot;kbd&quot;&gt;⋮&lt;/span&gt; at the top.">اضغط <b>ثبّت الآن</b> في الأعلى إن ظهر، أو اضغط القائمة <span class="kbd">⋮</span> أعلى الشاشة.</li>
+        <li data-en="Choose &lt;span class=&quot;kbd&quot;&gt;Install app&lt;/span&gt; or &lt;span class=&quot;kbd&quot;&gt;Add to Home screen&lt;/span&gt;.">اختر <span class="kbd">تثبيت التطبيق</span> أو <span class="kbd">إضافة إلى الشاشة الرئيسية</span>.</li>
+        <li data-en="Confirm with &lt;span class=&quot;kbd&quot;&gt;Install&lt;/span&gt;. The icon appears with your apps.">أكّد بـ <span class="kbd">تثبيت</span>. ستظهر الأيقونة بين تطبيقاتك.</li>
+      </ol>
+      <ol class="wList wSteps" data-dev="pc" hidden>
+        <li data-en="Open &lt;b&gt;cbct.thepf.net&lt;/b&gt; in &lt;b&gt;Chrome&lt;/b&gt; or &lt;b&gt;Edge&lt;/b&gt;.">افتح <b>cbct.thepf.net</b> في <b>Chrome</b> أو <b>Edge</b>.</li>
+        <li data-en="Click the install icon &lt;span class=&quot;kbd&quot;&gt;⊕&lt;/span&gt; at the right end of the address bar, or &lt;b&gt;Install now&lt;/b&gt; above.">اضغط أيقونة التثبيت <span class="kbd">⊕</span> في آخر شريط العنوان، أو زر <b>ثبّت الآن</b> في الأعلى.</li>
+        <li data-en="Click &lt;span class=&quot;kbd&quot;&gt;Install&lt;/span&gt;. The viewer gets its own window and a desktop/Start-menu shortcut.">اضغط <span class="kbd">تثبيت</span>. سيفتح العارض في نافذة خاصة، ويظهر اختصاره على سطح المكتب وقائمة ابدأ.</li>
+      </ol>
+    </section>
+
+    <h3 data-en="What does fusing the scan with the CBCT give you?">ماذا يقدّم لك دمج الطبعة مع الأشعة؟</h3>
+    <ul class="wList">
+      <li data-en="&lt;b&gt;Restoration-driven implant planning:&lt;/b&gt; place the implant under the real crown position, not only where the bone is."><b>تخطيط الزرعة من التاج النهائي:</b> تضع الزرعة تحت مكان التاج الحقيقي، لا حيث يوجد العظم فقط.</li>
+      <li data-en="&lt;b&gt;Gum thickness over the bone:&lt;/b&gt; the distance between the scan line and the bone in the cross-section is the soft-tissue thickness, useful for choosing the abutment height and the flap."><b>سماكة اللثة فوق العظم:</b> المسافة بين خط الطبعة والعظم في المقطع العرضي هي سماكة النسيج الرخو، وتفيدك في اختيار ارتفاع الدعامة وطريقة الشريحة.</li>
+      <li data-en="&lt;b&gt;Clear crowns despite metal:&lt;/b&gt; fillings and crowns cause streaks in the CBCT; the scan shows the true tooth surface."><b>تيجان واضحة رغم المعادن:</b> الحشوات والتيجان المعدنية تسبب خطوطاً في الأشعة، والطبعة تُظهر سطح السن الحقيقي.</li>
+      <li data-en="&lt;b&gt;Orthodontics:&lt;/b&gt; see the roots under each crown, root parallelism, and how impacted teeth relate to the erupted ones."><b>التقويم:</b> ترى الجذور تحت كل تاج، وتوازي الجذور، وعلاقة الأسنان المنطمرة بالأسنان الظاهرة.</li>
+      <li data-en="&lt;b&gt;Lab designs over the bone:&lt;/b&gt; crowns, abutments and scan bodies designed on the scan move with it onto the CBCT."><b>تصاميم المختبر فوق العظم:</b> التيجان والدعامات وقطع المسح المصممة على الطبعة تنتقل معها إلى الأشعة.</li>
+      <li data-en="&lt;b&gt;The first step towards a surgical guide:&lt;/b&gt; guided implant surgery always starts by fusing the scan with the CBCT."><b>الخطوة الأولى نحو الدليل الجراحي:</b> الجراحة الموجّهة للزرعات تبدأ دائماً بدمج الطبعة مع الأشعة.</li>
+      <li data-en="&lt;b&gt;Explaining to the patient:&lt;/b&gt; the patient sees their own teeth and gums over the bone, which makes the plan easier to understand."><b>الشرح للمريض:</b> يرى المريض أسنانه ولثته فوق العظم، فيفهم الخطة أسهل.</li>
+    </ul>
+
+    <h3 data-en="Tips for an accurate fusion">نصائح لدمج دقيق</h3>
+    <ol class="wList">
+      <li data-en="Use a scan and a CBCT of the &lt;b&gt;same patient taken close together&lt;/b&gt;, with no extraction or new crown in between.">استعمل طبعة وأشعة <b>لنفس المريض وفي وقت متقارب</b>، دون خلع أو تاج جديد بينهما.</li>
+      <li data-en="&lt;b&gt;Full-arch scans&lt;/b&gt; fuse more accurately than a partial scan.">الطبعة <b>الكاملة للقوس</b> أدق في الدمج من الطبعة الجزئية.</li>
+      <li data-en="Send the &lt;b&gt;colour version&lt;/b&gt; (PLY or OBJ) if you have it: colour lets the viewer separate teeth from gums.">أرسل <b>النسخة الملوّنة</b> (PLY أو OBJ) إن وُجدت، فالألوان تساعد البرنامج على فصل الأسنان عن اللثة.</li>
+      <li data-en="Ask for the CBCT with the &lt;b&gt;teeth slightly apart&lt;/b&gt; (a cotton roll or bite block) so the tooth surfaces show clearly.">اطلب الأشعة <b>والأسنان مفتوحة قليلاً</b> (قطنة أو حاجز عضّ)، لتظهر أسطح الأسنان واضحة.</li>
+      <li data-en="&lt;b&gt;Always check visually:&lt;/b&gt; scroll the cross-section along the arch; the line should hug the enamel. A median error under 0.3 mm is excellent; above 0.5 mm, check carefully."><b>تحقق بعينك دائماً:</b> مرّر المقطع العرضي على طول القوس، والخط يجب أن يلاصق المينا. الخطأ الوسيط أقل من 0.3 ملم ممتاز، وأكثر من 0.5 ملم يحتاج تدقيقاً.</li>
+      <li data-en="Many metal restorations can reduce accuracy; check those areas more closely.">كثرة المعادن في الفم قد تقلل الدقة، فدقق تلك المناطق أكثر.</li>
+    </ol>
+    <p class="fine" data-en="&lt;b&gt;How:&lt;/b&gt; open the CBCT ← tap “◐ Scan fusion” ← “Add scan files” ← wait a few seconds."><b>الطريقة:</b> افتح الأشعة ← اضغط «◐ دمج الطبعة» ← «أضف ملفات الطبعة» ← انتظر ثوانيَ.</p>
+    <div class="wAct">
+      <button class="btn primary" type="button" id="wStart" data-en="Get started">ابدأ</button>
+      <button class="iconbtn" type="button" id="wGuide" data-en="Open the full guide">افتح الدليل الكامل</button>
+    </div>
+  </div>
 </div>
 <div class="toast" id="toast" hidden role="status"></div>
 
@@ -948,6 +1227,7 @@ function errText(e) {
    ============================================================ */
 let loadT0 = 0, loadTimer = 0;
 function showLoading(name) {
+  if (!$("welcome").hidden) hideWelcome();
   $("startScreen").hidden = true; $("viewer").hidden = true; $("loadScreen").hidden = false;
   $("loadFile").textContent = name || ""; loadT0 = performance.now();
   clearInterval(loadTimer); loadTimer = setInterval(() => { $("loadTime").textContent = Math.round((performance.now() - loadT0) / 1000) + tr(" ث", " s"); }, 500);
@@ -971,13 +1251,16 @@ function openingDone() { try { localStorage.removeItem("cbct.opening"); } catch 
 S._crashed = (() => { try { const t = +localStorage.getItem("cbct.opening"); localStorage.removeItem("cbct.opening"); return t > 0 && Date.now() - t < 30 * 60e3; } catch (_) { return false; } })();
 function isArchive(name) { return /\.(rar|zip|7z|tar|gz|tgz|iso)$/i.test(name); }
 
+const MESH_RE = /\.(stl|ply|obj|off)$/i, MESH_AUX_RE = /\.(mtl|jpe?g|png|bmp)$/i;
 async function openFile(file) {
   if (!file) return;
   if (isArchive(file.name)) return openArchive(file);
+  if (MESH_RE.test(file.name)) return openModels([{ name: file.name, file }]);
   return openLoose([file]);
 }
 function openArchive(file) {
   openingStart();
+  const meshes = [];
   const asm = new Assembler(S.quality === "half" ? 2 : 1);
   showLoading(file.name + " · " + (file.size / 1048576).toFixed(0) + tr(" ميغابايت", " MB"));
   let worker;
@@ -989,6 +1272,7 @@ function openArchive(file) {
     if (d.type === "stage" && d.stage === "wasm") setLoad(tr("تجهيز أداة فك الضغط…", "Preparing the unpacking tool…"), null);
     else if (d.type === "read") setLoad(tr("قراءة الملف من الجهاز", "Reading the file from the device"), d.done / d.total * 0.25);
     else if (d.type === "stage" && d.stage === "extract") setLoad(tr("فك الضغط واستخراج الشرائح…", "Unpacking and extracting slices…"), 0.25);
+    else if (d.type === "file" && (d.kind === "mesh" || d.kind === "mesh-aux")) { meshes.push({ name: d.path, kind: d.kind, data: d.data }); }
     else if (d.type === "file") {
       try { asm.add(d.kind, d.path, d.data); } catch (e) { worker.terminate(); backToStart(errText(e)); return; }
       slices = asm.nnt.size + asm.dicom.length;
@@ -1007,13 +1291,21 @@ function openArchive(file) {
     else if (d.type === "zipprog") { slices = d.sent; setLoad(tr("استخراج الشرائح: ", "Extracting slices: ") + d.sent + " / " + d.files, 0.05 + 0.9 * d.done / Math.max(1, d.total)); }
     else if (d.type === "progress") { if (!slices) setLoad(tr("فك الضغط… (", "Unpacking… (") + d.seen + tr(" ملف)", " files)"), null); }
     else if (d.type === "error") { worker.terminate(); backToStart(errText(d.message)); }
-    else if (d.type === "done") { worker.terminate(); finishLoad(asm); }
+    else if (d.type === "done") {
+      worker.terminate();
+      const hasScan = asm.nnt.size || asm.dicom.length || asm.deferred.length;
+      if (!hasScan && meshes.some((m) => m.kind === "mesh")) { openingDone(); clearInterval(loadTimer); openModels(meshes); return; }
+      S.archiveMeshes = meshes.some((m) => m.kind === "mesh") ? meshes : null; // أشعة ومعها ملفات مسح: نعرضها لاحقاً من زر
+      finishLoad(asm);
+    }
   };
   worker.postMessage({ cmd: "extract", file });
 }
 async function openLoose(files) {
-  const list = [...files];
+  let list = [...files];
   if (list.length === 1 && isArchive(list[0].name)) return openArchive(list[0]);
+  const meshList = list.filter((f) => MESH_RE.test(f.name));
+  if (meshList.length && list.every((f) => MESH_RE.test(f.name) || MESH_AUX_RE.test(f.name) || /\.(txt|xml|html?|pdf)$/i.test(f.name))) return openModels(list.map((f) => ({ name: f.webkitRelativePath || f.name, file: f })));
   openingStart();
   const asm = new Assembler(S.quality === "half" ? 2 : 1);
   showLoading(list.length + tr(" ملف", " files"));
@@ -1100,6 +1392,7 @@ function percentiles(vol) {
 function startViewer(vol) {
   openingDone();
   S.volVer++; G3.lastKey = ""; $("panes").classList.remove("maxed");
+  if (typeof fuReset === "function" && FU.items.length) fuReset();
   S.vol = vol; S.measures = []; S.pending = null; S.curve = null; S.pano = null; S.archDraft = []; S.curveVer++; S.panoVer++;
   S.implants = []; S.nerves = []; S.curNerve = -1; S.archZ = null; selectImplant(null); UNDO.length = 0; updateUndoBtn();
   S.cur = { x: vol.nx >> 1, y: vol.ny >> 1, z: vol.nz >> 1 };
@@ -1730,6 +2023,44 @@ function buildLearn() {
 <li>Choose ${B("قياس", "Measure")} and measure bone height and width on the cross-section.</li>
 <li>Trace the <b>canal</b> if the site is in the mandible, then place the <b>implant</b> and watch the colour of the canal distance.</li></ol>
 <p>Any wrong step can be reversed with ${B("تراجع", "Undo")} at the top.</p>`] },
+  { id: "controls", ar: ["كيف تتحكم بالعارض", `<p>علامة ${UI("؟", "?")} في زاوية كل نافذة تشرح طريقة التحكم بتلك النافذة بالذات، وتبويب «ماذا ترى» يشرح محتواها.</p>
+<dl>
+<dt>على الهاتف والتابلت</dt><dd><ul>
+<li><b>الشريط</b> أسفل كل نافذة أو <b>‹ ›</b>: التنقل بين الشرائح.</li>
+<li><b>إصبعان (تقريب/تبعيد):</b> تكبير وتصغير. <b>سحب بإصبع:</b> تحريك الصورة، وفي ${TM("3D")} تدوير.</li>
+<li><b>نقرة:</b> تنقل النوافذ الأخرى إلى نفس النقطة. في البانوراما تفتح المقطع العرضي للسن.</li>
+<li><b>نقرتان</b> أو <b>⤢</b>: تكبير النافذة على الشاشة كلها والعودة.</li>
+<li>أزرار أسفل الشاشة تبدّل نوع النافذة النشطة (المحاطة بالأحمر).</li></ul></dd>
+<dt>على الحاسوب</dt><dd><ul>
+<li><b>عجلة الفأرة:</b> التنقل بين الشرائح (مع Shift خمس شرائح). <b>Ctrl + العجلة:</b> تكبير.</li>
+<li><b>سحب:</b> تحريك الصورة، وفي ${TM("3D")} تدوير. <b>نقر مزدوج:</b> ملء الشاشة. <b>Ctrl+Z:</b> تراجع.</li></ul></dd>
+<dt>الأدوات (الشريط العلوي)</dt><dd><ul>
+<li>${UI("تصفح", "Browse")}: الوضع العادي.</li>
+<li>${UI("قياس", "Measure")}: نقطتان فتظهر المسافة بالملم.</li>
+<li>${UI("زرعة", "Implant")}: انقر على ${TM("Cross-section")} لوضعها، اسحب وسطها لتحريكها وطرفها لتغيير الميلان، ومن اللوحة السفلية غيّر النظام والمقاس.</li>
+<li>${UI("قناة", "Canal")}: نقاط على مسار ${TM("Mandibular canal")} في البانوراما، ثم ${UI("تتبّع ذكي", "Smart trace")}.</li>
+<li>${UI("☀︎ السطوع", "☀︎ Brightness")} و${UI("◐ دمج الطبعة", "◐ Scan fusion")} و${UI("الخطة", "Plan")} (كل القياسات والزرعات) و${UI("↶ تراجع", "↶ Undo")}.</li></ul></dd>
+<dt>عارض النماذج (${TM("STL")})</dt><dd>سحب بإصبع للتدوير وإصبعان للتكبير والتحريك، ولوحة الأسهم ودائرة الاتجاهات للزوايا، والأزرار السريعة (العلوي، السفلي، الفكان، الكل) في الأعلى، والطبقات للإظهار والشفافية والألوان.</dd>
+</dl>`],
+    en: ["How to control the viewer", `<p>The ? in the corner of each view explains how to control that particular view, and its “What you see” tab explains the content.</p>
+<dl>
+<dt>Phone and tablet</dt><dd><ul>
+<li><b>Slider</b> below each view or <b>‹ ›</b>: move through slices.</li>
+<li><b>Pinch:</b> zoom. <b>One-finger drag:</b> move the image; rotate in 3D.</li>
+<li><b>Tap:</b> the other views jump to the same point. On the panoramic it opens that tooth's cross-section.</li>
+<li><b>Double-tap</b> or <b>⤢</b>: fill the screen with the view and back.</li>
+<li>Buttons at the bottom change the active view's type (red frame).</li></ul></dd>
+<dt>Computer</dt><dd><ul>
+<li><b>Mouse wheel:</b> move through slices (Shift: five at a time). <b>Ctrl + wheel:</b> zoom.</li>
+<li><b>Drag:</b> move the image; rotate in 3D. <b>Double-click:</b> full screen. <b>Ctrl+Z:</b> undo.</li></ul></dd>
+<dt>Tools (top bar)</dt><dd><ul>
+<li>Browse: normal mode.</li>
+<li>Measure: two points give the distance in mm.</li>
+<li>Implant: tap the cross-section to place it, drag its middle to move and its tip to tilt; change system and size in the bottom panel.</li>
+<li>Canal: points along the mandibular canal on the panoramic, then Smart trace.</li>
+<li>☀︎ Brightness, ◐ Scan fusion, Plan (all measurements and implants) and ↶ Undo.</li></ul></dd>
+<dt>Model viewer (STL)</dt><dd>Drag one finger to rotate and two to zoom and move; the arrow pad and direction gizmo for angles; quick buttons (upper, lower, both, all) at the top; layers for visibility, opacity and colours.</dd>
+</dl>`] },
   { id: "views", ar: ["الاتجاهات الستة", `<dl>${Object.keys(VIEW_TIPS).map((k) => `<dt>${VIEWS_AR[k]} ${TM(VIEW_TERMS[k])}</dt><dd>${VIEW_TIPS[k][0]}</dd>`).join("")}</dl>
 <p>كل الاتجاهات مرتبطة: النقر على نقطة في أحدها ينقل ${TM("Crosshair")} (الخطوط المنقطة) في البقية إلى نفس النقطة.</p>`],
     en: ["The six views", `<dl>${Object.keys(VIEW_TIPS).map((k) => `<dt>${VIEWS_EN[k]}</dt><dd>${VIEW_TIPS[k][1]}</dd>`).join("")}</dl>
@@ -1842,6 +2173,86 @@ function buildLearn() {
 <dt>Reconstructed panoramic</dt><dd>It depends on where the arch is drawn. If teeth look blurred or wide, edit the arch.</dd>
 <dt>3D view</dt><dd>Threshold effects can show false holes in thin bone. For orientation, not diagnosis.</dd>
 <dt>Window</dt><dd>Brightness and contrast change what you see. Do not judge bone presence or absence from a single window.</dd></dl>`] },
+  { id: "models", ar: ["عارض النماذج: المسح الضوئي والتصاميم", `<p>يفتح ملفات ${TM("Intraoral scan")} و${TM("Model scan")} وتصاميم ${TM("CAD/CAM")} بصيغ ${TM("STL")} و${TM("PLY")} و${TM("OBJ")} و${TM("OFF")}، منفردة أو عدة ملفات معاً أو داخل ${TM("ZIP")}. كل شيء على جهازك ولا يُرفع أي ملف.</p>
+<dl>
+<dt>كيف يتعرّف على كل طبعة</dt><dd>من اسم الملف أولاً (أسماء exocad و 3Shape و Medit و iTero الشائعة)، ثم من الشكل والموضع: الطبعة الأعلى ${TM("Upper jaw")} والأسفل ${TM("Lower jaw")}، والطبعات الصغيرة بين الفكين ${TM("Bite registration")}، وجهتها (يمين أو يسار المريض أو أمامي) من موقعها. ما حُدد من الشكل تظهر عليه علامة «تلقائي»، صحّحه من القائمة بجانبه إن لزم.</dd>
+<dt>${TM("Upper / Lower jaw")}</dt><dd>طبعة القوس كاملاً. إن وصلت نسختان (ملوّنة وغير ملوّنة) تظهر الملوّنة وتُخفى المكررة.</dd>
+<dt>${TM("Bite registration")} (${TM("Buccal bite")})</dt><dd>طبعات صغيرة من الجانب تسجّل علاقة الفكين في الإطباق. تُخفى تلقائياً حين يكون الفكان ظاهرين، وتظهر من زر «الإطباق».</dd>
+<dt>${TM("Preparation")}، ${TM("Restoration")}، ${TM("Abutment")} و${TM("Scan body")}</dt><dd>السن المحضَّر، والتاج أو الجسر المصمَّم، والدعامة أو قطعة المسح فوق الزرعة. خفّف شفافية التعويض لترى التحضير تحته.</dd>
+</dl>
+<ul>
+<li><b>الطبقات:</b> ${UI("◉", "◉")} إظهار وإخفاء، ${UI("وحدها", "Solo")} لعرض طبعة واحدة فقط، والشريط للشفافية، والدائرة لتغيير اللون. أزرار المجموعات (الفكوك، الإطباق، التعويضات) تُظهر أو تُخفي المجموعة كاملة.</li>
+<li><b>الزوايا:</b> أمام، علوي (${TM("Occlusal view")} للفك السفلي)، سفلي (للفك العلوي)، يمين ويسار المريض، ومائل.</li>
+<li><b>${UI("قياس", "Measure")}:</b> انقر نقطتين على السطح لتظهر المسافة بالملم.</li>
+<li><b>${UI("مقطع", "Section")}:</b> يقطع النموذج جانبياً أو أمامياً أو أفقياً لرؤية الداخل.</li>
+<li><b>${UI("دمج الطبعة", "Scan fusion")}:</b> من شاشة الأشعة، أضف ملفات الطبعة لنفس المريض فيطابقها البرنامج تلقائياً على الأسنان في ${TM("CBCT")} (كل فك وحده، لأن الفم في الأشعة قد يكون مفتوحاً قليلاً)، وتظهر حدود الطبعة خطاً ملوّناً فوق كل المقاطع والبانوراما: البرتقالي للعلوي والأزرق للسفلي. فائدته في التخطيط: ترى اللثة وشكل التاج الحقيقي فوق العظم، وهو أساس ${TM("Guided implant surgery")}.</li>
+<li><b>${UI("مشاركة", "Share")}:</b> لقطة مع طلب جاهز لأدوات الذكاء الاصطناعي، أو رابط لزميل يحمل الطبقات والألوان والقياسات والزاوية؛ يفتح زميلك نفس الملفات فيرى ما رأيت.</li>
+</ul>
+<p class="fine">ملفات exocad الخاصة (${TM(".dentalCADWeb")}) مغلقة ومشفّرة؛ اطلب من المختبر تصدير STL أو PLY.</p>`],
+    en: ["Model viewer: scans and designs", `<p>Opens intraoral and model scans and CAD/CAM designs in STL, PLY, OBJ and OFF, singly, several at once or inside a ZIP. Everything stays on your device.</p>
+<dl>
+<dt>How each scan is recognised</dt><dd>From the file name first (common exocad, 3Shape, Medit and iTero names), then from shape and position: the higher arch is the upper jaw, the lower one the lower jaw, small scans between the jaws are bite registrations, and their side (patient's right, left or front) comes from their position. Anything detected from shape is marked “Auto”; correct it from the list beside it.</dd>
+<dt>Upper / lower jaw</dt><dd>The full-arch scan. If a colour and a plain copy both arrive, the colour one is shown and the duplicate hidden.</dd>
+<dt>Bite registration (buccal bite)</dt><dd>Small side scans recording how the jaws meet. Hidden automatically when both jaws are shown; show them with “Bites”.</dd>
+<dt>Preparation, restoration, abutment, scan body</dt><dd>Lower the restoration's opacity to see the preparation beneath.</dd>
+</dl>
+<ul>
+<li><b>Layers:</b> ◉ show/hide, “Solo” to show one scan only, the slider for opacity, the dot to change colour. Group buttons (Jaws, Bites, Restorations) toggle a whole group.</li>
+<li><b>Views:</b> front, top (occlusal of the lower jaw), bottom (upper jaw), patient's right and left, 3/4.</li>
+<li><b>Measure:</b> tap two points on the surface.</li>
+<li><b>Section:</b> cut sideways, front-to-back or horizontally.</li>
+<li><b>Scan fusion:</b> from the CBCT screen, add the same patient's scan files and they are matched to the teeth in the CBCT automatically (each jaw separately, since the mouth may be slightly open in the CBCT). The scan outline is drawn over every slice and the panoramic: orange for upper, blue for lower. Useful for planning: you see the gingiva and the real crown shape over the bone, the basis of guided implant surgery.</li>
+<li><b>Share:</b> a snapshot with a ready AI request, or a link for a colleague carrying layers, colours, measurements and angle.</li>
+</ul>
+<p class="fine">exocad's own files (.dentalCADWeb) are closed and encrypted; ask the lab for STL or PLY.</p>`] },
+  { id: "fusion", ar: ["دمج الطبعة الرقمية مع الأشعة", `<p>يضع ${TM("Intraoral scan")} فوق ${TM("CBCT")} لنفس المريض، فترى في كل مقطع العظم من الأشعة، واللثة وشكل التاج الحقيقي من الطبعة. هذه العملية اسمها ${TM("Registration")} أو ${TM("Fusion")}، وهي أساس ${TM("Guided implant surgery")}.</p>
+<ol><li>افتح الأشعة.</li><li>اضغط ${UI("◐ دمج الطبعة", "◐ Scan fusion")} ثم ${UI("أضف ملفات الطبعة", "Add scan files")} واختر ملفات ${TM("STL")} أو ${TM("PLY")} أو ${TM("OBJ")} أو الملف المضغوط.</li><li>بعد ثوانٍ يظهر حدّ الطبعة: البرتقالي للفك العلوي والأزرق للسفلي.</li></ol>
+<dl>
+<dt>كيف يطابق البرنامج</dt><dd>يستخرج سطح الأسنان من الأشعة (المينا أوضح نسيج فيها)، ويأخذ من الطبعة الأسنان فقط (من ألوانها إن وُجدت)، ثم يطابق كل فك وحده بطريقة ${TM("ICP")}، لأن الفم في الأشعة قد يكون مفتوحاً قليلاً عن وضع الإطباق في الطبعة.</dd>
+<dt>${TM("Median error")}</dt><dd>متوسط بُعد سطح الطبعة عن سطح الأسنان في الأشعة. أقل من 0.3 ملم ممتاز، و0.3–0.5 جيد، وأكثر من ذلك يحتاج تحققاً بالعين.</dd>
+</dl>
+<h4>ماذا تستفيد</h4>
+<ul>
+<li><b>${TM("Prosthetically driven planning")}:</b> تضع الزرعة تحت مكان التاج النهائي، لا حيث يوجد العظم فقط.</li>
+<li><b>${TM("Soft tissue thickness")}:</b> المسافة بين خط الطبعة والعظم في المقطع العرضي، تفيدك في اختيار ارتفاع الدعامة وتصميم الشريحة.</li>
+<li><b>${TM("Metal artifacts")}:</b> الطبعة تُظهر سطح التاج الحقيقي حيث تشوّه المعادن صورة الأشعة.</li>
+<li><b>التقويم:</b> الجذور تحت كل تاج، وتوازيها، وعلاقة ${TM("Impacted teeth")} بالأسنان الظاهرة.</li>
+<li><b>تصاميم المختبر:</b> ${TM("Crown")} و${TM("Abutment")} و${TM("Scan body")} المصممة على الطبعة تنتقل معها فوق العظم.</li>
+<li><b>الشرح للمريض:</b> يرى أسنانه ولثته فوق العظم فيفهم الخطة.</li>
+</ul>
+<h4>نصائح لدمج دقيق</h4>
+<ul>
+<li>طبعة وأشعة لنفس المريض وفي وقت متقارب، دون خلع أو تاج جديد بينهما.</li>
+<li>الطبعة الكاملة للقوس أدق من الجزئية، والنسخة الملوّنة تساعد على فصل الأسنان عن اللثة.</li>
+<li>أشعة والأسنان مفتوحة قليلاً (قطنة أو ${TM("Bite block")}) تُظهر أسطح الأسنان أوضح.</li>
+<li>تحقق دائماً: مرّر ${TM("Cross-section")} على طول القوس، ويجب أن يلاصق الخط المينا.</li>
+<li>كثرة المعادن قد تقلل الدقة، فدقق مناطقها أكثر.</li>
+</ul>
+<p class="fine">هذه أداة للتخطيط المبدئي؛ الدليل الجراحي النهائي يُصمَّم ويُتحقق منه في برنامج معتمد.</p>`],
+    en: ["Fusing the intraoral scan with the CBCT", `<p>Places the patient's intraoral scan over their CBCT, so every slice shows the bone from the CBCT and the gum and true crown shape from the scan. This is called registration or fusion, and it is the basis of guided implant surgery.</p>
+<ol><li>Open the CBCT.</li><li>Tap “◐ Scan fusion”, then “Add scan files”, and pick STL, PLY, OBJ files or a ZIP.</li><li>After a few seconds the scan outline appears: orange for upper, blue for lower.</li></ol>
+<dl>
+<dt>How it matches</dt><dd>It extracts the tooth surface from the CBCT (enamel is the brightest tissue), takes only the teeth from the scan (using colour when available), and matches each jaw separately with ICP, because the mouth may be slightly open in the CBCT compared with the scan's bite.</dd>
+<dt>Median error</dt><dd>The typical distance between the scan surface and the tooth surface in the CBCT. Under 0.3 mm is excellent, 0.3–0.5 mm good; above that, check visually.</dd>
+</dl>
+<h4>What you gain</h4>
+<ul>
+<li><b>Prosthetically driven planning:</b> place the implant under the final crown, not only where the bone is.</li>
+<li><b>Soft tissue thickness:</b> the gap between the scan line and the bone in the cross-section, for abutment height and flap design.</li>
+<li><b>Metal artifacts:</b> the scan shows the true crown surface where metal distorts the CBCT.</li>
+<li><b>Orthodontics:</b> roots under each crown, their parallelism, and impacted teeth relative to erupted ones.</li>
+<li><b>Lab designs:</b> crowns, abutments and scan bodies designed on the scan move with it over the bone.</li>
+<li><b>Patient communication:</b> the patient sees their own teeth and gums over the bone.</li>
+</ul>
+<h4>Tips for an accurate fusion</h4>
+<ul>
+<li>Scan and CBCT of the same patient, taken close together, with no extraction or new crown in between.</li>
+<li>Full-arch scans are more accurate than partial ones, and the colour version helps separate teeth from gums.</li>
+<li>A CBCT with the teeth slightly apart (cotton roll or bite block) shows tooth surfaces more clearly.</li>
+<li>Always check: scroll the cross-section along the arch; the line should hug the enamel.</li>
+<li>Many metal restorations can reduce accuracy; check those areas more closely.</li>
+</ul>
+<p class="fine">A tool for preliminary planning; a final surgical guide must be designed and verified in certified software.</p>`] },
   { id: "limits", ar: ["حدود هذا البرنامج", `<ul>
 <li>نموذج أولي (${TM("Prototype")}) للعرض والتخطيط المبدئي، وليس جهازاً طبياً معتمداً للتشخيص.</li>
 <li>اتجاه ${TM("Right / Left")} في ملفات ${TM("NewTom")} لم يُطابق بعد مع برنامج المركز.</li>
@@ -1880,15 +2291,48 @@ function openLearn(section) {
 }
 function setBeginner(on) {
   S.beginner = on; try { localStorage.setItem("cbct.beginner", on ? "1" : "0"); } catch (_) {}
-  S.panes.forEach((p) => { if (p.tipCard) p.tipCard.hidden = true; }); syncLearnUI(); syncPaneUI();
+  S.panes.forEach((p) => { if (p.tipCard) p.tipCard.hidden = true; }); syncLearnUI(); syncPaneUI(); if (typeof isModelMode === "function" && isModelMode()) renderLayers();
+}
+// كيف تتحكم بكل نافذة: حركات اللمس على الهاتف والتابلت، والفأرة على الحاسوب
+const isTouchUI = () => matchMedia("(pointer: coarse)").matches;
+function howTo(view) {
+  const t = isTouchUI(), A = [], E = [], add = (ar, en) => { A.push(ar); E.push(en); };
+  if (view === "3d") {
+    add(t ? "<b>اسحب بإصبع</b> لتدوير المجسم في كل الاتجاهات." : "<b>اسحب بالفأرة</b> لتدوير المجسم في كل الاتجاهات.", t ? "<b>Drag one finger</b> to rotate the model." : "<b>Drag with the mouse</b> to rotate the model.");
+    add(t ? "<b>قرّب أو باعد إصبعين</b> للتكبير والتصغير." : "<b>عجلة الفأرة</b> للتكبير والتصغير.", t ? "<b>Pinch</b> to zoom." : "<b>Mouse wheel</b> to zoom.");
+    add("القائمة أسفل النافذة تختار ما يظهر (عظم، أسنان…)، والشريط <b>«٪ قطع»</b> يقطع المجسم لترى الداخل.", "The menu below picks what is shown (bone, teeth…), and the <b>“% cut”</b> slider cuts into the model.");
+  } else {
+    add(t ? "<b>الشريط أسفل النافذة</b> أو الزران <b>‹ ›</b> للتنقل بين الشرائح، شريحة بعد شريحة." : "<b>عجلة الفأرة</b> أو الشريط أسفل النافذة للتنقل بين الشرائح (مع Shift: خمس شرائح دفعة واحدة).",
+      t ? "<b>The slider below the view</b> or the <b>‹ ›</b> buttons move through the slices one by one." : "<b>Mouse wheel</b> or the slider below the view moves through the slices (hold Shift for five at a time).");
+    add(t ? "<b>قرّب أو باعد إصبعين</b> للتكبير، و<b>اسحب بإصبع</b> لتحريك الصورة." : "<b>Ctrl + عجلة الفأرة</b> للتكبير، و<b>اسحب</b> لتحريك الصورة.", t ? "<b>Pinch</b> to zoom and <b>drag one finger</b> to move the image." : "<b>Ctrl + wheel</b> to zoom and <b>drag</b> to move the image.");
+    if (view === "pano") add("<b>انقر على أي سن</b> فيظهر مقطعه العرضي في نافذة «مقطع عرضي». زر <b>«تعديل القوس»</b> أسفلها يصحح مسار البانوراما.", "<b>Tap any tooth</b> to show its cross-section. <b>“Edit arch”</b> below corrects the panoramic path.");
+    else if (view === "cross") add("الشريط أسفلها <b>يمشي على طول القوس</b> من سن إلى سن. انقر على البانوراما للقفز مباشرة إلى سن معين.", "Its slider <b>walks along the arch</b> tooth by tooth. Tap the panoramic to jump to a tooth.");
+    else add("<b>انقر على أي نقطة</b> فتنتقل النوافذ الأخرى إلى نفس الموضع (الخطوط المتقطعة تُظهر مكانه).", "<b>Tap any point</b> and the other views jump to the same spot (the dashed lines show where).");
+  }
+  add(t ? "<b>انقر مرتين</b> أو اضغط <b>⤢</b> لتكبير النافذة على الشاشة كلها، ومرة أخرى للرجوع." : "<b>انقر مرتين</b> أو <b>⤢</b> لتكبير النافذة على الشاشة كلها، ومرة أخرى للرجوع.", "<b>Double-tap</b> or <b>⤢</b> to fill the screen with this view; again to go back.");
+  add("القائمة أعلى النافذة تغيّر نوعها (محوري، بانوراما، مقطع عرضي…). النافذة الحمراء هي النشطة.", "The menu at the top changes the view type (axial, panoramic, cross-section…). The red-framed view is the active one.");
+  // الأداة الحالية
+  const tool = { measure: ["<b>أداة القياس:</b> انقر نقطتين فتظهر المسافة بالملم.", "<b>Measure tool:</b> tap two points to get the distance in mm."],
+    implant: ["<b>أداة الزرعة:</b> انقر على المقطع العرضي لوضع زرعة، اسحب وسطها لتحريكها، واسحب طرفها لتغيير الميلان.", "<b>Implant tool:</b> tap the cross-section to place an implant, drag its middle to move it and its tip to tilt it."],
+    nerve: ["<b>أداة القناة:</b> انقر نقاطاً على مسار القناة في البانوراما، ثم «تتبّع ذكي» يكمل المسار.", "<b>Canal tool:</b> tap points along the canal on the panoramic, then “Smart trace” completes it."],
+    wl: ["<b>ضبط السطوع:</b> اسحب أفقياً للتباين وعمودياً للسطوع.", "<b>Brightness drag:</b> drag sideways for contrast and up/down for brightness."] }[S.tool];
+  if (tool) add(tool[0], tool[1]);
+  else add("الأدوات في الشريط العلوي: <b>تصفح، قياس، زرعة، قناة</b>، و<b>☀︎ السطوع</b> و<b>◐ دمج الطبعة</b>. و<b>↶ تراجع</b> يلغي آخر خطوة.", "Tools are in the top bar: <b>Browse, Measure, Implant, Canal</b>, plus <b>☀︎ Brightness</b> and <b>◐ Scan fusion</b>. <b>↶ Undo</b> reverts the last step.");
+  return [A, E];
 }
 function showTip(p) {
   const c = p.tipCard; if (!c.hidden) { c.hidden = true; return; }
-  const t = VIEW_TIPS[p.view]; if (!t) return;
-  const en = LL() === "en";
+  const t = VIEW_TIPS[p.view], en = LL() === "en", [A, E] = howTo(p.view);
   c.dir = en ? "ltr" : "rtl"; c.lang = en ? "en" : "ar";
-  c.innerHTML = `<b>${viewName(p.view)}</b><p>${en ? t[1] : t[0]}</p><div class="row"><button class="paneact" type="button" data-more>${ltr("المزيد في الدليل", "More in the guide")}</button><button class="paneact" type="button" data-x>${ltr("إغلاق", "Close")}</button></div>`;
-  c.querySelector("[data-more]").onclick = () => { c.hidden = true; openLearn("views"); };
+  const seg = (k) => `<button type="button" data-tab="${k}" aria-pressed="${(c._tab || "how") === k}">${k === "how" ? ltr("كيف تتحكم", "How to use") : ltr("ماذا ترى", "What you see")}</button>`;
+  c.innerHTML = `<div class="tipHead"><b>${viewName(p.view)}</b><div class="seg tipSeg">${seg("how")}${t ? seg("what") : ""}</div></div>
+    <ul class="tipHow" data-p="how">${(en ? E : A).map((x) => `<li>${x}</li>`).join("")}</ul>
+    ${t ? `<p data-p="what">${en ? t[1] : t[0]}</p>` : ""}
+    <div class="row"><button class="paneact" type="button" data-more>${ltr("المزيد في الدليل", "More in the guide")}</button><button class="paneact" type="button" data-x>${ltr("إغلاق", "Close")}</button></div>`;
+  const show = (k) => { c._tab = k; c.querySelectorAll("[data-p]").forEach((e) => (e.hidden = e.dataset.p !== k)); c.querySelectorAll("[data-tab]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.tab === k)); };
+  c.querySelectorAll("[data-tab]").forEach((b) => (b.onclick = () => show(b.dataset.tab)));
+  show(t ? c._tab || "how" : "how");
+  c.querySelector("[data-more]").onclick = () => { c.hidden = true; openLearn(c._tab === "what" ? "views" : "controls"); };
   c.querySelector("[data-x]").onclick = () => (c.hidden = true);
   c.hidden = false;
 }
@@ -1901,10 +2345,15 @@ function showTip(p) {
 const SH = { which: "all", hideName: true, plang: "ar", blob: null, url: "" };
 const VIEW_EN_FULL = { axial: "Axial", coronal: "Coronal", sagittal: "Sagittal", pano: "Panoramic (curved MPR)", cross: "Cross-section (perpendicular to arch)", "3d": "3D volume rendering" };
 function sharePanes() {
+  if (typeof isModelMode === "function" && isModelMode()) { M.rnd.render(M.scene, M.cam); return [{ canvas: M.rnd.domElement, view: "model", label: "3D models" }]; }
   if (SH.which === "active") return [S.panes[S.active] || S.panes[0]];
   return S.panes.filter((p) => { const r = p.canvas.getBoundingClientRect(); return r.width > 4 && r.height > 4; });
 }
 function planLinesEN() {
+  if (typeof isModelMode === "function" && isModelMode()) {
+    return [...M.items.filter((i) => i.visible).map((i) => `Shown: ${MT[i.type].en}${i.type === "bite" && i.side ? " (" + SIDE[i.side][1] + ")" : ""}${i.colored ? ", colour scan" : ""} — ${i.base}`),
+      ...M.meas.map((m, k) => `Measurement ${k + 1}: ${fmt1(m.a.distanceTo(m.b))} mm`)];
+  }
   const v = S.vol, out = [];
   S.implants.forEach((imp) => {
     const d = nerveDistance(imp), s = sysById(imp.sys);
@@ -1917,6 +2366,7 @@ function planLinesEN() {
   return out;
 }
 function scanLineEN() {
+  if (typeof isModelMode === "function" && isModelMode()) return "3D dental scans/designs (STL/PLY/OBJ) · " + M.items.length + " file(s): " + M.items.map((i) => MT[i.type].en + (i.side ? " " + SIDE[i.side][1] : "")).join(", ");
   const v = S.vol, m = v.meta, bits = ["CBCT"];
   if (m.source) bits.push(m.source);
   if (m.scanDate) bits.push("scan " + m.scanDate);
@@ -1938,7 +2388,7 @@ function buildSnapshot() {
   const rects = raw.map((r) => ({ left: cx[ci(r)], top: cy[ri(r)], width: r.width, height: r.height }));
   const x0 = 0, y0 = 0, w0 = cx.at(-1) + colW.at(-1), h0 = cy.at(-1) + rowH.at(-1);
   const k = Math.min(2, 1800 / w0, 1800 / h0) || 1, W = Math.round(w0 * k);
-  const plan = planLinesEN(), pat = S.vol.meta.patient && !SH.hideName ? S.vol.meta.patient : "";
+  const plan = planLinesEN(), pat = S.vol && !isModelMode() && S.vol.meta.patient && !SH.hideName ? S.vol.meta.patient : "";
   const fs = Math.max(14, Math.round(W / 70)), lh = Math.round(fs * 1.45), pad = Math.round(fs * 0.9);
   const headH = pad * 2 + lh * (pat ? 3 : 2), footH = plan.length ? pad * 2 + lh * (plan.length + 1) : pad * 2 + lh;
   const c = document.createElement("canvas"); c.width = W; c.height = Math.round(h0 * k) + headH + footH;
@@ -1955,7 +2405,7 @@ function buildSnapshot() {
     const r = rects[i], dx = (r.left - x0) * k, dy = headH + (r.top - y0) * k, dw = r.width * k, dh = r.height * k;
     g.drawImage(p.canvas, dx, dy, dw, dh);
     g.strokeStyle = "#2a3341"; g.lineWidth = 2; g.strokeRect(dx + 1, dy + 1, dw - 2, dh - 2);
-    const lab = VIEWS_EN[p.view] + (p.view === "cross" && S.curve ? " @ " + fmt1(S.crossS * S.vol.sx) + " mm" : "");
+    const lab = p.label || VIEWS_EN[p.view] + (p.view === "cross" && S.curve ? " @ " + fmt1(S.crossS * S.vol.sx) + " mm" : "");
     g.font = `600 ${fs}px system-ui,sans-serif`; const tw = g.measureText(lab).width;
     g.fillStyle = "rgba(0,0,0,.7)"; g.fillRect(dx + 6, dy + 6, tw + pad, lh + 4);
     g.fillStyle = "#ffc94a"; g.fillText(lab, dx + 6 + pad / 2, dy + 8);
@@ -1968,6 +2418,33 @@ function buildSnapshot() {
   return c;
 }
 function buildPrompt() {
+  if (isModelMode()) {
+    const lines = planLinesEN().map((l) => "- " + l).join("\n");
+    if (SH.plang === "en") return `You are an expert assistant in digital dentistry (intraoral scans, CAD/CAM restorations and implant prosthetics).
+The attached image is a 3D view of dental scan/design files: ${scanLineEN()}.
+Visible layers and measurements:
+${lines}
+
+Please:
+1. Describe what is shown (arches, teeth present/missing, restorations, implants/scan bodies, bite scans).
+2. Assess occlusion and arch form as far as the view allows; note visible wear, crowding, spacing or gingival issues.
+3. For preparations/restorations: comment on margins, path of insertion, contacts and contour as visible.
+4. Note anything that needs another angle, a closer view, or the CBCT.
+5. Give a structured report: Findings · Impression · Recommendations.
+Write the full report in Arabic first (keep scientific terms in English inside the Arabic text), then in English. The final clinical decision rests with the treating dentist.`;
+    return `أنت مساعد خبير في طب الأسنان الرقمي (Intraoral scans و CAD/CAM restorations و Implant prosthetics).
+الصورة المرفقة عرض ثلاثي الأبعاد لملفات مسح وتصميم: ${scanLineEN()}.
+الطبقات الظاهرة والقياسات:
+${lines}
+
+المطلوب:
+1. صف ما يظهر (الأقواس، الأسنان الموجودة والمفقودة، التعويضات، الـ Implants أو Scan bodies، طبعات الـ Bite).
+2. قيّم الـ Occlusion وشكل القوس بقدر ما يسمح العرض، واذكر أي Wear أو Crowding أو Spacing أو مشكلة لثوية ظاهرة.
+3. للتحضيرات والتعويضات: علّق على الـ Margins والـ Path of insertion والـ Contacts والـ Contour الظاهرة.
+4. اذكر ما يحتاج زاوية أخرى أو تكبيراً أو أشعة CBCT.
+5. اكتب تقريراً منظماً: Findings · Impression · Recommendations.
+اكتب التقرير بالعربية أولاً مع إبقاء المصطلحات العلمية بالإنجليزية، ثم نفس التقرير بالإنجليزية. القرار السريري النهائي للطبيب المعالج.`;
+  }
   const views = sharePanes().map((p) => VIEW_EN_FULL[p.view]).join(", ");
   const plan = planLinesEN(), scan = scanLineEN();
   if (SH.plang === "en") return `You are an expert assistant in dental and maxillofacial CBCT interpretation and implant planning.
@@ -2014,7 +2491,7 @@ function refreshShare() {
   $("shNative").hidden = $("shNativeNote").hidden = !navigator.share;
 }
 function openShare() {
-  if (!S.vol) return;
+  if (!S.vol && !isModelMode()) return;
   closeDrawers(); openDrawer("drawerShare"); requestAnimationFrame(refreshShare);
 }
 async function copyText(t) {
@@ -2147,6 +2624,7 @@ function siteBase() { try { if (window.top === window && /^https?:$/.test(locati
 let ME = (() => { try { return localStorage.getItem("cbct.me") || ""; } catch (_) { return ""; } })();
 /* ---------- نافذة «مشاركة مع طبيب زميل» ---------- */
 function openPeer() {
+  if (isModelMode()) { closeDrawers(); openDrawer("drawerPeer"); $("pTitle").value = M.title; $("pMe").value = ME; $("pNote").value = ""; $("pLinkBox").hidden = true; renderThread(null); return; }
   if (!S.vol) return;
   closeDrawers(); openDrawer("drawerPeer");
   const fp = caseFP(S.vol), rec = getCase(fp);
@@ -2171,6 +2649,16 @@ function planSummary(P) {
   return parts.join(" · ") || tr("القوس فقط", "Arch only");
 }
 async function makePeerLink() {
+  if (isModelMode()) {
+    const title = $("pTitle").value.trim() || M.title, me = $("pMe").value.trim(), to = $("pTo").value.trim(), note = $("pNote").value.trim();
+    ME = me; try { localStorage.setItem("cbct.me", me); } catch (_) {}
+    const payload = { v: 1, kind: "m", fp: modelFP(), title, from: me, to, note, at: Date.now(), state: exportModelState(), files: M.items.map((i) => i.base) };
+    const url = siteBase() + "#c=" + (await packPayload(payload));
+    const msg = (me ? tr("د. ", "Dr. ") + me + " " : "") + tr("شاركك عرض النماذج «", "shared the 3D model view “") + title + tr("» في عارض المنصة.", "” in the Almanasa viewer.") + (note ? "\n" + note : "") +
+      "\n" + tr("١) احفظ ملفات المسح التي وصلتك (", "1) Save the scan files you received (") + payload.files.join("، ") + tr(").\n٢) افتح الرابط ثم اختر الملفات:", ").\n2) Open the link, then choose the files:") + "\n" + url;
+    $("pLink").value = msg; $("pLinkBox").hidden = false;
+    return { url, msg, title };
+  }
   const fp = caseFP(S.vol), title = $("pTitle").value.trim() || defaultCaseTitle(), me = $("pMe").value.trim(), to = $("pTo").value.trim(), note = $("pNote").value.trim();
   ME = me; try { localStorage.setItem("cbct.me", me); } catch (_) {}
   const P = exportPlan();
@@ -2195,6 +2683,11 @@ async function readIncoming() {
   const m = location.hash.match(/[#&]c=([A-Za-z0-9_-]+)/); if (!m) return;
   let p; try { p = await unpackPayload(m[1]); } catch (_) { toast(tr("الرابط تالف أو ناقص. اطلب من زميلك إرساله مرة أخرى.", "The link is damaged or incomplete. Ask your colleague to resend it."), 5000); return; }
   try { history.replaceState(null, "", location.pathname + location.search); } catch (_) {}
+  if (p && p.v === 1 && p.kind === "m" && p.state) {
+    PEER.pendingModel = p; const b = $("peerBanner");
+    b.innerHTML = `<div class="pbTxt"><b>${p.from ? tr("د. ", "Dr. ") + esc(p.from) + tr(" شاركك عرض نماذج", " shared a 3D model view") : tr("عرض نماذج مشترك", "Shared 3D model view")}: «${esc(p.title || "")}»</b>${p.note ? `<p class="pbNote">${esc(p.note)}</p>` : ""}<p class="fine">${tr("اختر ملفات المسح نفسها: ", "Choose the same scan files: ") + esc((p.files || []).join("، "))}</p></div><div class="pbAct"><button class="btn primary" type="button" id="pbOpenM">${tr("اختر الملفات", "Choose files")}</button></div>`;
+    b.hidden = false; $("pbOpenM").onclick = () => $("btnOpen").click(); return;
+  }
   if (!p || p.v !== 1 || !p.fp || !p.plan) return;
   const rec = getCase(p.fp) || { fp: p.fp, thread: [] };
   if (!rec.thread.some((t) => t.dir === "in" && t.at === p.at)) rec.thread = [...(rec.thread || []), { dir: "in", from: p.from, to: p.to, note: p.note, at: p.at, sum: planSummary(p.plan) }];
@@ -2268,6 +2761,1107 @@ function initPeer() {
   renderCaseList(); readIncoming();
 }
 
+/* ============================================================
+   عارض النماذج ثلاثية الأبعاد: ملفات المسح الضوئي والتصميم (STL و PLY و OBJ مع MTL والألوان و OFF)
+   تُفتح منفردة أو عدة ملفات معاً أو داخل ZIP. كل شيء على الجهاز، ولا يُرفع أي ملف.
+   التعرّف على كل طبعة يتم من اسم الملف أولاً، ثم من شكلها وموضعها (أعلى/أسفل، أمام، يمين/يسار المريض).
+   مكتبة Three.js تُحمّل فقط عند فتح هذا العارض.
+   ============================================================ */
+const M = { T: null, loaders: null, scene: null, cam: null, rnd: null, ctl: null, items: [], box: null, frame: null, measure: false, pend: null, meas: [], clip: { on: false, axis: "sag", t: 0.5 }, raf: 0, ro: null, urls: [], files: [], title: "" };
+async function loadThree() {
+  if (M.T) return;
+  const [T, stl, ply, obj, mtl, orbit, bgu] = await Promise.all([
+    import("three"), import("three/addons/loaders/STLLoader.js"), import("three/addons/loaders/PLYLoader.js"),
+    import("three/addons/loaders/OBJLoader.js"), import("three/addons/loaders/MTLLoader.js"),
+    import("three/addons/controls/OrbitControls.js"), import("three/addons/utils/BufferGeometryUtils.js"),
+  ]);
+  M.T = T; M.loaders = { STLLoader: stl.STLLoader, PLYLoader: ply.PLYLoader, OBJLoader: obj.OBJLoader, MTLLoader: mtl.MTLLoader, OrbitControls: orbit.OrbitControls, BGU: bgu };
+}
+/* ---------- أنواع الطبعات ---------- */
+const MT = {
+  upper: { ar: "الفك العلوي", en: "Upper jaw", col: 0xe9dfcc, g: "jaw" },
+  lower: { ar: "الفك السفلي", en: "Lower jaw", col: 0xe2d6bf, g: "jaw" },
+  jaw: { ar: "فك (غير محدد)", en: "Jaw (unspecified)", col: 0xe6dac6, g: "jaw" },
+  bite: { ar: "تسجيل الإطباق", en: "Bite scan", col: 0x9fd2c9, g: "bite" },
+  prep: { ar: "سن محضَّر", en: "Preparation", col: 0xd9c4a3, g: "resto" },
+  resto: { ar: "تعويض (تاج / جسر)", en: "Restoration", col: 0xf6f3ec, g: "resto" },
+  implant: { ar: "زرعة / دعامة", en: "Implant / abutment", col: 0xa9b7c6, g: "resto", metal: true },
+  gingiva: { ar: "لثة", en: "Gingiva", col: 0xe39a9a, g: "other" },
+  face: { ar: "الوجه", en: "Face", col: 0xd9b59b, g: "other" },
+  other: { ar: "نموذج", en: "Model", col: 0x8fb3ff, g: "other" },
+};
+const SIDE = { right: ["يمين", "right"], left: ["يسار", "left"], front: ["أمامي", "front"] };
+const GROUPS = { jaw: ["الفكوك", "Jaws"], bite: ["الإطباق", "Bites"], resto: ["التعويضات", "Restorations"], other: ["أخرى", "Other"] };
+const PALETTE = [0x8fb3ff, 0xffc94a, 0x7ed6a5, 0xff9f7a, 0xc9a7ff, 0x6fd3e8];
+const fileBase = (n) => n.split("/").pop().replace(/\.[^.]+$/, "");
+const hexStr = (c) => "#" + c.toString(16).padStart(6, "0");
+// تخمين النوع والجهة من الاسم (أسماء exocad و 3Shape و Medit و iTero و Carestream الشائعة، وبالألمانية والفرنسية)
+function nameGuess(path) {
+  const parts = path.toLowerCase().split("/"), base = parts.pop().replace(/\.[^.]+$/, ""), dir = parts.join(" ");
+  const t = " " + (base + " " + dir).replace(/([a-z])([A-Z])/g, "$1 $2").replace(/[_\-.()\[\]]+/g, " ").replace(/\s+/g, " ") + " ";
+  const has = (re) => re.test(t);
+  let side = null;
+  if (has(/ (right|rechts|droit|derech\w*|dx|rt|r) /)) side = "right"; else if (has(/ (left|links|gauche|izquierd\w*|sx|lt|l) /)) side = "left"; else if (has(/ (front|anterior|ant|frontal|vorne|middle|mid|center|centre) /)) side = "front";
+  if (has(/(bite|buccal|bukkal|registr|bissnahme|biss |occlusion|interocclus|occlusal ?record|total ?jaw|totaljaw|bite ?scan)/)) return { type: "bite", side };
+  if (has(/(implant|abutment|scan ?body|scanbody|ti ?base|screw|analog|aufbau)/)) return { type: "implant" };
+  if (has(/(prep|preparation|stump|stumpf| die )/)) return { type: "prep" };
+  if (has(/(crown|krone|bridge|bruecke|brücke|tooth|teeth|prosthe|anatomic|wax|restor|veneer|inlay|onlay|pontic|design|framework|coping|cad )/)) return { type: "resto" };
+  if (has(/(gingiva|gum|soft ?tissue|zahnfleisch)/)) return { type: "gingiva" };
+  if (has(/(face|smile|portrait|gesicht)/)) return { type: "face" };
+  if (has(/(upper|maxill|oberkiefer| ok | max | top |superior| u | up |haut)/)) return { type: "upper" };
+  if (has(/(lower|mandib|unterkiefer| uk | mand | bottom |inferior| l | low | bas )/)) return { type: "lower" };
+  if (has(/(jaw|arch|model|situ|stone|gips|antagon|scan|kiefer)/)) return { type: "jaw" };
+  return { type: null };
+}
+async function bufOf(f) { return f.data || (await f.file.arrayBuffer()); }
+async function textOf(f) { return new TextDecoder().decode(await bufOf(f)); }
+function parseOFF(text) { // OFF و COFF: رؤوس ثم وجوه، مع ألوان اختيارية
+  const T = M.T, lines = text.split(/\r?\n/).map((l) => l.replace(/#.*/, "").trim()).filter(Boolean);
+  let i = 0; const head = lines[i++]; const hasCol = /^C/i.test(head);
+  const counts = /^[A-Z]*OFF\s*$/i.test(head) ? lines[i++].split(/\s+/).map(Number) : head.replace(/^[A-Z]*OFF/i, "").trim().split(/\s+/).map(Number);
+  const [nv, nf] = counts, pos = new Float32Array(nv * 3), col = hasCol ? new Float32Array(nv * 3) : null;
+  for (let v = 0; v < nv; v++) { const a = lines[i++].split(/\s+/).map(Number); pos.set(a.slice(0, 3), v * 3); if (col) { const c = a.slice(3, 6), k = c.some((x) => x > 1) ? 1 / 255 : 1; col.set(c.map((x) => x * k), v * 3); } }
+  const idx = [];
+  for (let f = 0; f < nf; f++) { const a = lines[i++].split(/\s+/).map(Number), n = a[0]; for (let k = 2; k < n; k++) idx.push(a[1], a[k], a[k + 1]); }
+  const g = new T.BufferGeometry(); g.setAttribute("position", new T.BufferAttribute(pos, 3)); if (col) g.setAttribute("color", new T.BufferAttribute(col, 3)); g.setIndex(idx);
+  return g;
+}
+function smooth(g) { // ملفات STL بلا رؤوس مشتركة: ندمجها ليظهر السطح ناعماً
+  try { if (!g.index) { g.deleteAttribute("normal"); g = M.loaders.BGU.mergeVertices(g, 1e-4); } } catch (_) {}
+  if (!g.getAttribute("normal")) g.computeVertexNormals();
+  return g;
+}
+function newMat(colored, map) {
+  const T = M.T;
+  return new T.MeshStandardMaterial({ color: 0xffffff, vertexColors: !!colored && !map, map: map || null, roughness: 0.6, metalness: 0.02, side: T.DoubleSide, transparent: true, opacity: 1, clippingPlanes: [] });
+}
+function styleItem(it) { // الخامة حسب النوع، والألوان (الحقيقية أو لون الطبعة أو خريطة التلامس) في paintItem
+  const d = MT[it.type] || MT.other;
+  it.object.traverse((o) => { if (!o.isMesh) return; const m = o.material; m.roughness = d.metal ? 0.32 : 0.6; m.metalness = d.metal ? 0.55 : 0.02; m.opacity = it.opacity; m.depthWrite = it.opacity > 0.98; m.needsUpdate = true; });
+  it.object.visible = it.visible;
+  paintItem(it);
+}
+// طبعات بصورة ألوان (Texture) مثل ملفات PLY من بعض الماسحات: نحوّل الصورة إلى لون لكل رأس
+// فتصغر الذاكرة جداً وتعمل الألوان مع الإطباق وشريط القوة وخريطة التلامس كبقية الطبعات
+async function bakeTexture(g, imgFile) {
+  const blob = imgFile.file || new Blob([imgFile.data]);
+  let bmp = null;
+  for (const w of [4096, 2048]) { try { bmp = await createImageBitmap(blob, { resizeWidth: w, resizeQuality: "medium" }); break; } catch (_) {} }
+  if (!bmp) return false;
+  const W = bmp.width, H = bmp.height, cv = typeof OffscreenCanvas === "function" ? new OffscreenCanvas(W, H) : Object.assign(document.createElement("canvas"), { width: W, height: H });
+  const cx = cv.getContext("2d"); cx.drawImage(bmp, 0, 0); bmp.close && bmp.close();
+  const px = cx.getImageData(0, 0, W, H).data, uv = g.getAttribute("uv"), n = uv.count, col = new Float32Array(n * 3);
+  for (let i = 0; i < n; i++) {
+    const x = Math.min(W - 1, Math.max(0, Math.round(uv.getX(i) * (W - 1)))), y = Math.min(H - 1, Math.max(0, Math.round((1 - uv.getY(i)) * (H - 1)))), o = (y * W + x) * 4;
+    col[i * 3] = px[o] / 255; col[i * 3 + 1] = px[o + 1] / 255; col[i * 3 + 2] = px[o + 2] / 255;
+  }
+  g.setAttribute("color", new M.T.BufferAttribute(col, 3)); g.deleteAttribute("uv");
+  return true;
+}
+async function buildItems(files) {
+  const T = M.T, L = M.loaders, out = [];
+  const aux = new Map(files.filter((f) => MESH_AUX_RE.test(f.name)).map((f) => [f.name.split("/").pop().toLowerCase(), f]));
+  const meshes = files.filter((f) => MESH_RE.test(f.name)), errs = [];
+  for (let i = 0; i < meshes.length; i++) {
+    const f = meshes[i], ext = f.name.split(".").pop().toLowerCase();
+    try {
+      let object, colored = false;
+      if (ext === "stl" || ext === "ply" || ext === "off") {
+        let g0 = ext === "stl" ? new L.STLLoader().parse(await bufOf(f)) : ext === "ply" ? new L.PLYLoader().parse(await bufOf(f)) : parseOFF(await textOf(f));
+        if (ext === "ply" && g0.getAttribute("uv") && !g0.getAttribute("color")) {
+          const head = new TextDecoder("latin1").decode(new Uint8Array(await bufOf(f), 0, 2048)), tex = (head.match(/comment\s+TextureFile\s+(.+)/i) || [])[1];
+          const img = tex ? aux.get(tex.trim().split(/[\\/]/).pop().toLowerCase()) : null;
+          if (img) { try { await bakeTexture(g0, img); } catch (_) {} }
+          if (g0.getAttribute("uv")) g0.deleteAttribute("uv");
+        }
+        const g = smooth(g0);
+        colored = !!g.getAttribute("color"); object = new T.Mesh(g, newMat(colored));
+      } else if (ext === "obj") {
+        const text = await textOf(f), loader = new L.OBJLoader();
+        const mtlName = (text.match(/^mtllib\s+(.+)$/m) || [])[1];
+        const mtlFile = mtlName ? aux.get(mtlName.trim().split(/[\\/]/).pop().toLowerCase()) : null;
+        if (mtlFile) {
+          const mgr = new T.LoadingManager();
+          mgr.setURLModifier((u) => { const a = aux.get(decodeURIComponent(u).split(/[\\/]/).pop().toLowerCase()); if (!a) return u; const url = URL.createObjectURL(a.file || new Blob([a.data])); M.urls.push(url); return url; });
+          const mats = new L.MTLLoader(mgr).parse(await textOf(mtlFile), ""); mats.preload(); loader.setMaterials(mats);
+        }
+        object = loader.parse(text);
+        object.traverse((o) => { if (o.isMesh) { if (!o.geometry.getAttribute("normal")) o.geometry.computeVertexNormals(); const map = o.material && o.material.map; const c = !!map || !!o.geometry.getAttribute("color"); colored = colored || c; o.material = newMat(c, map); } });
+      }
+      if (!object) continue;
+      const g0 = nameGuess(f.name);
+      out.push({ name: f.name, base: fileBase(f.name), size: f.file ? f.file.size : f.data ? f.data.byteLength : 0, nameType: g0.type, nameSide: g0.side || null, type: g0.type || "other", side: g0.side || null, auto: !g0.type, colored, object, visible: true, opacity: 1, color: 0 });
+    } catch (e) { errs.push(f.name.split("/").pop()); }
+  }
+  if (errs.length) toast(tr("تعذّر قراءة: ", "Could not read: ") + errs.join("، "), 5000);
+  return out;
+}
+/* ---------- فهم المشهد: أي طبعة هي ماذا، واتجاهات المريض ---------- */
+function measureItem(it) {
+  const T = M.T, box = new T.Box3().setFromObject(it.object);
+  it.box = box; it.c = box.getCenter(new T.Vector3()); it.diag = box.getSize(new T.Vector3()).length();
+  const pts = []; // عينة من الرؤوس لتحديد شكل القوس
+  it.object.updateMatrixWorld(true);
+  it.object.traverse((o) => { if (!o.isMesh) return; const p = o.geometry.getAttribute("position"), st = Math.max(1, Math.floor(p.count / 6000)); for (let i = 0; i < p.count; i += st) pts.push(new T.Vector3(p.getX(i), p.getY(i), p.getZ(i)).applyMatrix4(o.matrixWorld)); });
+  it.pts = pts;
+}
+function analyzeScene() {
+  const T = M.T, items = M.items; items.forEach(measureItem);
+  const union = new T.Box3(); items.forEach((it) => union.union(it.box)); const uc = union.getCenter(new T.Vector3()), us = union.getSize(new T.Vector3());
+  const maxDiag = Math.max(...items.map((i) => i.diag));
+  // الأسماء المؤكدة أولاً، ثم الشكل: الطبعات الكبيرة فكوك، والصغيرة بين الفكين إطباق
+  items.forEach((it) => { if (!it.nameType) it.type = it.diag >= 0.55 * maxDiag ? "jaw" : "other"; });
+  const U = items.find((i) => i.type === "upper"), Lw = items.find((i) => i.type === "lower");
+  let up, upSure = false;
+  if (U && Lw && U.c.distanceTo(Lw.c) > 1) { up = U.c.clone().sub(Lw.c).normalize(); upSure = true; }
+  else {
+    // بلا أسماء مؤكدة: الاتجاه الأقل انتشاراً لرؤوس أكبر طبعة هو محور الارتفاع (يعمل حتى لو كانت الطبعة مائلة)
+    const big = items.slice().sort((a, b) => b.diag - a.diag)[0]; up = leastSpreadAxis(big.pts, T); if (up.x + up.y + up.z < 0) up.negate();
+    const jaws = items.filter((i) => i.M_G === undefined && (MT[i.type] || {}).g === "jaw");
+    if (U && jaws.length > 1) { const o = jaws.find((j) => j !== U); if (o && U.c.clone().sub(o.c).dot(up) < 0) up.negate(); upSure = true; }
+    else if (Lw && jaws.length > 1) { const o = jaws.find((j) => j !== Lw); if (o && o.c.clone().sub(Lw.c).dot(up) < 0) up.negate(); upSure = true; }
+  }
+  // فكان غير مسميين: الأعلى هو العلوي
+  const unnamedJaws = items.filter((i) => i.type === "jaw");
+  const pj = (i) => i.c.dot(up);
+  if (unnamedJaws.length) {
+    const allJaws = items.filter((i) => ["upper", "lower", "jaw"].includes(i.type)).sort((a, b) => pj(b) - pj(a));
+    if (allJaws.length >= 2) { allJaws.forEach((j, k) => { if (j.type === "jaw") { j.type = k === 0 ? "upper" : k === allJaws.length - 1 ? "lower" : "jaw"; j.auto = true; } }); }
+  }
+  // الطبعات الصغيرة الواقعة بين الفكين = تسجيل إطباق
+  const U2 = items.find((i) => i.type === "upper"), L2 = items.find((i) => i.type === "lower");
+  items.forEach((it) => {
+    if (it.nameType || it.type !== "other" || !U2 || !L2) return;
+    const z = pj(it), lo = Math.min(pj(U2), pj(L2)) - 3, hi = Math.max(pj(U2), pj(L2)) + 3;
+    if (z >= lo && z <= hi) { it.type = "bite"; it.auto = true; }
+  });
+  // الأمام: طرف القوس المغلق (الأسنان الأمامية متصلة في المنتصف، والخلفي مفتوح بين الجهتين)
+  const ref = items.filter((i) => ["upper", "lower", "jaw"].includes(i.type)).sort((a, b) => b.pts.length - a.pts.length)[0] || items[0];
+  const h1 = new T.Vector3(1, 0, 0); if (Math.abs(h1.dot(up)) > 0.7) h1.set(0, 1, 0); h1.sub(up.clone().multiplyScalar(h1.dot(up))).normalize();
+  const h2 = up.clone().cross(h1).normalize();
+  let best = null, worst = Infinity;
+  for (const [d, p] of [[h1, h2], [h1.clone().negate(), h2], [h2, h1], [h2.clone().negate(), h1]]) {
+    const pr = ref.pts.map((v) => v.dot(d)), mx = Math.max(...pr), mn = Math.min(...pr), pp = ref.pts.map((v) => v.dot(p)), pc = (Math.max(...pp) + Math.min(...pp)) / 2, pw = Math.max(...pp) - Math.min(...pp);
+    let n = 0, c = 0; pr.forEach((x, i) => { if (x > mx - 0.12 * (mx - mn)) { n++; if (Math.abs(pp[i] - pc) < 0.15 * pw) c++; } });
+    const frac = n ? c / n : 0; if (!best || frac > best.frac) best = { d: d.clone(), frac }; worst = Math.min(worst, frac);
+  }
+  const ant = best.d, antSure = best.frac > 0.15 && best.frac > 2 * worst;
+  const right = ant.clone().cross(up).normalize(); // يمين المريض (المريض ينظر إلى الأمام ورأسه للأعلى)
+  M.frame = { up, ant, right, center: uc, upSure, antSure };
+  // جهة طبعات الإطباق
+  items.forEach((it) => {
+    if (it.type !== "bite" || it.nameSide) return;
+    const v = it.c.clone().sub(uc), a = v.dot(ant), r = v.dot(right);
+    it.side = a > Math.abs(r) * 0.8 ? "front" : r > 0 ? "right" : "left"; it.sideAuto = true;
+  });
+  // نسخة ملوّنة وأخرى غير ملوّنة لنفس الطبعة: تُنقل الألوان إلى الطبعة الأساسية وتصبح طبقة واحدة
+  items.forEach((a, i) => items.forEach((b, j) => {
+    if (j <= i || a.dup || b.dup || a.merged || b.merged) return;
+    if (a.type === b.type && a.c.distanceTo(b.c) < 1.5 && Math.abs(a.diag - b.diag) < 0.08 * Math.max(a.diag, b.diag)) {
+      if (a.colored !== b.colored) { const plain = a.colored ? b : a, col = a.colored ? a : b; transferColors(plain, col); }
+      else b.dup = true;
+    }
+  }));
+  // الظهور الافتراضي: الفكان ظاهران، وطبعات الإطباق مخفية إن وُجد الفكان (كي لا تتراكب)، والنسخ المكررة مخفية
+  const both = items.some((i) => i.type === "upper") && items.some((i) => i.type === "lower");
+  items.forEach((it, k) => {
+    it.visible = !it.dup && !it.merged && !(both && it.type === "bite"); if (it.colorK == null) it.colorK = 1;
+    it.color = (MT[it.type] || MT.other).col || PALETTE[k % PALETTE.length];
+    if (it.type === "bite") it.color = { right: 0x9fd2c9, left: 0xb7a7e8, front: 0xf2c28b }[it.side] || 0x9fd2c9;
+    styleItem(it); it.pts = null;
+  });
+}
+function leastSpreadAxis(pts, T) { // أصغر قيمة ذاتية لمصفوفة التباين (طريقة Jacobi لمصفوفة 3×3)
+  const n = pts.length || 1, m = [0, 0, 0]; pts.forEach((p) => { m[0] += p.x; m[1] += p.y; m[2] += p.z; }); m.forEach((v, i) => (m[i] = v / n));
+  const C = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]; pts.forEach((p) => { const d = [p.x - m[0], p.y - m[1], p.z - m[2]]; for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) C[i][j] += d[i] * d[j] / n; });
+  const V = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+  for (let sweep = 0; sweep < 12; sweep++) for (const [p, q] of [[0, 1], [0, 2], [1, 2]]) {
+    if (Math.abs(C[p][q]) < 1e-12) continue;
+    const th = 0.5 * Math.atan2(2 * C[p][q], C[q][q] - C[p][p]), c = Math.cos(th), s = Math.sin(th);
+    for (let k = 0; k < 3; k++) { const a = C[k][p], b = C[k][q]; C[k][p] = c * a - s * b; C[k][q] = s * a + c * b; }
+    for (let k = 0; k < 3; k++) { const a = C[p][k], b = C[q][k]; C[p][k] = c * a - s * b; C[q][k] = s * a + c * b; }
+    for (let k = 0; k < 3; k++) { const a = V[k][p], b = V[k][q]; V[k][p] = c * a - s * b; V[k][q] = s * a + c * b; }
+  }
+  const ev = [C[0][0], C[1][1], C[2][2]], k = ev.indexOf(Math.min(...ev));
+  return new T.Vector3(V[0][k], V[1][k], V[2][k]).normalize();
+}
+function itemLabel(it) {
+  const d = MT[it.type] || MT.other;
+  return tr(d.ar, d.en) + (it.type === "bite" && it.side ? " · " + tr(SIDE[it.side][0], SIDE[it.side][1]) : "");
+}
+/* ---------- المشهد ---------- */
+function ensureScene() {
+  if (M.rnd) return;
+  const T = M.T, host = $("mStage");
+  M.rnd = new T.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+  M.rnd.setPixelRatio(Math.min(2, devicePixelRatio || 1)); M.rnd.localClippingEnabled = true; M.rnd.outputColorSpace = T.SRGBColorSpace;
+  host.prepend(M.rnd.domElement);
+  M.scene = new T.Scene(); M.cam = new T.PerspectiveCamera(35, 1, 0.5, 5000);
+  M.scene.add(new T.HemisphereLight(0xffffff, 0x2a2f38, 1.15));
+  M.head = new T.DirectionalLight(0xffffff, 1.6); M.cam.add(M.head); M.head.position.set(0.4, 0.6, 1); M.scene.add(M.cam);
+  M.ctl = new M.loaders.OrbitControls(M.cam, M.rnd.domElement); M.ctl.enableDamping = true; M.ctl.dampingFactor = 0.12; M.ctl.rotateSpeed = 0.9; M.ctl.addEventListener("change", mRequest);
+  M.ro = new ResizeObserver(mResize); M.ro.observe(host);
+  attachMeasure(M.rnd.domElement);
+}
+function mResize() { const host = $("mStage"), w = host.clientWidth, h = host.clientHeight; if (!w || !h || !M.rnd) return; M.rnd.setSize(w, h, false); M.cam.aspect = w / h; M.cam.updateProjectionMatrix(); mRequest(); }
+function mRequest() { if (M.raf || !M.rnd) return; M.raf = requestAnimationFrame(() => { M.raf = 0; if (M.ctl.update()) mRequest(); M.rnd.render(M.scene, M.cam); placeLabels(); drawGizmo(); }); }
+function fitAll(dir) {
+  const T = M.T, box = new T.Box3(); M.items.forEach((it) => it.visible && box.expandByObject(it.object));
+  if (box.isEmpty()) M.items.forEach((it) => box.expandByObject(it.object));
+  M.box = box; const c = box.getCenter(new T.Vector3()), r = box.getSize(new T.Vector3()).length() / 2 || 10;
+  const F = M.frame, up = F.up, ant = F.ant, right = F.right;
+  const dirs = {
+    front: ant.clone().addScaledVector(up, 0.25), back: ant.clone().negate().addScaledVector(up, 0.25),
+    right: right.clone().addScaledVector(up, 0.15), left: right.clone().negate().addScaledVector(up, 0.15),
+    top: up.clone().addScaledVector(ant, 0.02), bottom: up.clone().negate().addScaledVector(ant, 0.02),
+    iso: ant.clone().multiplyScalar(0.9).addScaledVector(right, 0.5).addScaledVector(up, 0.55),
+  };
+  const d = (dirs[dir] || dirs.iso).normalize();
+  M.cam.up.copy(dir === "top" || dir === "bottom" ? ant : up);
+  const hv = (M.cam.fov * Math.PI / 180) / 2, hh = Math.atan(Math.tan(hv) * (M.cam.aspect || 1)); // في الشاشة الطولية يُحسب العرض
+  const dist = r / Math.sin(Math.min(hv, hh)) * 0.95;
+  M.ctl.target.copy(c); M.cam.position.copy(c).addScaledVector(d, dist); M.cam.near = Math.max(0.1, dist / 100); M.cam.far = dist * 10; M.cam.updateProjectionMatrix();
+  M.ctl.update(); updateClip(); mRequest();
+}
+/* ---------- المقطع ---------- */
+function updateClip() {
+  const T = M.T; if (!M.box || !M.frame) return;
+  const planes = [];
+  if (M.clip.on) {
+    const n = ({ h: M.frame.up, sag: M.frame.right, cor: M.frame.ant })[M.clip.axis].clone().negate();
+    const corners = []; for (let i = 0; i < 8; i++) corners.push(new T.Vector3(i & 1 ? M.box.max.x : M.box.min.x, i & 2 ? M.box.max.y : M.box.min.y, i & 4 ? M.box.max.z : M.box.min.z).dot(n));
+    const lo = Math.min(...corners), hi = Math.max(...corners);
+    planes.push(new T.Plane(n, -(lo + (hi - lo) * (1 - M.clip.t))));
+  }
+  M.items.forEach((it) => it.object.traverse((o) => { if (o.isMesh) { o.material.clippingPlanes = planes; o.material.needsUpdate = true; } }));
+  mRequest();
+}
+/* ---------- القياس ---------- */
+function attachMeasure(cv) {
+  let down = null;
+  cv.addEventListener("pointerdown", (e) => { down = [e.clientX, e.clientY]; });
+  cv.addEventListener("pointerup", (e) => {
+    if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 6 || !M.measure) return;
+    const T = M.T, r = cv.getBoundingClientRect(), ndc = new T.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    const ray = new T.Raycaster(); ray.setFromCamera(ndc, M.cam);
+    const targets = []; M.items.forEach((it) => it.visible && it.object.traverse((o) => o.isMesh && targets.push(o)));
+    const hit = ray.intersectObjects(targets, false).find((h) => !M.clip.on || h.object.material.clippingPlanes.every((pl) => pl.distanceToPoint(h.point) >= 0));
+    if (!hit) return;
+    addMeasurePoint(hit.point.clone());
+  });
+}
+function addMeasurePoint(p) {
+  const T = M.T, dot = new T.Mesh(new T.SphereGeometry(M.box.getSize(new T.Vector3()).length() / 260, 16, 12), new T.MeshBasicMaterial({ color: 0xffc94a, depthTest: false }));
+  dot.renderOrder = 10; dot.position.copy(p); M.scene.add(dot);
+  if (!M.pend) { M.pend = { p, dot }; $("mHint").textContent = tr("انقر النقطة الثانية", "Tap the second point"); mRequest(); return; }
+  const a = M.pend.p, line = new T.Line(new T.BufferGeometry().setFromPoints([a, p]), new T.LineBasicMaterial({ color: 0xffc94a, depthTest: false }));
+  line.renderOrder = 10; M.scene.add(line);
+  const el = document.createElement("div"); el.className = "mLabel num"; el.textContent = fmt1(a.distanceTo(p)) + tr(" ملم", " mm"); $("mStage").appendChild(el);
+  M.meas.push({ a, b: p, objs: [M.pend.dot, dot, line], el }); M.pend = null; $("mHint").textContent = tr("القياس جاهز. انقر نقطتين أخريين لقياس جديد.", "Done. Tap two more points for another measurement.");
+  $("mClearMeas").hidden = false; mRequest();
+}
+function placeLabels() {
+  if (!M.meas.length) return;
+  const r = M.rnd.domElement.getBoundingClientRect(), host = $("mStage").getBoundingClientRect();
+  for (const m of M.meas) { const v = m.a.clone().add(m.b).multiplyScalar(0.5).project(M.cam); m.el.style.left = (r.left - host.left + (v.x + 1) / 2 * r.width) + "px"; m.el.style.top = (r.top - host.top + (1 - v.y) / 2 * r.height) + "px"; m.el.hidden = v.z > 1; }
+}
+function clearMeasures() {
+  for (const m of M.meas) { m.objs.forEach((o) => M.scene.remove(o)); m.el.remove(); }
+  if (M.pend) { M.scene.remove(M.pend.dot); M.pend = null; }
+  M.meas = []; $("mClearMeas").hidden = true; mRequest();
+}
+/* ---------- لوحة الطبقات ---------- */
+const TYPE_OPTS = ["upper", "lower", "bite:right", "bite:left", "bite:front", "prep", "resto", "implant", "gingiva", "face", "jaw", "other"];
+function typeOptLabel(o) { const [t, s] = o.split(":"); return tr(MT[t].ar, MT[t].en) + (s ? " · " + tr(SIDE[s][0], SIDE[s][1]) : ""); }
+function setVisible(it, v) { it.visible = v; it.object.visible = v; }
+function renderQuick() { // أزرار سريعة: العلوي فقط، السفلي فقط، الفكان، الكل
+  const el = $("mQuick"); if (!el) return;
+  const live = M.items.filter((i) => !i.merged && !i.dup), has = (t) => live.some((i) => i.type === t);
+  if (live.length < 2 || !(has("upper") || has("lower"))) { el.innerHTML = ""; return; }
+  const vis = (t) => live.filter((i) => i.type === t).some((i) => i.visible), others = live.filter((i) => i.type !== "upper" && i.type !== "lower").some((i) => i.visible);
+  const st = !others && vis("upper") && !vis("lower") ? "upper" : !others && vis("lower") && !vis("upper") ? "lower" : !others && vis("upper") && vis("lower") ? "both" : live.every((i) => i.visible) ? "all" : "";
+  const B = [["upper", tr("العلوي", "Upper"), has("upper")], ["lower", tr("السفلي", "Lower"), has("lower")], ["both", tr("الفكان", "Both"), has("upper") && has("lower")], ["all", tr("الكل", "All"), live.some((i) => i.type !== "upper" && i.type !== "lower")]];
+  el.innerHTML = B.filter((b) => b[2]).map(([k, l]) => `<button type="button" data-q="${k}" aria-pressed="${st === k}">${l}</button>`).join("");
+  el.querySelectorAll("[data-q]").forEach((b) => (b.onclick = () => {
+    const q = b.dataset.q;
+    M.items.forEach((it) => setVisible(it, !it.merged && !it.dup && (q === "all" || (q === "both" ? it.type === "upper" || it.type === "lower" : it.type === q))));
+    renderLayers(); fitAll(q === "upper" ? "bottom" : q === "lower" ? "top" : "front"); mRequest();
+  }));
+}
+function renderLayers() {
+  const order = ["upper", "lower", "jaw", "bite", "prep", "resto", "implant", "gingiva", "face", "other"];
+  const list = M.items.map((it, i) => ({ it, i })).filter((x) => !x.it.merged).sort((a, b) => order.indexOf(a.it.type) - order.indexOf(b.it.type) || (a.it.side || "").localeCompare(b.it.side || ""));
+  const groups = [...new Set(M.items.map((it) => (MT[it.type] || MT.other).g))];
+  $("mChips").innerHTML = `<button type="button" data-g="*">${tr("الكل", "All")}</button>` + groups.map((g) => {
+    const its = M.items.filter((it) => (MT[it.type] || MT.other).g === g), on = its.some((x) => x.visible);
+    return `<button type="button" data-g="${g}" aria-pressed="${on}">${tr(...GROUPS[g])} <span class="num">${its.length}</span></button>`;
+  }).join("");
+  $("mLayers").innerHTML = list.map(({ it, i }) => {
+    const opt = it.type === "bite" ? "bite:" + (it.side || "right") : it.type;
+    return `<li class="${it.visible ? "" : "off"}">
+      <button type="button" class="mEye" data-i="${i}" aria-label="${tr("إظهار/إخفاء", "Show/hide")}" aria-pressed="${it.visible}">${it.visible ? "◉" : "○"}</button>
+      <label class="mSw" style="background:${it.colored && !it.forceColor ? "conic-gradient(#e7a,#fd6,#7d9,#7bf,#e7a)" : hexStr(it.color)}" title="${tr("اللون", "Colour")}"><input type="color" value="${hexStr(it.color)}" data-c="${i}"></label>
+      <span class="mName"><b>${esc(itemLabel(it))}</b><small>${esc(it.base)}</small>
+        <span class="mBadges">${it.colored ? `<em class="b-col"${it.transferred ? ` title="${esc(it.transferred)}"` : ""}>${it.transferred ? tr("ألوان مدموجة", "Colour merged") : tr("ملوّنة", "Colour")}</em>` : ""}${it.usedForBite ? `<em>${tr("استُعملت للإطباق", "Used for occlusion")}</em>` : ""}${it.auto || it.sideAuto ? `<em class="b-auto" title="${tr("حُدد من الشكل والموضع، صحّحه إن لزم", "Detected from shape and position; correct it if needed")}">${tr("تلقائي", "Auto")}</em>` : ""}${it.dup ? `<em>${tr("نسخة مكررة", "Duplicate")}</em>` : ""}</span></span>
+      <button type="button" class="mSolo" data-s="${i}" title="${tr("هذه فقط", "Only this")}">${tr("وحدها", "Solo")}</button>
+      <select class="mType" data-t="${i}" aria-label="${tr("النوع", "Type")}">${TYPE_OPTS.map((o) => `<option value="${o}"${o === opt ? " selected" : ""}>${typeOptLabel(o)}</option>`).join("")}</select>
+      <input type="range" min="10" max="100" value="${Math.round(it.opacity * 100)}" data-o="${i}" aria-label="${tr("الشفافية", "Opacity")}" title="${tr("الشفافية", "Opacity")}">
+      ${it.colored ? `<label class="mColK"><span>${tr("الألوان", "Colour")}</span><input type="range" min="0" max="100" value="${Math.round((it.forceColor ? 0 : it.colorK ?? 1) * 100)}" data-k="${i}" aria-label="${tr("قوة الألوان الحقيقية", "True-colour strength")}"></label>` : ""}
+    </li>`;
+  }).join("");
+  const L = $("mLayers");
+  L.querySelectorAll("[data-i]").forEach((b) => (b.onclick = () => { const it = M.items[+b.dataset.i]; setVisible(it, !it.visible); renderLayers(); mRequest(); }));
+  L.querySelectorAll("[data-s]").forEach((b) => (b.onclick = () => { const k = +b.dataset.s; M.items.forEach((it, j) => setVisible(it, j === k)); renderLayers(); mRequest(); }));
+  L.querySelectorAll("[data-o]").forEach((r) => (r.oninput = () => { const it = M.items[+r.dataset.o]; it.opacity = r.value / 100; styleItem(it); mRequest(); }));
+  L.querySelectorAll("[data-c]").forEach((c) => (c.oninput = () => { const it = M.items[+c.dataset.c]; it.color = parseInt(c.value.slice(1), 16); if (it.colored) it.colorK = 0; styleItem(it); c.parentElement.style.background = c.value; const k = L.querySelector(`[data-k="${c.dataset.c}"]`); if (k) k.value = 0; mRequest(); }));
+  L.querySelectorAll("[data-k]").forEach((r) => (r.oninput = () => { const it = M.items[+r.dataset.k]; it.colorK = r.value / 100; it.forceColor = false; paintItem(it); mRequest(); }));
+  L.querySelectorAll("[data-t]").forEach((s) => (s.onchange = () => {
+    const it = M.items[+s.dataset.t], [t, sd] = s.value.split(":"); it.type = t; it.side = sd || null; it.auto = false; it.sideAuto = false; it.nameType = t; it.nameSide = it.side;
+    if (!it.forceColor) it.color = t === "bite" ? ({ right: 0x9fd2c9, left: 0xb7a7e8, front: 0xf2c28b }[it.side] || 0x9fd2c9) : (MT[t].col || it.color);
+    styleItem(it); renderLayers(); mRequest();
+  }));
+  $("mChips").querySelectorAll("[data-g]").forEach((b) => (b.onclick = () => {
+    const g = b.dataset.g;
+    if (g === "*") M.items.forEach((it) => setVisible(it, !it.dup));
+    else { const its = M.items.filter((it) => (MT[it.type] || MT.other).g === g), on = its.some((x) => x.visible); its.forEach((it) => setVisible(it, !on)); }
+    renderLayers(); mRequest();
+  }));
+  const shown = M.items.filter((i) => !i.merged); $("mCount").textContent = shown.filter((i) => i.visible).length + " / " + shown.length;
+  renderQuick();
+  if (typeof renderOccl === "function") renderOccl();
+  $("mTipBtn").hidden = !S.beginner;
+}
+/* ---------- الفتح ---------- */
+async function openModels(files, add) {
+  showLoading(files.filter((f) => MESH_RE.test(f.name)).length + tr(" نموذج ثلاثي الأبعاد", " 3D model(s)"));
+  setLoad(tr("تحميل أداة العرض ثلاثي الأبعاد…", "Loading the 3D viewer…"), 0.2);
+  try { await loadThree(); } catch (e) { clearInterval(loadTimer); backToStart(tr("تعذّر تحميل أداة العرض ثلاثي الأبعاد. تأكد من الاتصال بالإنترنت مرة واحدة، وبعدها يعمل بدون إنترنت.", "Could not load the 3D viewer. Connect to the internet once; after that it works offline.")); return; }
+  setLoad(tr("قراءة الملفات…", "Reading the files…"), 0.5);
+  await new Promise((r) => setTimeout(r, 20));
+  const items = await buildItems(files);
+  clearInterval(loadTimer);
+  if (!items.length) { backToStart(tr("لم أستطع قراءة أي نموذج من هذه الملفات.", "None of these files could be read as a 3D model.")); return; }
+  $("loadScreen").hidden = true; $("startScreen").hidden = true; $("viewer").hidden = true; $("modelScreen").hidden = false;
+  ensureScene();
+  if (!add) { M.items.forEach((it) => M.scene.remove(it.object)); clearMeasures(); M.items = []; M.files = []; }
+  items.forEach((it) => { M.scene.add(it.object); M.items.push(it); });
+  M.files.push(...files.filter((f) => MESH_RE.test(f.name)).map((f) => fileBase(f.name) + ":" + (f.file ? f.file.size : f.data ? f.data.byteLength : 0)));
+  analyzeScene();
+  if (!add) { const dirs = [...new Set(files.map((f) => f.name.split("/").slice(-2, -1)[0]).filter(Boolean))]; M.title = files.length === 1 ? fileBase(files[0].name) : dirs.length === 1 ? dirs[0] : tr("نماذج المريض", "Patient models"); }
+  $("mTitle").textContent = M.title;
+  OC.applied = false; OC.result = null; OC.contact = false;
+  renderLayers(); mResize(); fitAll("front"); if (M.panMode) setPanMode(false);
+  const F = M.frame, nU = M.items.filter((i) => i.type === "upper").length, nL = M.items.filter((i) => i.type === "lower").length, nB = M.items.filter((i) => i.type === "bite").length;
+  $("mHint").textContent = tr(`تعرّفت على: ${nU ? "الفك العلوي، " : ""}${nL ? "الفك السفلي، " : ""}${nB ? plural(nB, "طبعة إطباق واحدة", "طبعتي إطباق", "طبعات إطباق", "طبعة إطباق") + " (مخفية، أظهرها من «الإطباق»)، " : ""}والمجموع ${plural(M.items.length, "طبعة واحدة", "طبعتان", "طبعات", "طبعة")}.${!F.upSure || !F.antSure ? " بعض الاتجاهات تقديرية." : ""}`,
+    `Detected: ${nU ? "upper jaw, " : ""}${nL ? "lower jaw, " : ""}${nB ? nB + " bite scan(s) (hidden, show them from “Bites”), " : ""}${M.items.length} scans in total.${!F.upSure || !F.antSure ? " Some directions are estimated." : ""}`);
+  if (canOcclude()) await runOcclusion(true);
+  if (typeof afterModelsOpened === "function") afterModelsOpened();
+}
+function modelShot() {
+  M.rnd.render(M.scene, M.cam);
+  M.rnd.domElement.toBlob(async (b) => {
+    const f = new File([b], "model-" + Date.now() + ".png", { type: "image/png" });
+    if (navigator.canShare && navigator.canShare({ files: [f] })) { try { await navigator.share({ files: [f], title: "3D" }); return; } catch (e) { if (e && e.name === "AbortError") return; } }
+    const url = URL.createObjectURL(b); M.urls.push(url); $("mShotImg").src = url; $("mShot").hidden = false;
+  }, "image/png");
+}
+/* ---------- المشاركة مع زميل: حالة العرض نفسها (الطبقات والألوان والقياسات والزاوية) ---------- */
+const isModelMode = () => !$("modelScreen").hidden && M.items.length > 0;
+function modelFP() { const s = [...M.files].sort().join("|"); let h = 0x811c9dc5; for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 0x01000193); return "m" + (h >>> 0).toString(16); }
+function exportModelState() {
+  const r = (v) => [v.x, v.y, v.z].map((x) => Math.round(x * 100) / 100);
+  return { cam: { p: r(M.cam.position), t: r(M.ctl.target), u: r(M.cam.up) },
+    layers: M.items.map((it) => ({ n: it.base, t: it.type, s: it.side, v: it.visible ? 1 : 0, o: it.opacity, c: !it.colored || it.colorK === 0 ? it.color : null, k: it.colorK })), occl: OC.applied ? 1 : 0, contact: OC.contact ? 1 : 0,
+    meas: M.meas.map((m) => [r(m.a), r(m.b)]) };
+}
+function applyModelState(st) {
+  const T = M.T;
+  (st.layers || []).forEach((l) => { const it = M.items.find((x) => x.base === l.n); if (!it) return; it.type = l.t; it.side = l.s; it.auto = false; it.sideAuto = false; it.visible = !!l.v; it.opacity = l.o ?? 1; if (l.c != null) it.color = l.c; if (l.k != null) it.colorK = l.k; styleItem(it); });
+  if (st.occl && !OC.applied && canOcclude()) computeOcclusion(); else if (!st.occl && OC.applied) undoOcclusion();
+  OC.contact = !!st.contact; if (OC.contact) computeContacts(); M.items.forEach(paintItem);
+  clearMeasures(); (st.meas || []).forEach(([a, b]) => { addMeasurePoint(new T.Vector3(...a)); addMeasurePoint(new T.Vector3(...b)); });
+  if (st.cam) { M.cam.position.set(...st.cam.p); M.ctl.target.set(...st.cam.t); M.cam.up.set(...st.cam.u); M.ctl.update(); }
+  renderLayers(); mRequest();
+}
+function afterModelsOpened() {
+  const q = PEER.pendingModel; if (!q) return;
+  if (q.fp !== modelFP()) { peerNotice(tr("هذه الملفات لا تطابق ملفات الزميل تماماً (الأسماء أو الأحجام مختلفة).", "These files don't exactly match your colleague's files (names or sizes differ)."), [[tr("طبّق عرضه رغم ذلك", "Apply anyway"), () => applyIncomingModel(q)], [tr("لا", "No"), null]]); return; }
+  applyIncomingModel(q);
+}
+function applyIncomingModel(q) {
+  applyModelState(q.state); PEER.pendingModel = null; $("peerBanner").hidden = true;
+  peerNotice(`<b>${q.from ? tr("عرض د. ", "View from Dr. ") + esc(q.from) : tr("عرض الزميل", "Colleague's view")}</b>${q.note ? `<div class="pbNote">${esc(q.note)}</div>` : ""}<div class="fine">${tr("ظهرت الطبقات والقياسات والزاوية كما أرسلها زميلك.", "Layers, measurements and angle appear as your colleague sent them.")}</div>`, [[tr("الرد على الزميل", "Reply"), () => openPeer()], [tr("إغلاق", "Close"), null]]);
+}
+function showModelTip() {
+  const c = $("mTipCard"); if (!c.hidden) { c.hidden = true; return; }
+  const t = isTouchUI(), en = LL() === "en"; c.dir = en ? "ltr" : "rtl"; c.lang = en ? "en" : "ar";
+  const L = [
+    [t ? "<b>اسحب بإصبع</b> لتدوير النموذج، و<b>إصبعان</b> للتكبير والتحريك." : "<b>اسحب بالفأرة</b> للتدوير، و<b>العجلة</b> للتكبير، و<b>الزر الأيمن</b> للتحريك.", t ? "<b>Drag one finger</b> to rotate; <b>two fingers</b> to zoom and move." : "<b>Drag</b> to rotate, <b>wheel</b> to zoom, <b>right button</b> to move."],
+    ["<b>لوحة الأسهم:</b> ▲▼◀▶ تدوير بخطوات، ⌂ يعيد الزاوية، + و− للتكبير، و⟳ يبدّل بين التدوير والتحريك.", "<b>Arrow pad:</b> ▲▼◀▶ rotate in steps, ⌂ resets, + and − zoom, ⟳ switches between rotate and move."],
+    ["<b>دائرة الاتجاهات:</b> أ = أمام، ع = أعلى، ي = يمين المريض. انقر حرفاً لتنظر من تلك الجهة.", "<b>Direction gizmo:</b> F = front, T = top, R = patient's right. Tap a letter to look from that side."],
+    ["<b>الأزرار السريعة</b> في الأعلى: العلوي فقط، السفلي فقط، الفكان، أو الكل.", "<b>Quick buttons</b> at the top: upper only, lower only, both jaws, or all."],
+    ["<b>الطبقات:</b> ◉ إظهار وإخفاء، «وحدها» لطبعة واحدة، الشريط للشفافية، الدائرة للون، وشريط «الألوان» لقوة الألوان الحقيقية. صحّح نوع الطبعة من القائمة إن أخطأ.", "<b>Layers:</b> ◉ show/hide, “Solo” for one scan, slider for opacity, circle for colour, “Colour” slider for true-colour strength. Fix a scan's type from its menu if needed."],
+    ["<b>أسفل الشاشة:</b> الزوايا الجاهزة، و«قياس» (نقطتان على السطح)، و«مقطع» لرؤية الداخل، و«الإطباق» لخريطة التلامس.", "<b>Bottom bar:</b> preset angles, “Measure” (two points on the surface), “Section” to see inside, and “Occlusion” for the contact map."],
+  ];
+  c.innerHTML = `<b>${ltr("كيف تتحكم بعارض النماذج", "How to use the model viewer")}</b><ul class="tipHow">${L.map((x) => `<li>${en ? x[1] : x[0]}</li>`).join("")}</ul><div class="row"><button class="paneact" type="button" data-more>${ltr("المزيد في الدليل", "More in the guide")}</button><button class="paneact" type="button" data-x>${ltr("إغلاق", "Close")}</button></div>`;
+  c.querySelector("[data-more]").onclick = () => { c.hidden = true; openLearn("models"); };
+  c.querySelector("[data-x]").onclick = () => (c.hidden = true);
+  c.hidden = false;
+}
+function initModels() {
+  $("mBack").onclick = () => { $("modelScreen").hidden = true; $("startScreen").hidden = false; if (M.raf) { cancelAnimationFrame(M.raf); M.raf = 0; } };
+  $("mAdd").onclick = () => $("mAddIn").click();
+  $("mAddIn").onchange = (e) => { const fs = [...e.target.files]; e.target.value = ""; if (fs.length) openModels(fs.map((f) => ({ name: f.name, file: f })), true); };
+  document.querySelectorAll("#mViews [data-v]").forEach((b) => (b.onclick = () => fitAll(b.dataset.v)));
+  $("mMeasure").onclick = () => { M.measure = !M.measure; $("mMeasure").setAttribute("aria-pressed", M.measure); $("mHint").textContent = M.measure ? tr("قياس: انقر نقطتين على سطح النموذج", "Measure: tap two points on the model surface") : tr("التدوير مفعّل", "Rotation mode"); };
+  $("mClearMeas").onclick = clearMeasures;
+  $("mClipBtn").onclick = () => { M.clip.on = !M.clip.on; $("mClipBtn").setAttribute("aria-pressed", M.clip.on); $("mClipBar").hidden = !M.clip.on; updateClip(); };
+  $("mClipT").oninput = (e) => { M.clip.t = e.target.value / 100; updateClip(); };
+  document.querySelectorAll("#mClipAx [data-ax]").forEach((b) => (b.onclick = () => { M.clip.axis = b.dataset.ax; document.querySelectorAll("#mClipAx [data-ax]").forEach((x) => x.setAttribute("aria-pressed", x === b)); updateClip(); }));
+  $("mLayersBtn").onclick = () => $("mPanel").classList.toggle("open");
+  $("mShareBtn").onclick = () => openShare();
+  $("mLearn").onclick = () => openLearn("models");
+  $("mTipBtn").onclick = showModelTip;
+  $("mShotX").onclick = () => ($("mShot").hidden = true);
+  initOcclusion(); initNav();
+}
+/* ============================================================
+   الإطباق والألوان في عارض النماذج
+   - دمج الألوان: إن وصلت نسخة ملوّنة من نفس الفك، تُنقل ألوانها إلى الطبعة الأساسية (طبقة واحدة)، مع شريط لقوة اللون.
+   - الإطباق: تُستعمل طبعات الإطباق لوضع الفك العلوي في مكانه الصحيح فوق السفلي (مطابقة نقطية ICP)،
+     ثم تُخفى طبعات الإطباق لأنها أدّت دورها. يمكن إلغاء الإطباق والعودة للوضع الأصلي.
+   - خريطة التلامس: تلوين نقاط التماس بين الفكين حسب المسافة.
+   ============================================================ */
+const OC = { applied: false, contact: false, result: null };
+// شبكة مكانية للبحث السريع عن أقرب نقطة
+class PtGrid {
+  constructor(pts, cell) {
+    this.c = cell; this.p = pts; this.m = new Map();
+    for (let i = 0; i < pts.length; i += 3) { const k = this.key(pts[i], pts[i + 1], pts[i + 2]); let a = this.m.get(k); if (!a) this.m.set(k, (a = [])); a.push(i); }
+  }
+  key(x, y, z) { return (Math.floor(x / this.c) * 73856093) ^ (Math.floor(y / this.c) * 19349663) ^ (Math.floor(z / this.c) * 83492791); }
+  nearest(x, y, z, maxD) { // يرجع [مؤشر، مسافة²] أو null
+    const c = this.c, ix = Math.floor(x / c), iy = Math.floor(y / c), iz = Math.floor(z / c), p = this.p; let bi = -1, bd = maxD * maxD;
+    for (let a = -1; a <= 1; a++) for (let b = -1; b <= 1; b++) for (let d = -1; d <= 1; d++) {
+      const arr = this.m.get(((ix + a) * 73856093) ^ ((iy + b) * 19349663) ^ ((iz + d) * 83492791)); if (!arr) continue;
+      for (const i of arr) { const dx = p[i] - x, dy = p[i + 1] - y, dz = p[i + 2] - z, dd = dx * dx + dy * dy + dz * dz; if (dd < bd) { bd = dd; bi = i; } }
+    }
+    return bi < 0 ? null : [bi, bd];
+  }
+}
+function meshesOf(it) { const out = []; it.object.updateMatrixWorld(true); it.object.traverse((o) => o.isMesh && out.push(o)); return out; }
+function worldPts(it, maxN) { // نقاط الطبعة بإحداثيات المشهد
+  const T = M.T, v = new T.Vector3(), ms = meshesOf(it), total = ms.reduce((a, m) => a + m.geometry.getAttribute("position").count, 0), st = Math.max(1, Math.floor(total / (maxN || total)));
+  const out = []; ms.forEach((m) => { const p = m.geometry.getAttribute("position"); for (let i = 0; i < p.count; i += st) { v.set(p.getX(i), p.getY(i), p.getZ(i)).applyMatrix4(m.matrixWorld); out.push(v.x, v.y, v.z); } });
+  return new Float32Array(out);
+}
+/* ---------- دمج الألوان ---------- */
+function transferColors(dst, src) {
+  const T = M.T, sPts = worldPts(src), sCols = [], cell = 0.6;
+  meshesOf(src).forEach((m) => { const c = m.geometry.getAttribute("color"); const n = m.geometry.getAttribute("position").count; for (let i = 0; i < n; i++) sCols.push(c ? c.getX(i) : 1, c ? c.getY(i) : 1, c ? c.getZ(i) : 1); });
+  const grid = new PtGrid(sPts, cell), v = new T.Vector3(); let hit = 0, tot = 0;
+  meshesOf(dst).forEach((m) => {
+    const p = m.geometry.getAttribute("position"), col = new Float32Array(p.count * 3);
+    for (let i = 0; i < p.count; i++) {
+      v.set(p.getX(i), p.getY(i), p.getZ(i)).applyMatrix4(m.matrixWorld);
+      let r = grid.nearest(v.x, v.y, v.z, cell * 1.5); tot++;
+      if (!r) { const g2 = M._g2 || (M._g2 = new PtGrid(sPts, 3)); r = g2.nearest(v.x, v.y, v.z, 4.5); } else hit++;
+      if (r) { const j = r[0]; col[i * 3] = sCols[j]; col[i * 3 + 1] = sCols[j + 1]; col[i * 3 + 2] = sCols[j + 2]; } else col.set([0.9, 0.86, 0.8], i * 3);
+    }
+    m.userData.trueCol = col;
+  });
+  M._g2 = null;
+  dst.colored = true; dst.transferred = src.base; dst.colorK = 1; src.merged = true; src.visible = false; src.object.visible = false;
+  return tot ? hit / tot : 0;
+}
+// ألوان كل رأس: لون الطبعة الأساسي ممزوجاً بالألوان الحقيقية (حسب القوة)، ثم خريطة التلامس فوقها
+function paintItem(it) {
+  const T = M.T, stone = new T.Color(it.color), k = it.colorK ?? 1;
+  meshesOf(it).forEach((m) => {
+    const g = m.geometry, n = g.getAttribute("position").count, mat = m.material;
+    if (mat.map || mat.userData.map) { // صورة ألوان (OBJ): تظهر أو تختفي حسب القوة
+      if (k > 0.5 && !it.forceColor) { if (mat.userData.map) mat.map = mat.userData.map; mat.color.setHex(0xffffff); } else { if (mat.map) mat.userData.map = mat.map; mat.map = null; mat.color.copy(stone); }
+      mat.vertexColors = false; mat.needsUpdate = true; return;
+    }
+    if (!m.userData.trueCol && g.getAttribute("color") && !m.userData.colInit) { m.userData.trueCol = Float32Array.from(g.getAttribute("color").array); }
+    m.userData.colInit = true;
+    const tc = it.forceColor ? null : m.userData.trueCol, cd = OC.contact ? m.userData.contact : null;
+    if (!tc && !cd) { mat.vertexColors = false; mat.color.copy(stone); mat.needsUpdate = true; return; }
+    let a = g.getAttribute("color"); if (!a || a.count !== n || a.itemSize !== 3) { a = new T.BufferAttribute(new Float32Array(n * 3), 3); g.setAttribute("color", a); }
+    const out = a.array;
+    for (let i = 0; i < n; i++) {
+      let r = stone.r, gg = stone.g, b = stone.b;
+      if (tc) { r = r * (1 - k) + tc[i * 3] * k; gg = gg * (1 - k) + tc[i * 3 + 1] * k; b = b * (1 - k) + tc[i * 3 + 2] * k; }
+      if (cd) { const d = cd[i]; let c = null; if (d < 0.1) c = [0.95, 0.12, 0.12]; else if (d < 0.3) c = [1, 0.45, 0.1]; else if (d < 0.6) c = [1, 0.85, 0.15]; else if (d < 1) c = [0.35, 0.8, 0.45]; if (c) { r = r * 0.15 + c[0] * 0.85; gg = gg * 0.15 + c[1] * 0.85; b = b * 0.15 + c[2] * 0.85; } }
+      out[i * 3] = r; out[i * 3 + 1] = gg; out[i * 3 + 2] = b;
+    }
+    a.needsUpdate = true; mat.vertexColors = true; mat.color.setHex(0xffffff); mat.needsUpdate = true;
+  });
+}
+/* ---------- المطابقة النقطية (ICP) ---------- */
+function jacobiSym(A) { // القيم والمتجهات الذاتية لمصفوفة متماثلة صغيرة
+  const n = A.length, a = A.map((r) => r.slice()), V = a.map((_, i) => a.map((__, j) => (i === j ? 1 : 0)));
+  for (let s = 0; s < 40; s++) {
+    let off = 0; for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) off += a[i][j] * a[i][j]; if (off < 1e-18) break;
+    for (let p = 0; p < n; p++) for (let q = p + 1; q < n; q++) {
+      if (Math.abs(a[p][q]) < 1e-15) continue;
+      const th = 0.5 * Math.atan2(2 * a[p][q], a[q][q] - a[p][p]), c = Math.cos(th), sn = Math.sin(th);
+      for (let k = 0; k < n; k++) { const x = a[k][p], y = a[k][q]; a[k][p] = c * x - sn * y; a[k][q] = sn * x + c * y; }
+      for (let k = 0; k < n; k++) { const x = a[p][k], y = a[q][k]; a[p][k] = c * x - sn * y; a[q][k] = sn * x + c * y; }
+      for (let k = 0; k < n; k++) { const x = V[k][p], y = V[k][q]; V[k][p] = c * x - sn * y; V[k][q] = sn * x + c * y; }
+    }
+  }
+  return { val: a.map((r, i) => r[i]), vec: V };
+}
+function rigidFit(P, Q) { // أفضل دوران وإزاحة تنقل P إلى Q (طريقة Horn بالرباعيات)
+  const T = M.T, n = P.length / 3, pc = [0, 0, 0], qc = [0, 0, 0];
+  for (let i = 0; i < n; i++) for (let k = 0; k < 3; k++) { pc[k] += P[i * 3 + k] / n; qc[k] += Q[i * 3 + k] / n; }
+  const S = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+  for (let i = 0; i < n; i++) for (let a = 0; a < 3; a++) for (let b = 0; b < 3; b++) S[a][b] += (P[i * 3 + a] - pc[a]) * (Q[i * 3 + b] - qc[b]);
+  const [[xx, xy, xz], [yx, yy, yz], [zx, zy, zz]] = S;
+  const N = [[xx + yy + zz, yz - zy, zx - xz, xy - yx], [yz - zy, xx - yy - zz, xy + yx, zx + xz], [zx - xz, xy + yx, -xx + yy - zz, yz + zy], [xy - yx, zx + xz, yz + zy, -xx - yy + zz]];
+  const { val, vec } = jacobiSym(N), k = val.indexOf(Math.max(...val)), q = new T.Quaternion(vec[1][k], vec[2][k], vec[3][k], vec[0][k]).normalize();
+  const R = new T.Matrix4().makeRotationFromQuaternion(q), pcv = new T.Vector3(...pc).applyMatrix4(R);
+  R.setPosition(qc[0] - pcv.x, qc[1] - pcv.y, qc[2] - pcv.z);
+  return R;
+}
+function icp(src, tgt, opts) { // src: نقاط تتحرك، tgt: نقاط ثابتة. يرجع التحويل وجودة المطابقة
+  const T = M.T, trim = opts.trim || 0.6, coarse = opts.coarse || new PtGrid(tgt, 4), fine = opts.fine || new PtGrid(tgt, 1.5), Mx = opts.init ? opts.init.clone() : new T.Matrix4(), v = new T.Vector3(), n = src.length / 3;
+  let rms = Infinity, inl = 0;
+  // إن كانت الطبعتان متقاربتين أصلاً (وهو الغالب في التصدير) نبدأ بالمطابقة الدقيقة مباشرة، فلا تنزلق على أسنان متشابهة
+  let near = 0; for (let i = 0; i < n; i++) { v.set(src[i * 3], src[i * 3 + 1], src[i * 3 + 2]).applyMatrix4(Mx); if (fine.nearest(v.x, v.y, v.z, 1.0)) near++; }
+  const start = opts.start ?? (near / n > 0.25 ? 30 : 0), iters = opts.iters || 60;
+  for (let it = start; it < iters + start; it++) {
+    const grid = it < 15 ? coarse : fine, maxD = it < 15 ? 6 : it < 35 ? 2.2 : 1.2, pairs = [];
+    for (let i = 0; i < n; i++) { v.set(src[i * 3], src[i * 3 + 1], src[i * 3 + 2]).applyMatrix4(Mx); const r = grid.nearest(v.x, v.y, v.z, maxD); if (r) pairs.push([v.x, v.y, v.z, r[0], r[1]]); }
+    if (pairs.length < 30) break;
+    pairs.sort((a, b) => a[4] - b[4]); const keep = pairs.slice(0, Math.max(30, Math.floor(pairs.length * trim)));
+    const P = new Float32Array(keep.length * 3), Q = new Float32Array(keep.length * 3);
+    const G = grid.p; keep.forEach((p, j) => { P.set([p[0], p[1], p[2]], j * 3); Q.set([G[p[3]], G[p[3] + 1], G[p[3] + 2]], j * 3); });
+    const dM = rigidFit(P, Q); Mx.premultiply(dM);
+    const newRms = Math.sqrt(keep.reduce((a, p) => a + p[4], 0) / keep.length); inl = pairs.length / n;
+    const e = dM.elements, moved = Math.abs(e[12]) + Math.abs(e[13]) + Math.abs(e[14]) + Math.abs(e[0] - 1) + Math.abs(e[5] - 1) + Math.abs(e[10] - 1);
+    rms = newRms; if (it > start + 20 && moved < 1e-4) break;
+  }
+  let good = 0; for (let i = 0; i < n; i++) { v.set(src[i * 3], src[i * 3 + 1], src[i * 3 + 2]).applyMatrix4(Mx); if (fine.nearest(v.x, v.y, v.z, 0.4)) good++; }
+  return { M: Mx, rms, inl, score: good / n };
+}
+// مطابقة متعددة البدايات: نجرّب زوايا ابتدائية مختلفة ونختار الأكثر تطابقاً، ثم نصقلها. تمنع الوقوع في مطابقة خاطئة قريبة
+function icpRobust(src, tgt, opts) {
+  const T = M.T, n = src.length / 3, c = [0, 0, 0];
+  const vox = new Map(), small = []; for (let i = 0; i < tgt.length; i += 3) { const k = Math.floor(tgt[i] / 0.8) + "," + Math.floor(tgt[i + 1] / 0.8) + "," + Math.floor(tgt[i + 2] / 0.8); if (!vox.has(k)) { vox.set(k, 1); small.push(tgt[i], tgt[i + 1], tgt[i + 2]); } }
+  const tS = new Float32Array(small), cS = new PtGrid(tS, 4), fS = new PtGrid(tS, 1.5);
+  for (let i = 0; i < n; i++) for (let k = 0; k < 3; k++) c[k] += src[i * 3 + k] / n;
+  const st = Math.max(1, Math.floor(n / 1500)), sub = []; for (let i = 0; i < n; i += st) sub.push(src[i * 3], src[i * 3 + 1], src[i * 3 + 2]);
+  const s32 = new Float32Array(sub), A = [-7, 0, 7].map((d) => (d * Math.PI) / 180), cands = [];
+  for (const ax of A) for (const ay of A) for (const az of A) {
+    const R = new T.Matrix4().makeRotationFromEuler(new T.Euler(ax, ay, az)), init = new T.Matrix4().makeTranslation(c[0], c[1], c[2]).multiply(R).multiply(new T.Matrix4().makeTranslation(-c[0], -c[1], -c[2]));
+    cands.push(icp(s32, tS, { ...opts, coarse: cS, fine: fS, init, start: 0, iters: 24 }));
+  }
+  cands.sort((a, b) => b.score - a.score);
+  return icp(src, tgt, { ...opts, init: cands[0].M, start: 30, iters: 40 });
+}
+/* ---------- حساب الإطباق ---------- */
+function canOcclude() { return M.items.some((i) => i.type === "upper" && !i.merged) && M.items.some((i) => i.type === "lower" && !i.merged) && M.items.some((i) => i.type === "bite" && !i.merged); }
+function computeOcclusion() {
+  const T = M.T, U = M.items.find((i) => i.type === "upper" && !i.merged), L = M.items.find((i) => i.type === "lower" && !i.merged), B = M.items.filter((i) => i.type === "bite" && !i.merged && !i.dup);
+  if (!U || !L || !B.length) return null;
+  [U, L, ...B].forEach((it) => { if (!it.orig) it.orig = it.object.matrix.clone(); });
+  const Lp = worldPts(L, 120000), Lgrid = new PtGrid(Lp, 1.5), upperPts = [], rep = [];
+  for (const b of B) { // ١) كل طبعة إطباق تُطابق على الفك السفلي (نصفها تقريباً يخصه)
+    const r = icp(worldPts(b, 8000), Lp, { trim: 0.45 });
+    b.object.applyMatrix4(r.M); b.object.updateMatrixWorld(true); rep.push(r);
+    const bp = worldPts(b, 6000); for (let i = 0; i < bp.length; i += 3) { const nn = Lgrid.nearest(bp[i], bp[i + 1], bp[i + 2], 1.5); if (!nn || nn[1] > 0.6 * 0.6) upperPts.push(bp[i], bp[i + 1], bp[i + 2]); }
+  }
+  if (upperPts.length < 300) return { ok: false, why: "few" };
+  // ٢) الأجزاء التي لا تخص السفلي = أسنان الفك العلوي في الإطباق؛ نطابقها على الفك العلوي ثم نعكس التحويل لنحرّك الفك نفسه
+  const r = icpRobust(new Float32Array(upperPts), worldPts(U, 120000), { trim: 0.7 });
+  U.object.applyMatrix4(r.M.clone().invert()); U.object.updateMatrixWorld(true);
+  const ok = r.rms < 0.35 && r.inl > 0.35 && rep.every((x) => x.rms < 0.45);
+  OC.applied = true; OC.result = { ok, rms: r.rms, inl: r.inl, bites: rep.map((x) => x.rms) };
+  B.forEach((b) => { b.visible = false; b.object.visible = false; b.usedForBite = true; });
+  computeContacts(); return OC.result;
+}
+function undoOcclusion() {
+  M.items.forEach((it) => { if (it.orig) { it.object.matrix.copy(it.orig); it.object.matrix.decompose(it.object.position, it.object.quaternion, it.object.scale); it.object.updateMatrixWorld(true); } });
+  OC.applied = false; computeContacts();
+}
+function computeContacts() { // المسافة من كل رأس إلى الفك المقابل
+  const U = M.items.find((i) => i.type === "upper" && !i.merged), L = M.items.find((i) => i.type === "lower" && !i.merged);
+  M.items.forEach((it) => meshesOf(it).forEach((m) => (m.userData.contact = null)));
+  if (!U || !L) return;
+  const T = M.T, v = new T.Vector3();
+  for (const [a, b] of [[U, L], [L, U]]) {
+    const g = new PtGrid(worldPts(b, 250000), 1.0);
+    meshesOf(a).forEach((m) => { const p = m.geometry.getAttribute("position"), d = new Float32Array(p.count); for (let i = 0; i < p.count; i++) { v.set(p.getX(i), p.getY(i), p.getZ(i)).applyMatrix4(m.matrixWorld); const r = g.nearest(v.x, v.y, v.z, 1.0); d[i] = r ? Math.sqrt(r[1]) : 9; } m.userData.contact = d; });
+  }
+}
+function occlusionStatus() {
+  const r = OC.result;
+  if (!r) return "";
+  if (r.ok === false && r.why === "few") return tr("طبعات الإطباق لا تحتوي أجزاء كافية من الفك العلوي.", "The bite scans don't contain enough of the upper jaw.");
+  return (r.ok ? "✓ " : "⚠︎ ") + tr("دقة المطابقة ", "Fit accuracy ") + r.rms.toFixed(2) + tr(" ملم", " mm") + tr(` · تطابق ${Math.round(r.inl * 100)}٪`, ` · ${Math.round(r.inl * 100)}% matched`) + (r.ok ? "" : tr(" — راجع الإطباق بالعين، فالمطابقة غير مؤكدة.", " — check visually; the fit is uncertain."));
+}
+function renderOccl() {
+  const has = canOcclude() || OC.applied, box = $("mOccl");
+  $("mOcclBtn").hidden = !has && !M.items.some((i) => i.type === "upper") ;
+  if (box.hidden) return;
+  $("mOcclRun").hidden = OC.applied || !canOcclude();
+  $("mOcclOn").hidden = !OC.result; $("mOcclOn").checked = OC.applied;
+  $("mOcclMsg").textContent = !canOcclude() && !OC.applied ? tr("للإطباق يلزم الفك العلوي والسفلي وطبعة إطباق واحدة على الأقل.", "Occlusion needs the upper and lower jaws and at least one bite scan.") : OC.applied ? occlusionStatus() : tr("ضع الفك العلوي في مكانه الصحيح باستعمال طبعات الإطباق.", "Place the upper jaw correctly using the bite scans.");
+  $("mContact").checked = OC.contact; $("mLegend").hidden = !OC.contact;
+}
+async function runOcclusion(auto) {
+  $("mHint").textContent = tr("جارٍ حساب الإطباق من طبعات الإطباق…", "Computing the occlusion from the bite scans…");
+  await new Promise((r) => setTimeout(r, 30));
+  const r = computeOcclusion();
+  M.items.forEach(paintItem); renderLayers(); fitAll("front"); renderOccl();
+  if (r) $("mHint").textContent = (auto ? tr("حُسب الإطباق تلقائياً من طبعات الإطباق. ", "Occlusion computed automatically from the bite scans. ") : "") + occlusionStatus();
+}
+function initOcclusion() {
+  $("mOcclBtn").onclick = () => { const b = $("mOccl"); b.hidden = !b.hidden; $("mOcclBtn").setAttribute("aria-pressed", !b.hidden); renderOccl(); };
+  $("mOcclRun").onclick = () => runOcclusion(false);
+  $("mOcclOn").onchange = (e) => { if (e.target.checked) runOcclusion(false); else { undoOcclusion(); M.items.forEach(paintItem); renderLayers(); fitAll("front"); renderOccl(); $("mHint").textContent = tr("أُلغي الإطباق المحسوب، والطبعات في وضعها الأصلي.", "Computed occlusion removed; scans are back in their original position."); } };
+  $("mContact").onchange = (e) => { OC.contact = e.target.checked; if (OC.contact && !M.items.some((it) => meshesOf(it).some((m) => m.userData.contact))) computeContacts(); M.items.forEach(paintItem); renderOccl(); mRequest(); };
+}
+/* ============================================================
+   أداة التحكم الصغيرة: أسهم للتدوير، تكبير وتصغير، وضع التحريك، إعادة الزاوية،
+   ومؤشر اتجاهات (أمام، أعلى، يمين المريض) يمكن النقر على أحرفه للانتقال إلى تلك الزاوية.
+   ============================================================ */
+function orbitBy(yawDeg, pitchDeg) {
+  const T = M.T, off = M.cam.position.clone().sub(M.ctl.target), up = M.cam.up.clone().normalize();
+  if (yawDeg) off.applyAxisAngle(up, yawDeg * Math.PI / 180);
+  if (pitchDeg) { const right = new T.Vector3().crossVectors(up, off).normalize(), test = off.clone().applyAxisAngle(right, pitchDeg * Math.PI / 180); if (Math.abs(test.clone().normalize().dot(up)) < 0.985) off.copy(test); }
+  M.cam.position.copy(M.ctl.target).add(off); M.cam.lookAt(M.ctl.target); M.ctl.update(); mRequest();
+}
+function zoomBy(k) { const off = M.cam.position.clone().sub(M.ctl.target).multiplyScalar(k); M.cam.position.copy(M.ctl.target).add(off); M.ctl.update(); mRequest(); }
+function setPanMode(on) {
+  const T = M.T; M.panMode = on;
+  M.ctl.mouseButtons.LEFT = on ? T.MOUSE.PAN : T.MOUSE.ROTATE; M.ctl.touches.ONE = on ? T.TOUCH.PAN : T.TOUCH.ROTATE;
+  $("mPan").setAttribute("aria-pressed", on); $("mPan").textContent = on ? "✋" : "⟳"; $("mPan").title = on ? tr("وضع التحريك: اسحب لتحريك النموذج", "Pan mode: drag to move the model") : tr("وضع التدوير: اسحب للتدوير", "Rotate mode: drag to rotate");
+  $("mHint").textContent = on ? tr("وضع التحريك: اسحب بإصبع واحد لتحريك النموذج. اضغط ⟳ للرجوع إلى التدوير.", "Pan mode: drag with one finger to move the model. Press ⟳ to go back to rotating.") : tr("وضع التدوير: اسحب للتدوير، وبإصبعين للتكبير والتحريك.", "Rotate mode: drag to rotate; two fingers to zoom and pan.");
+}
+function drawGizmo() {
+  const cv = $("mGizmo"); if (!cv || !M.frame) return;
+  const g = cv.getContext("2d"), W = cv.width, c = W / 2, R = W * 0.36, inv = M.cam.quaternion.clone().invert();
+  g.clearRect(0, 0, W, W);
+  g.fillStyle = "rgba(17,22,29,.75)"; g.beginPath(); g.arc(c, c, W / 2 - 1, 0, 7); g.fill();
+  const axes = [[M.frame.ant, "#e3343c", tr("أ", "F"), "front"], [M.frame.up, "#4cc9c0", tr("ع", "T"), "top"], [M.frame.right, "#ffc94a", tr("ي", "R"), "right"]];
+  const pts = axes.map(([v, col, lab, view]) => { const p = v.clone().applyQuaternion(inv); return { x: c + p.x * R, y: c - p.y * R, z: p.z, col, lab, view }; });
+  const back = axes.map(([v, col, lab]) => { const p = v.clone().negate().applyQuaternion(inv); return { x: c + p.x * R, y: c - p.y * R, z: p.z, col }; });
+  g.lineWidth = W / 40; back.forEach((p) => { g.strokeStyle = p.col + "55"; g.beginPath(); g.moveTo(c, c); g.lineTo(p.x, p.y); g.stroke(); });
+  pts.sort((a, b) => a.z - b.z).forEach((p) => {
+    g.strokeStyle = p.col; g.beginPath(); g.moveTo(c, c); g.lineTo(p.x, p.y); g.stroke();
+    g.fillStyle = p.col; g.beginPath(); g.arc(p.x, p.y, W * 0.11, 0, 7); g.fill();
+    g.fillStyle = "#0b0e12"; g.font = `700 ${Math.round(W * 0.13)}px system-ui,sans-serif`; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(p.lab, p.x, p.y + 1);
+  });
+  M.gizmoPts = pts;
+}
+function initNav() {
+  let rep = null; const hold = (fn) => (e) => { e.preventDefault(); fn(); clearInterval(rep); rep = setInterval(fn, 90); };
+  const stop = () => clearInterval(rep);
+  [["mNavL", () => orbitBy(-8, 0)], ["mNavR", () => orbitBy(8, 0)], ["mNavU", () => orbitBy(0, -8)], ["mNavD", () => orbitBy(0, 8)], ["mZin", () => zoomBy(0.88)], ["mZout", () => zoomBy(1.14)]].forEach(([id, fn]) => {
+    const b = $(id); b.addEventListener("pointerdown", hold(fn)); ["pointerup", "pointerleave", "pointercancel"].forEach((t) => b.addEventListener(t, stop));
+  });
+  $("mNavC").onclick = () => fitAll("front");
+  $("mPan").onclick = () => setPanMode(!M.panMode);
+  $("mGizmo").addEventListener("click", (e) => {
+    const r = e.target.getBoundingClientRect(), k = e.target.width / r.width, x = (e.clientX - r.left) * k, y = (e.clientY - r.top) * k;
+    const hit = (M.gizmoPts || []).filter((p) => Math.hypot(p.x - x, p.y - y) < e.target.width * 0.16).sort((a, b) => b.z - a.z)[0];
+    if (hit) fitAll(hit.view);
+  });
+}
+
+/* ============================================================
+   دمج الطبعة الرقمية مع الأشعة (Scan ↔ CBCT fusion)
+   ١) نستخرج سطح الأسنان من الأشعة (المينا أوضح نسيج فيها).
+   ٢) نأخذ من الطبعة الأسنان فقط (من ألوانها إن وُجدت: الأبيض أسنان والوردي لثة).
+   ٣) بحث شامل عن الوضع التقريبي، ثم مطابقة دقيقة (ICP). كل فك يُطابق وحده،
+      لأن فم المريض في الأشعة قد يكون مفتوحاً قليلاً عن وضع الإطباق في الطبعة.
+   ٤) نرسم حدود الطبعة فوق كل مقطع (محوري، أمامي، جانبي، عرضي، بانوراما).
+   ============================================================ */
+const FU = { items: [], ver: 0, busy: false, files: null, show: true, width: 1.6 };
+const FU_COL = { upper: "#ff9f1c", lower: "#3fd0ff", resto: "#ffd34d", implant: "#c9a7ff", other: "#7ed6a5" };
+const fuTick = () => new Promise((r) => setTimeout(r, 0));
+function fuMsg(t, cls) { const m = $("fuMsg"); if (m) { m.textContent = t; m.className = "fine " + (cls || ""); } setStatus(t); }
+
+/* ---------- سطح الأسنان من الأشعة ---------- */
+function fuSurface() {
+  const v = S.vol, k = Math.max(1, Math.round(0.3 / v.sx)), kz = Math.max(1, Math.round(0.3 / v.sz));
+  const nx = Math.floor(v.nx / k), ny = Math.floor(v.ny / k), nz = Math.floor(v.nz / kz), hx = v.sx * k, hy = v.sy * k, hz = v.sz * kz, N = nx * ny * nz;
+  const D = new Uint16Array(N);
+  for (let z = 0; z < nz; z++) { const s = v.slices[z * kz], o = z * nx * ny; for (let y = 0; y < ny; y++) { const r = y * k * v.nx, oy = o + y * nx; for (let x = 0; x < nx; x++) D[oy + x] = s[r + x * k]; } }
+  const samp = []; for (let i = 0; i < N; i += 11) if (D[i] > 0) samp.push(D[i]);
+  const A = Uint16Array.from(samp).sort(), P = (p) => A[clamp(Math.round(p / 100 * (A.length - 1)), 0, A.length - 1)];
+  const E = P(99.85), B = P(50), iso = B + 0.55 * (E - B);
+  // المينا، مع إهمال النقاط المعزولة (ضجيج أو شظايا معدنية صغيرة)
+  const en = new Uint8Array(N), sxy = nx * ny; let bx0 = 1e9, by0 = 1e9, bz0 = 1e9, bx1 = -1, by1 = -1, bz1 = -1, nEn = 0;
+  for (let z = 1; z < nz - 1; z++) for (let y = 1; y < ny - 1; y++) for (let x = 1; x < nx - 1; x++) {
+    const i = z * sxy + y * nx + x; if (D[i] < E) continue;
+    const c = (D[i - 1] >= E) + (D[i + 1] >= E) + (D[i - nx] >= E) + (D[i + nx] >= E) + (D[i - sxy] >= E) + (D[i + sxy] >= E);
+    if (c < 3) continue; en[i] = 1; nEn++;
+    if (x < bx0) bx0 = x; if (x > bx1) bx1 = x; if (y < by0) by0 = y; if (y > by1) by1 = y; if (z < bz0) bz0 = z; if (z > bz1) bz1 = z;
+  }
+  if (nEn < 200) return null;
+  // نوسّع منطقة المينا 2.4 ملم لنأخذ سطح التاج كاملاً حولها
+  const near = en.slice(), tmp = new Uint8Array(Math.max(nx, ny, nz));
+  const dil = (len, stride, starts, r) => { for (const s0 of starts) { let run = 0; for (let i = 0; i < len; i++) tmp[i] = near[s0 + i * stride]; const pre = new Int32Array(len + 1); for (let i = 0; i < len; i++) pre[i + 1] = pre[i] + tmp[i]; for (let i = 0; i < len; i++) { const a = Math.max(0, i - r), b = Math.min(len, i + r + 1); near[s0 + i * stride] = pre[b] - pre[a] > 0 ? 1 : 0; } run; } };
+  const rx = Math.round(2.4 / hx), rz = Math.round(2.4 / hz);
+  const sx_ = [], sy_ = [], sz_ = [];
+  for (let z = 0; z < nz; z++) for (let y = 0; y < ny; y++) sx_.push(z * sxy + y * nx);
+  for (let z = 0; z < nz; z++) for (let x = 0; x < nx; x++) sy_.push(z * sxy + x);
+  for (let y = 0; y < ny; y++) for (let x = 0; x < nx; x++) sz_.push(y * nx + x);
+  dil(nx, 1, sx_, rx); dil(ny, nx, sy_, rx); dil(nz, sxy, sz_, rz);
+  // نقاط السطح: فوكسل فوق الحد وجاره تحته، مع تقدير موضع الحد بدقة أقل من الفوكسل
+  const pts = []; const nb = [[1, 0, 0, 1], [-1, 0, 0, -1], [0, 1, 0, nx], [0, -1, 0, -nx], [0, 0, 1, sxy], [0, 0, -1, -sxy]];
+  for (let z = 1; z < nz - 1; z++) for (let y = 1; y < ny - 1; y++) for (let x = 1; x < nx - 1; x++) {
+    const i = z * sxy + y * nx + x; if (!near[i]) continue; const v0 = D[i]; if (v0 < iso) continue;
+    for (const [dx, dy, dz, o] of nb) { const vn = D[i + o]; if (vn < iso) { const f = (v0 - iso) / (v0 - vn || 1); pts.push((x + dx * f) * hx, (y + dy * f) * hy, (z + dz * f) * hz); break; } }
+  }
+  let P3 = new Float32Array(pts);
+  if (P3.length / 3 > 400000) { const st = Math.ceil(P3.length / 3 / 400000), q = []; for (let i = 0; i < P3.length; i += 3 * st) q.push(P3[i], P3[i + 1], P3[i + 2]); P3 = new Float32Array(q); }
+  return { pts: P3, box: [bx0 * hx, by0 * hy, bz0 * hz, bx1 * hx, by1 * hy, bz1 * hz], ext: [nx * hx, ny * hy, nz * hz], iso, E };
+}
+// خريطة المسافة إلى أقرب نقطة سطح (خلايا نصف ملم) للبحث الشامل السريع
+function fuEDT(pts, ext, cell) {
+  const c = cell || 0.5, gx = Math.ceil(ext[0] / c) + 2, gy = Math.ceil(ext[1] / c) + 2, gz = Math.ceil(ext[2] / c) + 2, N = gx * gy * gz, d = new Float32Array(N).fill(1e6);
+  for (let i = 0; i < pts.length; i += 3) { const x = Math.round(pts[i] / c), y = Math.round(pts[i + 1] / c), z = Math.round(pts[i + 2] / c); d[(z * gy + y) * gx + x] = 0; }
+  const nb = []; for (let dz = -1; dz <= 1; dz++) for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) { const o = (dz * gy + dy) * gx + dx; if (o < 0) nb.push([dx, dy, dz, o, Math.hypot(dx, dy, dz) * c]); }
+  const pass = (fw) => {
+    const z0 = fw ? 1 : gz - 2, z1 = fw ? gz - 1 : 0, st = fw ? 1 : -1;
+    for (let z = z0; z !== z1; z += st) for (let y = fw ? 1 : gy - 2; fw ? y < gy - 1 : y > 0; y += st) for (let x = fw ? 1 : gx - 2; fw ? x < gx - 1 : x > 0; x += st) {
+      const i = (z * gy + y) * gx + x; let m = d[i];
+      for (const n of nb) { const j = fw ? i + n[3] : i - n[3], q = d[j] + n[4]; if (q < m) m = q; }
+      d[i] = m;
+    }
+  };
+  pass(true); pass(false);
+  for (let i = 0; i < N; i++) if (d[i] > 6) d[i] = 6;
+  return { d, gx, gy, gz, c };
+}
+
+/* ---------- نقاط الأسنان من الطبعة ---------- */
+function fuScanPts(it) {
+  const ms = meshesOf(it), all = [], cols = []; let colored = true;
+  ms.forEach((m) => {
+    const p = m.geometry.getAttribute("position"), tc = m.userData.trueCol || (it.colored && m.geometry.getAttribute("color") ? m.geometry.getAttribute("color").array : null), v = new M.T.Vector3();
+    if (!tc) colored = false;
+    for (let i = 0; i < p.count; i++) { v.set(p.getX(i), p.getY(i), p.getZ(i)).applyMatrix4(m.matrixWorld); all.push(v.x, v.y, v.z); if (tc) cols.push(tc[i * 3], tc[i * 3 + 1], tc[i * 3 + 2]); else cols.push(-1, -1, -1); }
+  });
+  const n = all.length / 3, teeth = [];
+  if (colored) for (let i = 0; i < n; i++) { const r = cols[i * 3], g = cols[i * 3 + 1], b = cols[i * 3 + 2], mx = Math.max(r, g, b), mn = Math.min(r, g, b); if (mx > 0.55 && (mx - mn) / mx < 0.22) teeth.push(all[i * 3], all[i * 3 + 1], all[i * 3 + 2]); }
+  let byColour = teeth.length / 3 > 0.03 * n;
+  if (!byColour) { // بلا ألوان: نأخذ الشريط القريب من سطح الإطباق (التيجان وأعناق الأسنان)
+    teeth.length = 0; const up = M.frame.up, u = new Float32Array(n);
+    for (let i = 0; i < n; i++) u[i] = all[i * 3] * up.x + all[i * 3 + 1] * up.y + all[i * 3 + 2] * up.z;
+    const s = Float32Array.from(u).sort(), lowJaw = it.type === "lower", ref = lowJaw ? s[Math.floor(n * 0.98)] : s[Math.floor(n * 0.02)];
+    for (let i = 0; i < n; i++) if (lowJaw ? u[i] > ref - 10 : u[i] < ref + 10) teeth.push(all[i * 3], all[i * 3 + 1], all[i * 3 + 2]);
+  }
+  const pick = (arr, max) => { const m = arr.length / 3; if (m <= max) return new Float32Array(arr); const st = m / max, out = new Float32Array(max * 3); for (let j = 0; j < max; j++) { const i = Math.floor(j * st) * 3; out[j * 3] = arr[i]; out[j * 3 + 1] = arr[i + 1]; out[j * 3 + 2] = arr[i + 2]; } return out; };
+  return { teeth: pick(teeth, 8000), all: pick(all, 80000), byColour };
+}
+
+/* ---------- البحث الشامل ثم المطابقة الدقيقة ---------- */
+const m3mul = (A, B) => { const C = new Array(9).fill(0); for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) for (let k = 0; k < 3; k++) C[r * 3 + c] += A[r * 3 + k] * B[k * 3 + c]; return C; };
+const m3cols = (a, b, c) => [a[0], b[0], c[0], a[1], b[1], c[1], a[2], b[2], c[2]];
+const m3T = (A) => [A[0], A[3], A[6], A[1], A[4], A[7], A[2], A[5], A[8]];
+function m3rot(ax, ay, az) { const [cx, sx, cy, sy, cz, sz] = [Math.cos(ax), Math.sin(ax), Math.cos(ay), Math.sin(ay), Math.cos(az), Math.sin(az)]; return m3mul(m3mul([cz, -sz, 0, sz, cz, 0, 0, 0, 1], [cy, 0, sy, 0, 1, 0, -sy, 0, cy]), [1, 0, 0, 0, cx, -sx, 0, sx, cx]); }
+// إطارات الأشعة المحتملة: الأجهزة تختلف في اتجاه ترتيب الشرائح والصفوف، فنجرّبها ونختار الأفضل
+function fuFrames(mirror) {
+  const out = [];
+  for (const up of [[0, 0, 1], [0, 0, -1]]) for (const ant of [[0, -1, 0], [0, 1, 0]]) {
+    let r = [ant[1] * up[2] - ant[2] * up[1], ant[2] * up[0] - ant[0] * up[2], ant[0] * up[1] - ant[1] * up[0]];
+    if (mirror) r = r.map((x) => -x);
+    out.push(m3cols(r, ant, up));
+  }
+  return out;
+}
+async function fuSearch(src, edt, box, mirror, onProg, edt2) {
+  const F = M.frame, Fs = m3cols(F.right.toArray(), F.ant.toArray(), F.up.toArray()), FsT = m3T(Fs);
+  const n = Math.min(220, src.length / 3), st = src.length / 3 / n, sub = new Float32Array(n * 3); let cx = 0, cy = 0, cz = 0;
+  for (let j = 0; j < n; j++) { const i = Math.floor(j * st) * 3; sub[j * 3] = src[i]; sub[j * 3 + 1] = src[i + 1]; sub[j * 3 + 2] = src[i + 2]; cx += src[i] / n; cy += src[i + 1] / n; cz += src[i + 2] / n; }
+  const { d, gx, gy, gz, c } = edt, K = 5, q = new Float32Array(n * 3), deg = Math.PI / 180, all = [];
+  const rots = []; for (const yaw of [-14, -7, 0, 7, 14]) for (const pit of [-8, 0, 8]) for (const rol of [-6, 0, 6]) rots.push(m3rot(rol * deg, pit * deg, yaw * deg));
+  const frames = fuFrames(mirror); let done = 0;
+  // لكل إطار محتمل نحتفظ بأفضل مرشحيه، حتى لا يطغى إطار مقلوب على الصحيح (القوس شبه متناظر)
+  for (const Fc of frames) {
+    const top = [];
+    for (const Rp of rots) {
+      // R = Fc · Rp · Fsᵀ  (من محاور الطبعة إلى محاور الأشعة مع انحراف بسيط)
+      const R = m3mul(m3mul(Fc, Rp), FsT);
+      for (let j = 0; j < n; j++) { const x = sub[j * 3] - cx, y = sub[j * 3 + 1] - cy, z = sub[j * 3 + 2] - cz; q[j * 3] = R[0] * x + R[1] * y + R[2] * z; q[j * 3 + 1] = R[3] * x + R[4] * y + R[5] * z; q[j * 3 + 2] = R[6] * x + R[7] * y + R[8] * z; }
+      for (let tz = box[2] - 4; tz <= box[5] + 4; tz += 3) for (let ty = box[1] - 4; ty <= box[4] + 4; ty += 3) for (let tx = box[0] - 4; tx <= box[3] + 4; tx += 3) {
+        const lim = top.length < K ? 1e9 : top[top.length - 1].s * n; let s = 0, j = 0;
+        for (; j < n; j++) {
+          const xi = Math.round((q[j * 3] + tx) / c), yi = Math.round((q[j * 3 + 1] + ty) / c), zi = Math.round((q[j * 3 + 2] + tz) / c);
+          s += xi < 0 || yi < 0 || zi < 0 || xi >= gx || yi >= gy || zi >= gz ? 6 : d[(zi * gy + yi) * gx + xi];
+          if (s > lim) break;
+        }
+        if (j < n) continue;
+        const sc = s / n;
+        // لا نكرر مرشحين متجاورين: نحتفظ بالأفضل في كل جوار 4 ملم
+        const near = top.findIndex((o) => Math.abs(o.tx - tx) < 4 && Math.abs(o.ty - ty) < 4 && Math.abs(o.tz - tz) < 4);
+        if (near >= 0) { if (sc < top[near].s) top.splice(near, 1); else continue; }
+        if (top.length < K || sc < top[top.length - 1].s) { top.push({ s: sc, R, tx, ty, tz, t: [tx - (R[0] * cx + R[1] * cy + R[2] * cz), ty - (R[3] * cx + R[4] * cy + R[5] * cz), tz - (R[6] * cx + R[7] * cy + R[8] * cz)] }); top.sort((a, b) => a.s - b.s); if (top.length > K) top.pop(); }
+      }
+      if (++done % 15 === 0) { onProg && onProg(done / (frames.length * rots.length)); await fuTick(); }
+    }
+    all.push(...top);
+  }
+  const { d: d2, gx: gx2, gy: gy2, gz: gz2, c: c2 } = edt2 || edt;
+  // صقل محلي لكل مرشح على خريطة المسافة: خطوات صغيرة في الإزاحة والدوران حتى لا يتحسن
+  const m = Math.min(700, src.length / 3), st2 = src.length / 3 / m, rel = new Float32Array(m * 3);
+  for (let j = 0; j < m; j++) { const i = Math.floor(j * st2) * 3; rel[j * 3] = src[i] - cx; rel[j * 3 + 1] = src[i + 1] - cy; rel[j * 3 + 2] = src[i + 2] - cz; }
+  const ev = (R, t) => { let s = 0; for (let j = 0; j < m; j++) { const x = rel[j * 3], y = rel[j * 3 + 1], z = rel[j * 3 + 2]; const xi = Math.round((R[0] * x + R[1] * y + R[2] * z + t[0]) / c2), yi = Math.round((R[3] * x + R[4] * y + R[5] * z + t[1]) / c2), zi = Math.round((R[6] * x + R[7] * y + R[8] * z + t[2]) / c2); s += xi < 0 || yi < 0 || zi < 0 || xi >= gx2 || yi >= gy2 || zi >= gz2 ? 6 : d2[(zi * gy2 + yi) * gx2 + xi]; } return s / m; };
+  for (const cd of all) {
+    let R = cd.R, t = [cd.tx, cd.ty, cd.tz], best = ev(R, t);
+    for (const [dt, da] of [[1.5, 3], [0.75, 1.5], [0.35, 0.7], [0.15, 0.3]]) {
+      for (let it = 0; it < 30; it++) {
+        let imp = false;
+        for (let k = 0; k < 12; k++) {
+          const sg = k & 1 ? -1 : 1, ax = k >> 1; let R2 = R, t2 = t;
+          if (ax < 3) { t2 = t.slice(); t2[ax] += sg * dt; } else { const e = [0, 0, 0]; e[ax - 3] = sg * da * deg; R2 = m3mul(m3rot(e[0], e[1], e[2]), R); }
+          const v2 = ev(R2, t2); if (v2 < best - 1e-4) { best = v2; R = R2; t = t2; imp = true; }
+        }
+        if (!imp) break;
+      }
+    }
+    cd.R = R; cd.s = best; cd.t = [t[0] - (R[0] * cx + R[1] * cy + R[2] * cz), t[1] - (R[3] * cx + R[4] * cy + R[5] * cz), t[2] - (R[6] * cx + R[7] * cy + R[8] * cz)];
+  }
+  all.sort((a, b) => a.s - b.s);
+  return all.slice(0, 6).map((c) => new M.T.Matrix4().set(c.R[0], c.R[1], c.R[2], c.t[0], c.R[3], c.R[4], c.R[5], c.t[1], c.R[6], c.R[7], c.R[8], c.t[2], 0, 0, 0, 1));
+}
+function fuMedian(src, Mx, grid) {
+  const v = new M.T.Vector3(), ds = []; const n = src.length / 3, st = Math.max(1, Math.floor(n / 3000));
+  for (let i = 0; i < n; i += st) { v.set(src[i * 3], src[i * 3 + 1], src[i * 3 + 2]).applyMatrix4(Mx); const r = grid.nearest(v.x, v.y, v.z, 3); ds.push(r ? Math.sqrt(r[1]) : 3); }
+  ds.sort((a, b) => a - b); return ds[ds.length >> 1];
+}
+async function fuRegister(jaw, T, mirror, onProg) {
+  const cands = await fuSearch(jaw.sp.teeth, T.edt, T.box, mirror, onProg, T.edt2);
+  const n2 = Math.min(1500, jaw.sp.teeth.length / 3), st = jaw.sp.teeth.length / 3 / n2, small = new Float32Array(n2 * 3);
+  for (let j = 0; j < n2; j++) { const i = Math.floor(j * st) * 3; small.set(jaw.sp.teeth.subarray(i, i + 3), j * 3); }
+  let best = null;
+  for (const init of cands) { const r = icp(small, T.pts, { trim: 0.7, coarse: T.coarse, fine: T.fine, init, start: 15, iters: 35 }); if (!best || r.score > best.score) best = r; await fuTick(); }
+  const fin = icp(jaw.sp.teeth, T.pts, { trim: 0.75, coarse: T.coarse, fine: T.fine, init: best.M, start: 30, iters: 40 });
+  const r = fin.score >= best.score * 0.95 ? fin : best;
+  r.med = fuMedian(jaw.sp.teeth, r.M, T.fine);
+  return r;
+}
+function fuTarget(pts, ext, box) { // البحث التقريبي على نقاط مخففة (نقطة لكل 1 ملم) والدقيق على كل النقاط
+  const seen = new Set(), sm = [];
+  for (let i = 0; i < pts.length; i += 3) { const k = Math.round(pts[i]) * 1e6 + Math.round(pts[i + 1]) * 1e3 + Math.round(pts[i + 2]); if (!seen.has(k)) { seen.add(k); sm.push(pts[i], pts[i + 1], pts[i + 2]); } }
+  return { pts, ext, box, coarse: new PtGrid(new Float32Array(sm), 4), fine: new PtGrid(pts, 1.5), edt: fuEDT(pts, ext, 1), edt2: fuEDT(pts, ext, 0.5) };
+}
+function fuWithout(T, jawAll, Mx) { // نحذف من سطح الأشعة ما يخص الفك الذي طابقناه، ليبحث الفك الآخر في أسنانه هو
+  const v = new M.T.Vector3(), q = new Float32Array(jawAll.length);
+  for (let i = 0; i < jawAll.length; i += 3) { v.set(jawAll[i], jawAll[i + 1], jawAll[i + 2]).applyMatrix4(Mx); q[i] = v.x; q[i + 1] = v.y; q[i + 2] = v.z; }
+  const g = new PtGrid(q, 1.5), keep = [];
+  for (let i = 0; i < T.pts.length; i += 3) if (!g.nearest(T.pts[i], T.pts[i + 1], T.pts[i + 2], 1.2)) keep.push(T.pts[i], T.pts[i + 1], T.pts[i + 2]);
+  return fuTarget(new Float32Array(keep), T.ext, T.box);
+}
+async function runFusion() {
+  if (FU.busy || !S.vol) return; FU.busy = true; renderFuse();
+  try {
+    const jaws = M.items.filter((i) => !i.merged && !i.dup && (i.type === "upper" || i.type === "lower" || i.type === "jaw"));
+    if (!jaws.length) { fuMsg(tr("لم أجد فكاً علوياً أو سفلياً في ملفات الطبعة.", "No upper or lower jaw found in the scan files."), "err"); return; }
+    fuMsg(tr("استخراج سطح الأسنان من الأشعة…", "Extracting the tooth surface from the CBCT…")); await fuTick();
+    const surf = fuSurface();
+    if (!surf || surf.pts.length < 3000) { fuMsg(tr("لم أجد أسناناً واضحة في هذه الأشعة.", "No clear teeth were found in this CBCT."), "err"); return; }
+    let T = fuTarget(surf.pts, surf.ext, surf.box); await fuTick();
+    jaws.forEach((j) => (j.sp = fuScanPts(j)));
+    const prog = (name) => (x) => fuMsg(tr("مطابقة ", "Matching ") + name + " " + Math.round(x * 100) + "%");
+    const res = new Map(); let mirror = false;
+    // نبدأ بفك واحد (السفلي أولاً عادة، أسنانه أوضح انفصالاً)؛ إن طابق جيداً ثبّتناه وحذفنا أسنانه من الأشعة ثم طابقنا الآخر
+    const order = [...jaws].sort((a, b) => (b.type === "lower") - (a.type === "lower"));
+    let anchor = null;
+    for (const j of order) {
+      res.set(j, await fuRegister(j, T, mirror, prog(itemLabel(j))));
+      if (res.get(j).score >= 0.6) { anchor = j; break; }
+    }
+    if (!anchor) { // ربما الأشعة مخزّنة معكوسة يميناً ويساراً
+      const best0 = Math.max(...[...res.values()].map((r) => r.score));
+      if (best0 < 0.35) { mirror = true; for (const j of order) { const r = await fuRegister(j, T, true, prog(itemLabel(j))); if (!res.has(j) || r.score > res.get(j).score) res.set(j, r); else mirror = false; } }
+      anchor = [...res.keys()].sort((a, b) => res.get(b).score - res.get(a).score)[0];
+    }
+    let Tr = fuWithout(T, anchor.sp.all, res.get(anchor).M);
+    for (const j of order) {
+      if (j === anchor) continue;
+      const r = await fuRegister(j, Tr, mirror, prog(itemLabel(j)));
+      if (!res.has(j) || r.score > res.get(j).score) res.set(j, r);
+      Tr = fuWithout(Tr, j.sp.all, res.get(j).M);
+    }
+    // التعويضات والزرعات المصممة على الطبعة تتبع فكّها
+    const extras = M.items.filter((i) => !i.merged && !i.dup && ["resto", "implant", "prep", "gingiva"].includes(i.type));
+    FU.items = [];
+    const v = new M.T.Vector3();
+    const add = (it, r, type) => {
+      const pos = [], idx = []; let base = 0;
+      meshesOf(it).forEach((m) => {
+        const g = m.geometry, p = g.getAttribute("position"), W = m.matrixWorld.clone().premultiply(r.M);
+        for (let i = 0; i < p.count; i++) { v.set(p.getX(i), p.getY(i), p.getZ(i)).applyMatrix4(W); pos.push(v.x, v.y, v.z); }
+        if (g.index) { const a = g.index.array; for (let i = 0; i < a.length; i++) idx.push(a[i] + base); } else for (let i = 0; i < p.count; i++) idx.push(i + base);
+        base += p.count;
+      });
+      FU.items.push({ it, type, name: itemLabel(it), base: it.base, pos: new Float32Array(pos), idx: Uint32Array.from(idx), score: r.score, med: r.med, visible: true, col: FU_COL[type] || FU_COL.other });
+    };
+    jaws.forEach((j) => add(j, res.get(j), j.type === "jaw" ? "upper" : j.type));
+    for (const e of extras) {
+      const c = new M.T.Box3().setFromObject(e.object).getCenter(new M.T.Vector3()); let bj = jaws[0], bd = 1e9;
+      for (const j of jaws) { const a = j.sp.all; for (let i = 0; i < a.length; i += 30) { const dd = (a[i] - c.x) ** 2 + (a[i + 1] - c.y) ** 2 + (a[i + 2] - c.z) ** 2; if (dd < bd) { bd = dd; bj = j; } } }
+      add(e, res.get(bj), e.type);
+    }
+    jaws.forEach((j) => (j.sp = null));
+    FU.ver++; FU.show = true; FU.mirror = mirror;
+    const worst = Math.max(...jaws.map((j) => res.get(j).med)), good = jaws.every((j) => res.get(j).score > 0.45 && res.get(j).med < 0.4);
+    fuMsg((good ? "✓ " : "⚠ ") + tr("دُمجت الطبعة مع الأشعة · الخطأ الوسيط ", "Scan fused with the CBCT · median error ") + worst.toFixed(2) + tr(" ملم", " mm") + (good ? "" : tr(" — تحقق بالعين، وقد تحتاج أشعة أوضح أو طبعة كاملة.", " — check visually; a clearer CBCT or a complete scan may be needed.")), good ? "ok" : "warn");
+    requestRender();
+  } catch (e) { console.error(e); fuMsg(tr("تعذّر الدمج: ", "Fusion failed: ") + (e.message || e), "err"); }
+  finally { FU.busy = false; renderFuse(); }
+}
+
+/* ---------- قراءة ملفات الطبعة ---------- */
+function fuExtract(file) {
+  return new Promise((resolve, reject) => {
+    const out = []; let w; try { w = new Worker("cbct-worker.js"); } catch (e) { reject(e); return; }
+    w.onerror = (e) => { w.terminate(); reject(new Error(e.message || "worker")); };
+    w.onmessage = (ev) => { const d = ev.data;
+      if (d.type === "file" && (d.kind === "mesh" || d.kind === "mesh-aux")) out.push({ name: d.path, kind: d.kind, data: d.data });
+      else if (d.type === "read") fuMsg(tr("قراءة الملف… ", "Reading the file… ") + Math.round(d.done / d.total * 100) + "%");
+      else if (d.type === "error") { w.terminate(); reject(new Error(d.message)); }
+      else if (d.type === "done") { w.terminate(); resolve(out); } };
+    w.postMessage({ cmd: "extract", file });
+  });
+}
+async function fuLoad(files) {
+  if (FU.busy) return;
+  FU.busy = true; renderFuse();
+  try {
+    let list = [];
+    for (const f of files) {
+      if (f.data || f.file) { list.push(f); continue; }
+      if (isArchive(f.name)) list.push(...(await fuExtract(f))); else if (MESH_RE.test(f.name) || MESH_AUX_RE.test(f.name)) list.push({ name: f.webkitRelativePath || f.name, file: f });
+    }
+    if (!list.some((f) => MESH_RE.test(f.name))) { fuMsg(tr("لا توجد ملفات طبعة (STL أو PLY أو OBJ) في ما اخترته.", "No scan files (STL, PLY or OBJ) in what you picked."), "err"); return; }
+    fuMsg(tr("تحميل أداة العرض ثلاثي الأبعاد…", "Loading the 3D tools…")); await loadThree();
+    fuMsg(tr("قراءة ملفات الطبعة…", "Reading the scan files…")); await fuTick();
+    const items = await buildItems(list);
+    if (!items.length) { fuMsg(tr("لم أستطع قراءة ملفات الطبعة.", "The scan files could not be read."), "err"); return; }
+    M.items.forEach((it) => M.scene && M.scene.remove(it.object));
+    M.items = items; M.files = list.filter((f) => MESH_RE.test(f.name)).map((f) => fileBase(f.name)); analyzeScene();
+    FU.files = list;
+  } catch (e) { console.error(e); fuMsg(tr("تعذّر فتح ملفات الطبعة: ", "Could not open the scan files: ") + (e.message || e), "err"); return; }
+  finally { FU.busy = false; }
+  await runFusion();
+}
+
+/* ---------- الرسم فوق المقاطع ---------- */
+// تقاطع سطح الطبعة مع مستوى المقطع: لكل مثلث تتغير إشارة المسافة على حوافه نرسم قطعة مستقيمة
+function fuCut(F, dist, proj) {
+  const I = F.idx, out = [];
+  for (let f = 0; f < I.length; f += 3) {
+    const a = I[f], b = I[f + 1], c = I[f + 2], da = dist[a], db = dist[b], dc = dist[c];
+    if (da !== da || db !== db || dc !== dc) continue;
+    const pa = da >= 0, pb = db >= 0, pc = dc >= 0; if (pa === pb && pb === pc) continue;
+    let k = 0; const L = out.length;
+    if (pa !== pb) { proj(out, a, b, da / (da - db)); k++; }
+    if (pb !== pc) { proj(out, b, c, db / (db - dc)); k++; }
+    if (pc !== pa && k < 2) { proj(out, c, a, dc / (dc - da)); k++; }
+    if (k !== 2) out.length = L;
+  }
+  return out;
+}
+function fuPanoMap(F) { // لكل رأس: موضعه على القوس (s) وبُعده عنه (o)، لرسم الطبعة على البانوراما
+  if (F._pv === S.curveVer) return; const c = S.curve, v = S.vol, B = 8, cells = new Map();
+  for (let i = 0; i < c.L; i++) { const k = Math.floor(c.X[i] / B) + "," + Math.floor(c.Y[i] / B); (cells.get(k) || cells.set(k, []).get(k)).push(i); }
+  const n = F.pos.length / 3, s = new Float32Array(n), o = new Float32Array(n);
+  for (let j = 0; j < n; j++) {
+    const x = F.pos[j * 3] / v.sx, y = F.pos[j * 3 + 1] / v.sy, gx = Math.floor(x / B), gy = Math.floor(y / B); let bi = -1, bd = 1e18;
+    for (let a = -2; a <= 2; a++) for (let b = -2; b <= 2; b++) { const arr = cells.get((gx + a) + "," + (gy + b)); if (arr) for (const i of arr) { const dd = (c.X[i] - x) ** 2 + (c.Y[i] - y) ** 2; if (dd < bd) { bd = dd; bi = i; } } }
+    if (bi < 0 || bi === 0 || bi === c.L - 1) { s[j] = NaN; o[j] = NaN; continue; }
+    s[j] = bi; o[j] = (x - c.X[bi]) * c.NX[bi] + (y - c.Y[bi]) * c.NY[bi];
+  }
+  F._ps = s; F._po = o; F._pv = S.curveVer;
+}
+function fuSegments(p, F) {
+  const v = S.vol, c = S.cur, P = F.pos, n = P.length / 3; let key, dist, proj;
+  const Z = (z) => v.nz - 1 - z / v.sz + 0.5;
+  if (p.view === "axial") { const z0 = c.z * v.sz; key = "a" + c.z; dist = (j) => P[j * 3 + 2] - z0; proj = (o, a, b, t) => o.push((P[a * 3] + (P[b * 3] - P[a * 3]) * t) / v.sx + 0.5, (P[a * 3 + 1] + (P[b * 3 + 1] - P[a * 3 + 1]) * t) / v.sy + 0.5); }
+  else if (p.view === "coronal") { const y0 = c.y * v.sy; key = "c" + c.y; dist = (j) => P[j * 3 + 1] - y0; proj = (o, a, b, t) => o.push((P[a * 3] + (P[b * 3] - P[a * 3]) * t) / v.sx + 0.5, Z(P[a * 3 + 2] + (P[b * 3 + 2] - P[a * 3 + 2]) * t)); }
+  else if (p.view === "sagittal") { const x0 = c.x * v.sx; key = "s" + c.x; dist = (j) => P[j * 3] - x0; proj = (o, a, b, t) => o.push((P[a * 3 + 1] + (P[b * 3 + 1] - P[a * 3 + 1]) * t) / v.sy + 0.5, Z(P[a * 3 + 2] + (P[b * 3 + 2] - P[a * 3 + 2]) * t)); }
+  else if (p.view === "cross" && S.curve && p.map && p.map.img) {
+    const cv = S.curve, i = clamp(Math.round(S.crossS), 0, cv.L - 1), qx = cv.X[i] * v.sx, qy = cv.Y[i] * v.sy, nx = cv.NX[i], ny = cv.NY[i], hw = p.map.img.hw;
+    key = "x" + S.curveVer + ":" + i; dist = (j) => (P[j * 3] - qx) * -ny + (P[j * 3 + 1] - qy) * nx;
+    proj = (o, a, b, t) => { const x = P[a * 3] + (P[b * 3] - P[a * 3]) * t, y = P[a * 3 + 1] + (P[b * 3 + 1] - P[a * 3 + 1]) * t, z = P[a * 3 + 2] + (P[b * 3 + 2] - P[a * 3 + 2]) * t; o.push(hw + ((x - qx) * nx + (y - qy) * ny) / v.sx + 0.5, Z(z)); };
+  }
+  else if (p.view === "pano" && S.curve) {
+    fuPanoMap(F); const s = F._ps, o = F._po; key = "p" + S.curveVer;
+    dist = (j) => o[j]; proj = (out, a, b, t) => { if (Math.abs(s[a] - s[b]) > 15) { out.push(NaN, NaN); return; } out.push(s[a] + (s[b] - s[a]) * t + 0.5, Z(P[a * 3 + 2] + (P[b * 3 + 2] - P[a * 3 + 2]) * t)); };
+  }
+  else return null;
+  key += ":" + FU.ver + ":" + S.volVer;
+  if (F._cache && F._cache[p.view] && F._cache[p.view].key === key) return F._cache[p.view].seg;
+  const d = new Float32Array(n); for (let j = 0; j < n; j++) d[j] = dist(j);
+  const seg = fuCut(F, d, proj);
+  (F._cache ||= {})[p.view] = { key, seg };
+  return seg;
+}
+function drawFusion(p) {
+  if (!FU.show || !FU.items.length || !p.map) return;
+  const ctx = p.ctx;
+  for (const F of FU.items) {
+    if (!F.visible) continue;
+    const seg = fuSegments(p, F); if (!seg || !seg.length) continue;
+    ctx.save(); ctx.strokeStyle = F.col; ctx.lineWidth = FU.width; ctx.lineCap = "round"; ctx.globalAlpha = 0.95; ctx.beginPath();
+    for (let i = 0; i < seg.length; i += 4) { if (seg[i] !== seg[i] || seg[i + 2] !== seg[i + 2]) continue; const [X1, Y1] = toScreen(p, seg[i], seg[i + 1]), [X2, Y2] = toScreen(p, seg[i + 2], seg[i + 3]); ctx.moveTo(X1, Y1); ctx.lineTo(X2, Y2); }
+    ctx.stroke(); ctx.restore();
+  }
+}
+
+/* ---------- اللوحة ---------- */
+function renderFuse() {
+  const has = FU.items.length > 0, b = $("btnFuse"); if (!b) return;
+  b.setAttribute("aria-pressed", has && FU.show ? "true" : "false");
+  $("fuArchive").hidden = !(S.archiveMeshes && !has && !FU.busy);
+  $("fuAdd").disabled = FU.busy; $("fuRerun").hidden = !has || FU.busy; $("fuClear").hidden = !has || FU.busy; $("fuShowRow").hidden = !has;
+  $("fuShow").checked = FU.show;
+  $("fuList").innerHTML = FU.items.map((F, i) => `<button type="button" data-fi="${i}" aria-pressed="${F.visible}" style="--c:${F.col}"><i></i>${esc(F.name)}${F.med != null && (F.type === "upper" || F.type === "lower") ? ` <span class="num">${F.med.toFixed(2)}</span>` : ""}</button>`).join("");
+  $("fuList").querySelectorAll("[data-fi]").forEach((x) => (x.onclick = () => { const F = FU.items[+x.dataset.fi]; F.visible = !F.visible; renderFuse(); requestRender(); }));
+  if (!has && !FU.busy && !$("fuMsg").textContent) fuMsg(tr("أضف ملفات الطبعة الرقمية (STL أو PLY أو OBJ، أو ملف مضغوط فيه الطبعات) لنفس المريض، وسأطابقها على الأسنان في الأشعة تلقائياً.", "Add the patient's intraoral scan files (STL, PLY, OBJ, or a ZIP of them) and they will be matched to the teeth in the CBCT automatically."));
+}
+function fuReset() { FU.items = []; FU.ver++; FU.files = null; $("fuMsg").textContent = ""; renderFuse(); requestRender(); }
+function initFuse() {
+  $("btnFuse").onclick = () => { const p = $("fusePop"); p.hidden = !p.hidden; $("btnFuse").setAttribute("aria-expanded", !p.hidden); renderFuse(); };
+  $("fuClose").onclick = () => { $("fusePop").hidden = true; $("btnFuse").setAttribute("aria-expanded", "false"); };
+  $("fuAdd").onclick = () => $("fuIn").click();
+  $("fuIn").onchange = (e) => { const f = [...e.target.files]; e.target.value = ""; if (f.length) fuLoad(f); };
+  $("fuArchive").onclick = () => { if (S.archiveMeshes) fuLoad(S.archiveMeshes); };
+  $("fuRerun").onclick = () => runFusion();
+  $("fuClear").onclick = () => fuReset();
+  $("fuShow").onchange = (e) => { FU.show = e.target.checked; renderFuse(); requestRender(); };
+}
+
+/* ---------- ترحيب أول مرة: ما يقدّمه العارض وأهمية دمج الطبعة ---------- */
+const WELCOME_VER = "2";
+function renderWelcomeInstall() {
+  const dev = isIOS() ? "ios" : /Android/i.test(navigator.userAgent) ? "android" : "pc";
+  const pick = (d) => { $("wTabs").querySelectorAll("[data-dev]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.dev === d)); document.querySelectorAll(".wSteps").forEach((o) => (o.hidden = o.dataset.dev !== d)); };
+  $("wTabs").querySelectorAll("[data-dev]").forEach((b) => (b.onclick = () => pick(b.dataset.dev)));
+  pick(dev);
+  const inst = isStandalone(); $("wInstDone").hidden = !inst; $("wTabs").hidden = inst; document.querySelectorAll(".wSteps").forEach((o) => inst && (o.hidden = true));
+  $("wInstNow").hidden = inst || !INST.evt;
+}
+function showWelcome() { renderWelcomeInstall(); const w = $("welcome"); w.dir = S.lang === "en" ? "ltr" : "rtl"; w.lang = S.lang; w.hidden = false; w.scrollTop = 0; }
+function hideWelcome() { $("welcome").hidden = true; try { localStorage.setItem("cbct.welcome", WELCOME_VER); } catch (_) {} }
+function initWelcome() {
+  $("wStart").onclick = hideWelcome;
+  $("wGuide").onclick = () => { hideWelcome(); openLearn("fusion"); };
+  $("welcome").addEventListener("click", (e) => { if (e.target.id === "welcome") hideWelcome(); });
+  $("btnWhat").onclick = showWelcome;
+  $("wInstNow").onclick = async () => { if (!INST.evt) return; INST.evt.prompt(); try { await INST.evt.userChoice; } catch (_) {} INST.evt = null; renderWelcomeInstall(); renderInstall(); };
+  let seen = null; try { seen = localStorage.getItem("cbct.welcome"); } catch (_) {}
+  // لا نقاطع زميلاً فتح رابطاً مشتركاً
+  if (seen !== WELCOME_VER && !/[#&]c=/.test(location.hash)) setTimeout(() => { if (!$("startScreen").hidden) showWelcome(); }, 400);
+}
 /* ============================================================
    تتبّع القناة الذكي بين نقاط يضعها الطبيب
    بين كل نقطتين متتاليتين نبحث في المقاطع العرضية عن «ثقب داكن تحيطه حلقة بيضاء»،
@@ -2565,6 +4159,7 @@ function drawPane(p) {
   if (img.flipV) { ctx.translate(0, dh); ctx.scale(1, -1); }
   ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = "high";
   ctx.drawImage(p.off, 0, 0, dw, dh); ctx.restore();
+  drawFusion(p);
   drawOverlays(p);
   // معلومات النافذة
   const v = S.vol;
@@ -3029,7 +4624,7 @@ $("qFull").onclick = () => { setQuality("full"); try { localStorage.setItem("cbc
 $("qHalf").onclick = () => { setQuality("half"); try { localStorage.setItem("cbct.quality", "half"); } catch (_) {} };
 $("btnOpen").onclick = () => $("inFile").click();
 $("btnFolder").onclick = () => $("inFolder").click();
-$("inFile").onchange = (e) => { const f = e.target.files[0]; e.target.value = ""; openFile(f); };
+$("inFile").onchange = (e) => { const fs = [...e.target.files]; e.target.value = ""; if (fs.length === 1) openFile(fs[0]); else if (fs.length) openLoose(fs); };
 $("inFolder").onchange = (e) => { const fs = [...e.target.files]; e.target.value = ""; if (fs.length) openLoose(fs); };
 $("btnDemo").onclick = async () => { showLoading(tr("نموذج اصطناعي", "Synthetic phantom")); setLoad(tr("توليد نموذج تجريبي…", "Generating the demo phantom…"), null); await new Promise((r) => setTimeout(r, 30)); clearInterval(loadTimer); startViewer(makePhantom()); };
 const drop = $("drop");
@@ -3084,6 +4679,9 @@ $("nerveDelPt").onclick = () => deleteCanalPoint();
 $("safeIn").onchange = (e) => { const v = parseFloat(e.target.value); if (v > 0 && v <= 5) { S.safety = v; updateSheet(); requestRender(); } };
 $("layoutSeg").querySelectorAll("button").forEach((b) => (b.onclick = () => { buildPanes(+b.dataset.n); assignDefaultViews(); }));
 initShare();
+initModels();
+initWelcome();
+initFuse();
 /* ===== السطوع والتباين: فوق النافذة المختارة من القائمة ===== */
 function adjWin(w) {
   const c = (w.lo + w.hi) / 2, wd = Math.max(20, w.hi - w.lo), wd2 = wd * 100 / S.adj.c, c2 = c - (S.adj.b / 100) * wd * 0.5;
@@ -3127,7 +4725,7 @@ function renderInstall() {
     $("btnInstall").hidden = true; card.hidden = false;
   } else card.hidden = true;
 }
-addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); INST.evt = e; renderInstall(); });
+addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); INST.evt = e; renderInstall(); if (typeof renderWelcomeInstall === "function" && !$("welcome").hidden) renderWelcomeInstall(); });
 addEventListener("appinstalled", () => { INST.evt = null; $("installCard").hidden = true; toast(tr("ثُبّت العارض. ستجده على الشاشة الرئيسية.", "Installed. You'll find it on your home screen.")); });
 $("btnInstall").onclick = async () => { if (!INST.evt) return; INST.evt.prompt(); try { await INST.evt.userChoice; } catch (_) {} INST.evt = null; renderInstall(); };
 $("installLater").onclick = () => { try { localStorage.setItem("cbct.installLater", "1"); } catch (_) {} $("installCard").hidden = true; };
@@ -3184,9 +4782,10 @@ function applyLang() {
   const en = S.lang === "en";
   document.querySelectorAll("[data-en]").forEach((el) => { if (el.dataset.ar === undefined) el.dataset.ar = el.innerHTML; el.innerHTML = en ? el.dataset.en : el.dataset.ar; });
   [$("app"), $("drawerMeasures"), $("drawerSettings"), $("drawerLib"), $("drawerLearn"), $("drawerShare"), $("drawerPeer")].forEach((el) => { el.dir = en ? "ltr" : "rtl"; el.lang = en ? "en" : "ar"; });
-  fillSysSelect(); if (typeof renderInstall === "function") renderInstall(); if (!$("drawerLib").hidden) renderLib(); if (!$("drawerLearn").hidden) renderLearn(); if (!$("drawerShare").hidden) refreshShare(); renderCaseList(); showPendingBanner(); S.panes.forEach((p) => p.tipCard && (p.tipCard.hidden = true));
+  fillSysSelect(); if (typeof renderInstall === "function") renderInstall(); if (!$("drawerLib").hidden) renderLib(); if (!$("drawerLearn").hidden) renderLearn(); if (!$("drawerShare").hidden) refreshShare(); renderCaseList(); showPendingBanner(); if (isModelMode()) { renderLayers(); $("mTitle").textContent = M.title; } S.panes.forEach((p) => p.tipCard && (p.tipCard.hidden = true));
   { const sel = S.implants.find((m) => m.id === S.sel); if (sel) fillSizeSelects(sel); }
   document.documentElement.lang = en ? "en" : "ar";
+  { const w = $("welcome"); if (w) { w.dir = en ? "ltr" : "rtl"; w.lang = en ? "en" : "ar"; } }
   document.querySelectorAll(".langSeg button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.lang === S.lang));
   deviceCheck(true);
   updateUndoBtn();
