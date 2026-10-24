@@ -905,8 +905,19 @@ function openArchive(file) {
     else if (d.type === "file") {
       try { asm.add(d.kind, d.path, d.data); } catch (e) { worker.terminate(); backToStart(errText(e)); return; }
       slices = asm.nnt.size + asm.dicom.length;
-      setLoad(tr("استخراج الشرائح: ", "Extracting slices: ") + slices, 0.25 + 0.7 * Math.min(1, slices / 700));
+      if (!asm._est) setLoad(tr("استخراج الشرائح: ", "Extracting slices: ") + slices, 0.25 + 0.7 * Math.min(1, slices / 700));
     }
+    else if (d.type === "estimate") {
+      asm._est = true;
+      // ZIP يُقرأ بالأجزاء، ونعرف حجم الأشعة قبل فكّها. على جهاز لم يثبت أنه قوي نخفف الدقة إن كانت لن تتسع في الذاكرة.
+      const big = d.bytes > (S.tier && S.tier.mobile ? 420e6 : 1.6e9);
+      if (asm.f === 1 && big && !(S.tier && S.tier.tier === "full" && !S.tier.mobile)) {
+        asm.f = 2; setQuality("half");
+        toast(tr("الأشعة كبيرة على ذاكرة هذا الجهاز (", "This scan is large for this device's memory (") + Math.round(d.bytes / 1048576) + tr(" ميغابايت)، فتحناها بالدقة المخففة.", " MB), so it opens at reduced resolution."), 5000);
+      }
+      setLoad(tr("استخراج الشرائح مباشرة من الملف…", "Extracting slices directly from the file…"), 0.05);
+    }
+    else if (d.type === "zipprog") { slices = d.sent; setLoad(tr("استخراج الشرائح: ", "Extracting slices: ") + d.sent + " / " + d.files, 0.05 + 0.9 * d.done / Math.max(1, d.total)); }
     else if (d.type === "progress") { if (!slices) setLoad(tr("فك الضغط… (", "Unpacking… (") + d.seen + tr(" ملف)", " files)"), null); }
     else if (d.type === "error") { worker.terminate(); backToStart(errText(d.message)); }
     else if (d.type === "done") { worker.terminate(); finishLoad(asm); }
