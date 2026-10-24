@@ -245,6 +245,12 @@ html[data-dev="tablet"] .pane footer .step{width:36px;height:34px}
 .sw{width:14px;height:14px;border-radius:3px;flex:none;display:inline-block;transform:translateY(2px);border:1px solid rgba(255,255,255,.25)}
 .check li::marker{content:"☐  "}
 #learnBody{display:flex;flex-direction:column;gap:8px}
+.wlPop{position:fixed;inset-inline:0;margin:0 auto;top:calc(110px + env(safe-area-inset-top,0px));width:min(380px,calc(100% - 24px));background:rgba(17,22,29,.97);border:1px solid var(--line);border-radius:12px;padding:12px 14px;z-index:24;box-shadow:0 12px 40px rgba(0,0,0,.55);display:flex;flex-direction:column;gap:10px}
+.wlRow{display:grid;grid-template-columns:64px 1fr 48px;align-items:center;gap:10px}
+.wlRow input{accent-color:var(--accent);width:100%}
+.wlRow .num{text-align:end;color:var(--fg-dim);font-size:12.5px}
+.wlAct{display:flex;gap:8px;align-items:center}
+@media (max-width:719px){.wlPop{top:auto;bottom:calc(130px + env(safe-area-inset-bottom,0px))}}
 .peerBtn{font-weight:600}
 hr.sep{border:0;border-top:1px solid var(--line);margin:4px 0;width:100%}
 .grid2.tight{gap:10px}
@@ -359,8 +365,9 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
           <div class="drop" id="drop" data-en="or drag and drop the file here">أو اسحب الملف وأفلته هنا</div>
           <div class="formats">
             <span class="chip"><b>NewTom</b> · NNTViewer</span>
-            <span class="chip" data-en="&lt;b&gt;DICOM&lt;/b&gt; uncompressed"><b>DICOM</b> غير مضغوط</span>
-            <span class="chip">RAR · ZIP · 7z</span>
+            <span class="chip" data-en="&lt;b&gt;DICOM&lt;/b&gt; all common types"><b>DICOM</b> بأنواعه الشائعة</span>
+            <span class="chip">JPEG 2000 · JPEG-LS · Lossless · RLE</span>
+            <span class="chip">RAR · ZIP · 7z · ISO</span>
           </div>
           <button class="btn" type="button" id="btnLearnStart" data-en="New to CBCT? Read the beginner's guide">جديد على CBCT؟ اقرأ دليل المبتدئ</button>
       <div id="startErr" hidden></div>
@@ -413,6 +420,7 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
         <option value="metal" data-en="Metal &amp; implants">معادن وزرعات</option>
         <option value="manual" data-en="Manual (drag)">ضبط يدوي بالسحب</option>
       </select>
+      <button class="iconbtn" type="button" id="btnWL" aria-expanded="false" title="السطوع والتباين"><span aria-hidden="true">☀︎</span><span class="hide-phone" data-en=" Brightness"> السطوع</span></button>
       <button class="iconbtn" type="button" id="btnMeasures"><span data-en="Plan">الخطة</span> <span class="num" id="mCount">0</span></button>
       <span class="sep layoutSeg"></span>
       <div class="seg layoutSeg" role="group" aria-label="عدد النوافذ" id="layoutSeg">
@@ -595,6 +603,17 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
   </div>
 </aside>
 <div class="peerNote" id="peerNote" hidden role="status"></div>
+<div class="wlPop" id="wlPop" hidden role="dialog" aria-label="السطوع والتباين">
+  <div class="wlRow"><label for="wlB" data-en="Brightness">السطوع</label><input type="range" id="wlB" min="-100" max="100" step="1" value="0"><span class="num" id="wlBv">0</span></div>
+  <div class="wlRow"><label for="wlC" data-en="Contrast">التباين</label><input type="range" id="wlC" min="40" max="300" step="1" value="100"><span class="num" id="wlCv">100%</span></div>
+  <div class="wlAct">
+    <button class="iconbtn" type="button" id="wlAuto" data-en="Auto">تلقائي</button>
+    <button class="iconbtn" type="button" id="wlReset" data-en="Reset">إعادة</button>
+    <span style="flex:1"></span>
+    <button class="iconbtn" type="button" id="wlClose" data-en="Done">تم</button>
+  </div>
+  <p class="fine" style="margin:0" data-en="Applies to all views. Pick a preset from the list (Teeth &amp; bone, Bone…) and fine-tune here.">يُطبّق على كل النوافذ. اختر من القائمة (أسنان وعظم، عظم…) ثم اضبط هنا بدقة.</p>
+</div>
 <div class="toast" id="toast" hidden role="status"></div>
 
 <script>
@@ -747,8 +766,17 @@ function parseNNTHeader(buf) {
   return meta;
 }
 
+// صيغ DICOM: غير المضغوطة تُقرأ مباشرة، والمضغوطة تُفك بأدوات تُحمَّل عند الحاجة (cbct-codecs.js)
+const NATIVE_TS = new Set(["1.2.840.10008.1.2", "1.2.840.10008.1.2.1", "1.2.840.10008.1.2.2", "1.2.840.10008.1.2.1.99"]);
+const CODEC_TS = { "1.2.840.10008.1.2.4.57": 1, "1.2.840.10008.1.2.4.70": 1, "1.2.840.10008.1.2.4.90": 1, "1.2.840.10008.1.2.4.91": 1, "1.2.840.10008.1.2.4.201": 1, "1.2.840.10008.1.2.4.202": 1, "1.2.840.10008.1.2.4.203": 1, "1.2.840.10008.1.2.4.80": 1, "1.2.840.10008.1.2.4.81": 1, "1.2.840.10008.1.2.5": 1, "1.2.840.10008.1.2.4.50": 1, "1.2.840.10008.1.2.1.99": 1 };
+const CODEC_NAMES = { "1.2.840.10008.1.2.4.51": "JPEG 12-bit", "1.2.840.10008.1.2.4.100": "MPEG2", "1.2.840.10008.1.2.4.102": "MPEG-4", "1.2.840.10008.1.2.4.110": "JPEG XL" };
+let codecsP = null;
+function loadCodecs() {
+  if (window.CBCTCodecs) return Promise.resolve();
+  return (codecsP ||= new Promise((res, rej) => { const s = document.createElement("script"); s.src = "cbct-codecs.js"; s.onload = () => res(); s.onerror = () => { codecsP = null; rej(new Error("CODECS_LOAD")); }; document.head.appendChild(s); }));
+}
 class Assembler {
-  constructor(f) { this.f = f; this.nnt = new Map(); this.nntN = 0; this.meta = {}; this.dicom = []; this.unsupported = new Set(); this.names = []; }
+  constructor(f) { this.f = f; this.nnt = new Map(); this.nntN = 0; this.meta = {}; this.dicom = []; this.deferred = []; this.unsupported = new Set(); this.names = []; }
   add(kind, path, buf) {
     const u8 = new Uint8Array(buf, 0, Math.min(buf.byteLength, 140));
     if (kind === "nnt-header" || /\.vdh$/i.test(path)) { Object.assign(this.meta, parseNNTHeader(buf)); this.meta.source = "NewTom (NNTViewer)"; this.studyName(path); return; }
@@ -777,33 +805,90 @@ class Assembler {
   addDicom(buf) {
     if (typeof dicomParser === "undefined") { this.unsupported.add(tr("مكتبة DICOM لم تُحمَّل", "DICOM library not loaded")); return; }
     const u8 = new Uint8Array(buf); let ds;
-    try { ds = dicomParser.parseDicom(u8); } catch (e) { return; }
-    const pix = ds.elements.x7fe00010; if (!pix) return;
+    try { ds = dicomParser.parseDicom(u8, window.CBCTCodecs ? { inflater: CBCTCodecs.inflater } : undefined); }
+    catch (e) { if (/pako|inflat|deflat/i.test(String((e && e.message) || e))) { this.deferred.push(buf); } return; } // Deflated: تُفك بعد تحميل أدوات فك الضغط
+    const pix = ds.elements.x7fe00010; if (!pix) return; // DICOMDIR وملفات التقارير بلا صورة
     const ts = ds.string("x00020010") || "1.2.840.10008.1.2.1";
-    if (pix.encapsulatedPixelData || !["1.2.840.10008.1.2", "1.2.840.10008.1.2.1"].includes(ts)) { this.unsupported.add(ts); return; }
-    const rows = ds.uint16("x00280010"), cols = ds.uint16("x00280011"), bits = ds.uint16("x00280100") || 16;
-    const pr = ds.uint16("x00280103") || 0, spp = ds.uint16("x00280002") || 1;
-    if (spp !== 1 || !rows || !cols) return;
-    const frames = parseInt(ds.string("x00280008") || "1", 10) || 1;
-    const slope = parseFloat(ds.string("x00281053") || "1") || 1, inter = parseFloat(ds.string("x00281052") || "0") || 0;
-    const ps = (ds.string("x00280030") || "").split("\\").map(parseFloat);
-    const ipp = (ds.string("x00200032") || "").split("\\").map(parseFloat);
-    const thick = parseFloat(ds.string("x00180050") || ""), sbs = parseFloat(ds.string("x00180088") || "");
-    const offset = (pr === 1 || inter < 0) ? 32768 : 0;
-    const bpp = bits / 8, fsz = rows * cols * bpp;
-    if (!this.meta.patient) { const n = ds.string("x00100010"); if (n) this.meta.patient = n.replace(/\^/g, " ").trim(); }
-    if (!this.meta.scanDate) { const d = ds.string("x00080020"); if (d && d.length === 8) this.meta.scanDate = `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}`; }
-    this.meta.source = "DICOM";
-    for (let fi = 0; fi < frames; fi++) {
-      const off = pix.dataOffset + fi * fsz; if (off + fsz > u8.length) break;
-      const raw = bits === 16 ? (pr ? new Int16Array(u8.slice(off, off + fsz).buffer) : new Uint16Array(u8.slice(off, off + fsz).buffer)) : u8.subarray(off, off + fsz);
-      let px = new Uint16Array(rows * cols);
-      for (let k = 0; k < px.length; k++) px[k] = clamp(Math.round(raw[k] * slope + inter + offset), 0, 65535);
-      if (this.f === 2) px = avg2(px, cols, rows);
-      this.dicom.push({ series: ds.string("x0020000e") || "s", z: isFinite(ipp[2]) ? ipp[2] : null, inst: parseInt(ds.string("x00200013") || "0", 10) + fi / 1000, frame: fi, frames, rows, cols, ps, thick, sbs, offset, px });
+    const info = this.frameInfo(ds, ts); if (!info) return;
+    if (pix.encapsulatedPixelData || !NATIVE_TS.has(ts)) {
+      if (CODEC_TS[ts]) { this.deferred.push(buf); return; }
+      this.unsupported.add(CODEC_NAMES[ts] || ts); return;
+    }
+    const fsz = info.rows * info.cols * info.bpp, data = ds.byteArray || u8; // في Deflated تكون البيانات المفكوكة في ds.byteArray
+    for (let fi = 0; fi < info.frames; fi++) {
+      const off = pix.dataOffset + fi * fsz; if (off + fsz > data.length) break;
+      let raw;
+      if (info.bits === 16) {
+        const b = data.slice(off, off + fsz);
+        if (ts === "1.2.840.10008.1.2.2") for (let k = 0; k < b.length; k += 2) { const t = b[k]; b[k] = b[k + 1]; b[k + 1] = t; } // Big Endian
+        raw = info.signed ? new Int16Array(b.buffer) : new Uint16Array(b.buffer);
+      } else raw = data.subarray(off, off + fsz);
+      this.pushFrame(info, fi, raw);
     }
   }
-  finish() {
+  // معلومات الصورة، ومنها ملفات Enhanced متعددة الإطارات التي تضع القياسات داخل تسلسلات
+  frameInfo(ds, ts) {
+    const item = (d, tag) => d && d.elements[tag] && d.elements[tag].items && d.elements[tag].items[0] ? d.elements[tag].items[0].dataSet : null;
+    const num = (d, tag) => { if (!d) return undefined; const v = parseFloat(d.string(tag)); return isFinite(v) ? v : undefined; };
+    const arr = (d, tag) => { if (!d) return null; const v = (d.string(tag) || "").split("\\").map(parseFloat); return v.length && v.every(isFinite) ? v : null; };
+    const rows = ds.uint16("x00280010"), cols = ds.uint16("x00280011"), bits = ds.uint16("x00280100") || 16;
+    const spp = ds.uint16("x00280002") || 1; if (spp !== 1 || !rows || !cols) return null; // الصور الملوّنة المصغّرة
+    if (bits !== 8 && bits !== 16) { this.unsupported.add(bits + "-bit"); return null; }
+    const shared = item(ds, "x52009229"), pm = item(shared, "x00289110"), pvt = item(shared, "x00289145"), po = item(shared, "x00209116");
+    const frames = parseInt(ds.string("x00280008") || "1", 10) || 1;
+    const slope = num(ds, "x00281053") ?? num(pvt, "x00281053") ?? 1, inter = num(ds, "x00281052") ?? num(pvt, "x00281052") ?? 0;
+    const ps = arr(ds, "x00280030") || arr(pm, "x00280030") || [NaN, NaN];
+    const thick = num(ds, "x00180050") ?? num(pm, "x00180050"), sbs = num(ds, "x00180088") ?? num(pm, "x00180088");
+    const iop = arr(ds, "x00200037") || arr(po, "x00200037") || [1, 0, 0, 0, 1, 0];
+    const nrm = [iop[1] * iop[5] - iop[2] * iop[4], iop[2] * iop[3] - iop[0] * iop[5], iop[0] * iop[4] - iop[1] * iop[3]];
+    const zOf = (p) => (p ? p[0] * nrm[0] + p[1] * nrm[1] + p[2] * nrm[2] : null);
+    const ipp0 = arr(ds, "x00200032");
+    const perFrame = ds.elements.x52009230 && ds.elements.x52009230.items ? ds.elements.x52009230.items.map((it) => zOf(arr(item(it.dataSet, "x00209113"), "x00200032"))) : null;
+    const signed = (ds.uint16("x00280103") || 0) === 1;
+    if (!this.meta.patient) { const n = ds.string("x00100010"); if (n) this.meta.patient = n.replace(/\^/g, " ").trim(); }
+    if (!this.meta.scanDate) { const d = ds.string("x00080020"); if (d && d.length === 8) this.meta.scanDate = `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}`; }
+    if (!this.meta.maker) { const mk = [ds.string("x00080070"), ds.string("x00081090")].filter(Boolean).join(" "); if (mk) this.meta.maker = mk.trim(); }
+    this.meta.source = "DICOM" + (this.meta.maker ? " · " + this.meta.maker : "");
+    return { rows, cols, bits, bpp: bits / 8, signed, frames, slope, inter, ps, thick, sbs, offset: (signed || inter < 0) ? 32768 : 0,
+      series: ds.string("x0020000e") || "s", inst: parseInt(ds.string("x00200013") || "0", 10), z0: zOf(ipp0), perFrame, ts };
+  }
+  pushFrame(info, fi, raw) {
+    const { rows, cols, slope, inter, offset } = info;
+    let px = new Uint16Array(rows * cols);
+    for (let k = 0; k < px.length; k++) px[k] = clamp(Math.round(raw[k] * slope + inter + offset), 0, 65535);
+    if (this.f === 2) px = avg2(px, cols, rows);
+    const z = info.perFrame && info.perFrame[fi] != null ? info.perFrame[fi] : info.frames > 1 ? null : info.z0;
+    this.dicom.push({ series: info.series, z, inst: info.inst + fi / 1000, frame: fi, frames: info.frames, rows, cols, ps: info.ps, thick: info.thick, sbs: info.sbs, offset, px });
+  }
+  // فك الملفات المضغوطة بعد تحميل أدوات فك الضغط
+  async decodeDeferred(onProgress) {
+    if (!this.deferred.length) return;
+    await loadCodecs();
+    const list = this.deferred; this.deferred = [];
+    for (let i = 0; i < list.length; i++) {
+      const u8 = new Uint8Array(list[i]); list[i] = null; let ds;
+      try { ds = dicomParser.parseDicom(u8, { inflater: CBCTCodecs.inflater }); } catch (_) { continue; }
+      const pix = ds.elements.x7fe00010; if (!pix) continue;
+      const ts = ds.string("x00020010") || "1.2.840.10008.1.2.1";
+      if (!pix.encapsulatedPixelData) { this.addDicom(u8.buffer); continue; } // Deflated: تُقرأ الآن مع أداة الفك المحمّلة
+      const info = this.frameInfo(ds, ts); if (!info) continue;
+      let bot = null;
+      for (let fi = 0; fi < info.frames; fi++) {
+        let bytes;
+        if (info.frames === 1) bytes = dicomParser.readEncapsulatedPixelDataFromFragments(ds, pix, 0, pix.fragments.length);
+        else if (pix.basicOffsetTable && pix.basicOffsetTable.length) bytes = dicomParser.readEncapsulatedImageFrame(ds, pix, fi);
+        else if (pix.fragments.length === info.frames) bytes = dicomParser.readEncapsulatedPixelDataFromFragments(ds, pix, fi, 1);
+        else { bot = bot || dicomParser.createJPEGBasicOffsetTable(ds, pix); bytes = dicomParser.readEncapsulatedImageFrame(ds, pix, fi, bot); }
+        let raw;
+        try { raw = await CBCTCodecs.decodeFrame(ts, bytes, info); } catch (e) { this.unsupported.add(CODEC_NAMES[ts] || ts); break; }
+        this.pushFrame(info, fi, raw);
+        if (fi % 8 === 7) await new Promise((r) => setTimeout(r, 0));
+      }
+      if (onProgress) onProgress((i + 1) / list.length);
+    }
+  }
+  async finish(onProgress) {
+    await this.decodeDeferred(onProgress);
     const f = this.f;
     if (this.nnt.size) {
       const idxs = [...this.nnt.keys()].sort((a, b) => a - b);
@@ -823,13 +908,13 @@ class Assembler {
       return { nx: N, ny: N, nz: slices.length, slices, vox0, sx: vox0 * f, sy: vox0 * f, sz: vox0 * f, f, offset: 0, meta: { ...this.meta, voxelGuessed: !this.meta.voxel } };
     }
     if (this.dicom.length) {
-      const by = new Map(); for (const d of this.dicom) { if (!by.has(d.series)) by.set(d.series, []); by.get(d.series).push(d); }
-      const list = [...by.values()].sort((a, b) => b.length - a.length)[0];
+      const by = new Map(); for (const d of this.dicom) { const k = d.series + "|" + d.rows + "x" + d.cols; if (!by.has(k)) by.set(k, []); by.get(k).push(d); }
+      const list = [...by.values()].sort((a, b) => b.length - a.length)[0]; // أكبر سلسلة بنفس الأبعاد (نستبعد الصور الاستكشافية)
       const multi = list[0].frames > 1;
-      if (!multi && list.every((d) => d.z !== null)) list.sort((a, b) => a.z - b.z); else list.sort((a, b) => a.inst - b.inst);
+      if (list.every((d) => d.z !== null)) list.sort((a, b) => a.z - b.z); else list.sort((a, b) => a.inst - b.inst);
       const d0 = list[0];
       let sz = null;
-      if (!multi && list.length > 1 && list.every((d) => d.z !== null)) { const diffs = []; for (let i = 1; i < list.length; i++) diffs.push(Math.abs(list[i].z - list[i - 1].z)); diffs.sort((a, b) => a - b); sz = diffs[diffs.length >> 1]; }
+      if (list.length > 1 && list.every((d) => d.z !== null)) { const diffs = []; for (let i = 1; i < list.length; i++) diffs.push(Math.abs(list[i].z - list[i - 1].z)); diffs.sort((a, b) => a - b); sz = diffs[diffs.length >> 1]; }
       if (!sz) sz = d0.sbs || d0.thick || d0.ps[0] || 0.2;
       let slices = list.map((d) => d.px);
       if (f === 2) { const out = []; for (let k = 0; k + 1 < slices.length; k += 2) { const a = slices[k], b = slices[k + 1], o = new Uint16Array(a.length); for (let i = 0; i < o.length; i++) o[i] = (a[i] + b[i] + 1) >> 1; out.push(o); } slices = out; }
@@ -844,7 +929,8 @@ class Assembler {
 }
 
 const ERRORS = {
-  NO_SLICES: ["لم أجد شرائح أشعة داخل الملف. الصيغ المدعومة الآن: حزمة NewTom (NNTViewer) وDICOM غير المضغوط.", "No scan slices were found in the file. Supported now: NewTom (NNTViewer) packages and uncompressed DICOM."],
+  CODECS_LOAD: ["تعذّر تحميل أداة فك ضغط صور DICOM. تأكد من الاتصال بالإنترنت وأعد المحاولة مرة واحدة، وبعدها تعمل بدون إنترنت.", "Could not load the DICOM decompression tool. Check the internet connection and try once more; after that it works offline."],
+  NO_SLICES: ["لم أجد شرائح أشعة داخل الملف. البرنامج يقرأ حزم NewTom وملفات DICOM من كل الأجهزة (مضغوطة وغير مضغوطة، ملف واحد أو مجلد شرائح). تأكد أن الملف يحتوي صور الأشعة وليس برنامج العرض فقط.", "No scan slices were found in the file. The viewer reads NewTom packages and DICOM from all devices (compressed or not, one file or a folder of slices). Make sure the file contains the images and not only the viewer program."],
   OPEN_FAILED: ["تعذّر فتح الأرشيف. قد يكون الملف تالفاً، أو لم يكتمل تنزيله، أو محمياً بكلمة سر.", "The archive could not be opened. It may be damaged, not fully downloaded, or password-protected."],
   NO_MEMORY: ["ذاكرة الجهاز لا تكفي لفتح هذا الملف. اختر «مخففة» أو افتح الملف على جهاز أقوى.", "Not enough memory to open this file. Choose “Reduced” or use a stronger device."],
   NNT_SHAPE: ["شرائح NewTom في هذا الملف بأبعاد غير مربعة، وهذه الحالة غير مدعومة بعد.", "The NewTom slices in this file are not square; this case is not supported yet."],
@@ -882,7 +968,7 @@ function backToStart(err) {
 function openingStart() { try { if (S.quality === "full") localStorage.setItem("cbct.opening", String(Date.now())); } catch (_) {} }
 function openingDone() { try { localStorage.removeItem("cbct.opening"); } catch (_) {} }
 S._crashed = (() => { try { const t = +localStorage.getItem("cbct.opening"); localStorage.removeItem("cbct.opening"); return t > 0 && Date.now() - t < 30 * 60e3; } catch (_) { return false; } })();
-function isArchive(name) { return /\.(rar|zip|7z|tar|gz|tgz)$/i.test(name); }
+function isArchive(name) { return /\.(rar|zip|7z|tar|gz|tgz|iso)$/i.test(name); }
 
 async function openFile(file) {
   if (!file) return;
@@ -947,7 +1033,10 @@ async function finishLoad(asm) {
   setLoad(tr("بناء الحجم ثلاثي الأبعاد…", "Building the 3D volume…"), 0.96);
   await new Promise((r) => setTimeout(r, 30));
   let vol;
-  try { vol = asm.finish(); } catch (e) { backToStart(errText(e)); return; }
+  try {
+    if (asm.deferred.length) setLoad(tr("فك ضغط صور DICOM…", "Decompressing DICOM images…"), 0.9);
+    vol = await asm.finish((x) => setLoad(tr("فك ضغط صور DICOM… ", "Decompressing DICOM images… ") + Math.round(x * 100) + "%", 0.9 + 0.09 * x));
+  } catch (e) { backToStart(errText(e)); return; }
   clearInterval(loadTimer);
   const secs = Math.round((performance.now() - loadT0) / 1000);
   startViewer(vol);
@@ -1015,12 +1104,13 @@ function startViewer(vol) {
   S.cur = { x: vol.nx >> 1, y: vol.ny >> 1, z: vol.nz >> 1 };
   const P = percentiles(vol);
   S.presets = {
-    dent: { lo: Math.round(P(50) * 0.5), hi: P(99.7) },
+    // الأجهزة تخزّن القيم بإزاحات مختلفة (بعضها يجعل الهواء ≈ 31768 وليس صفراً)، فنحسب البداية من قاع المسح الفعلي
+    dent: { lo: Math.round(P(0.5) + (P(50) - P(0.5)) * 0.5), hi: P(99.7) },
     bone: { lo: P(75), hi: P(99.9) },
     soft: { lo: P(2), hi: P(92) },
     metal: { lo: P(99.4), hi: Math.max(P(100), P(99.4) + 10) },
   };
-  S.preset = "dent"; S.win = { ...S.presets.dent }; S.lutVer++;
+  S.preset = "dent"; S.adj = { b: 0, c: 100 }; S.win = { ...S.presets.dent }; S.lutVer++; syncWLPop();
   $("presetSel").value = "dent";
   $("loadScreen").hidden = true; $("startScreen").hidden = true; $("viewer").hidden = false;
   renderMeta();
@@ -2846,7 +2936,7 @@ drop.addEventListener("drop", (e) => { const fs = [...(e.dataTransfer.files || [
 $("toolSeg").querySelectorAll("button").forEach((b) => (b.onclick = () => setTool(b.dataset.tool)));
 $("presetSel").onchange = (e) => {
   if (e.target.value === "manual") { setTool("wl"); e.target.value = "manual"; return; }
-  S.preset = e.target.value; S.win = { ...S.presets[S.preset] }; if (S.presetsPano) S.winPano = { ...S.presetsPano[S.preset] }; S.lutVer++;
+  S.preset = e.target.value; S.adj = { b: 0, c: 100 }; S.win = { ...S.presets[S.preset] }; if (S.presetsPano) S.winPano = { ...S.presetsPano[S.preset] }; S.lutVer++; syncWLPop();
   if (S.tool === "wl") setTool("browse"); requestRender();
 };
 $("impSys").onchange = (e) => { // نظام آخر: نختار أقرب قطر وطول متوفرين فيه
@@ -2889,6 +2979,30 @@ $("nerveAuto").onclick = () => smartTrace();
 $("safeIn").onchange = (e) => { const v = parseFloat(e.target.value); if (v > 0 && v <= 5) { S.safety = v; updateSheet(); requestRender(); } };
 $("layoutSeg").querySelectorAll("button").forEach((b) => (b.onclick = () => { buildPanes(+b.dataset.n); assignDefaultViews(); }));
 initShare();
+/* ===== السطوع والتباين: فوق النافذة المختارة من القائمة ===== */
+function adjWin(w) {
+  const c = (w.lo + w.hi) / 2, wd = Math.max(20, w.hi - w.lo), wd2 = wd * 100 / S.adj.c, c2 = c - (S.adj.b / 100) * wd * 0.5;
+  return { lo: Math.round(c2 - wd2 / 2), hi: Math.round(c2 + wd2 / 2) };
+}
+function applyAdj() {
+  if (!S.presets) return;
+  const key = S.presets[S.preset] ? S.preset : "dent";
+  S.win = adjWin(S.presets[key]); if (S.presetsPano) S.winPano = adjWin(S.presetsPano[key]);
+  S.lutVer++; requestRender(); syncWLPop();
+}
+function syncWLPop() {
+  if (!S.adj) S.adj = { b: 0, c: 100 };
+  $("wlB").value = S.adj.b; $("wlC").value = S.adj.c; $("wlBv").textContent = (S.adj.b > 0 ? "+" : "") + S.adj.b; $("wlCv").textContent = S.adj.c + "%";
+}
+$("btnWL").onclick = () => { const p = $("wlPop"); p.hidden = !p.hidden; $("btnWL").setAttribute("aria-expanded", !p.hidden); if (S.preset === "manual" || S.tool === "wl") { $("presetSel").value = "dent"; S.preset = "dent"; if (S.tool === "wl") setTool("browse"); } syncWLPop(); };
+$("wlB").oninput = (e) => { S.adj.b = +e.target.value; applyAdj(); };
+$("wlC").oninput = (e) => { S.adj.c = +e.target.value; applyAdj(); };
+$("wlReset").onclick = () => { S.adj = { b: 0, c: 100 }; applyAdj(); };
+$("wlAuto").onclick = () => { // تلقائي: يعيد حساب النافذة من المسح الحالي ويختار «أسنان وعظم»
+  S.preset = "dent"; $("presetSel").value = "dent"; S.adj = { b: 0, c: 100 }; applyAdj();
+  toast(tr("ضُبط السطوع والتباين تلقائياً حسب هذا المسح", "Brightness and contrast set automatically for this scan"));
+};
+$("wlClose").onclick = () => { $("wlPop").hidden = true; $("btnWL").setAttribute("aria-expanded", "false"); };
 initPeer();
 /* ===== التثبيت كتطبيق ويب ===== */
 const INST = { evt: null };
