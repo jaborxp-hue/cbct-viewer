@@ -1,5 +1,5 @@
 // يحفظ البرنامج على الجهاز ليعمل بدون إنترنت بعد أول فتح. ملفات الأشعة لا تمر من هنا أبداً.
-const V = "cbct-f4e8e60f86";
+const V = "cbct-9a18555b5d";
 const CORE = ["./", "index.html", "cbct-worker.js", "libarchive.wasm", "cbct-codecs.js", "openjpegwasm_decode.wasm", "charlswasm_decode.wasm", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png",
   "https://cdn.jsdelivr.net/npm/dicom-parser@1.8.21/dist/dicomParser.min.js"];
 self.addEventListener("install", (e) => e.waitUntil(caches.open(V).then((c) => c.addAll(CORE)).then(() => self.skipWaiting())));

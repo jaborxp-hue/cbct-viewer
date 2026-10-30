@@ -633,6 +633,7 @@ bdi.ui{color:var(--fg);font-weight:600;white-space:nowrap;background:var(--ink-3
         <span class="badge" id="impNerve"></span>
         <span class="fine" id="impAngle"></span>
         <span class="spacer"></span>
+        <button class="paneact" type="button" id="impHelp" data-en="? How to choose">؟ كيف أختار</button>
         <button class="iconbtn quiet" type="button" id="impClose" data-en="Close">إغلاق</button>
       </div>
       <div class="row">
@@ -2136,6 +2137,46 @@ function buildLearn() {
 <dt>Maxillary sinus</dt><dd>A dark air space above the upper premolar and molar roots. Measure bone from the crest to the sinus floor and note any thickened lining.</dd>
 <dt>Nasal floor and incisive canal</dt><dd>The incisive (nasopalatine) canal lies behind the upper central incisors in the midline, clearly seen on axial and sagittal views.</dd>
 <dt>Cortical plates</dt><dd>The dense white lines bordering the cancellous bone on the buccal and lingual sides.</dd></dl>`] },
+  { id: "implantPick", ar: ["اختيار الزرعة ووضع أكثر من زرعة", `<ol>
+<li><b>ضع ${TM("Implant")}:</b> اضغط ${B("Implant", "Implant")} في الشريط العلوي، ثم انقر على ${TM("Panoramic")} في مكان السن المفقود، فيُفتح ${TM("Cross-section")} عنده. انقر على ${TM("Cross-section")} عند ${TM("Alveolar crest")} فتُوضع الزرعة.</li>
+<li><b>اختر الشركة والنظام:</b> من البطاقة أسفل الشاشة افتح قائمة ${TM("Implant system")}. الأنظمة مرتبة حسب الشركة (مثلاً تحت MIS تجد C1 و V3 و SEVEN). عند تغيير النظام يختار البرنامج تلقائياً أقرب قطر وطول متوفرين فيه.</li>
+<li><b>اختر ${TM("Diameter")} ثم ${TM("Length")}:</b> تظهر فقط الأقطار التي تنتجها الشركة فعلاً، وقائمة الأطوال تتغير حسب القطر. عند تغيير الطول تبقى ${TM("Platform")} في مكانها ويتحرك ${TM("Apex")} فقط.</li>
+<li><b>عدّل الموضع:</b> اسحب الزرعة لتحريكها، واسحب النقطة البيضاء عند ${TM("Apex")} لتغيير ${TM("Angulation")}. الشارة أعلى البطاقة تُظهر المسافة إلى ${TM("Canal")} وتحذّر إذا اقتربت أكثر من ${TM("Safety margin")}.</li>
+</ol>
+<h4>إضافة أكثر من زرعة</h4>
+<ul>
+<li>اترك ${B("Implant", "Implant")} مفعّلاً، وانقر على ${TM("Panoramic")} عند السن التالي، ثم انقر على ${TM("Cross-section")} <b>في مكان فارغ</b> فتُضاف زرعة جديدة. النقر على زرعة موجودة يحددها للتعديل فقط.</li>
+<li>الزرعات تُرقّم تلقائياً (زرعة ١، ٢، ٣…)، وكل زرعة جديدة تأخذ نفس النظام والقياس الذي اخترته للزرعة السابقة. ويمكن تغيير قياس أي زرعة وحدها.</li>
+<li>لتعديل زرعة سابقة انقر عليها في ${TM("Panoramic")} أو ${TM("Cross-section")}. وكل الزرعات تظهر في ${B("الخطة", "Plan")} للانتقال إليها أو حذفها.</li>
+<li>استخدم ${B("قياس", "Measure")} للتأكد أن ${TM("Inter-implant distance")} لا تقل عن نحو ٣ ملم.</li>
+</ul>
+<h4>نصائح لاختيار القياس</h4>
+<ul>
+<li>${TM("Diameter")}: اترك نحو ١٫٥ إلى ٢ ملم من العظم على جهتي ${TM("Buccal")} و${TM("Lingual")}. مثلاً عرض عظم ٧ ملم ← قطر نحو ٣٫٥ إلى ٤ ملم.</li>
+<li>${TM("Length")}: اترك نحو ٢ ملم فوق ${TM("Canal")} في الفك السفلي، وانتبه لـ ${TM("Sinus floor")} في العلوي.</li>
+<li>النظام الذي عليه ⚠ ${B("يحتاج تأكيد", "Verify")} في ${B("المكتبة", "Library")}: قارن القياس مع كتالوج الوكيل قبل الطلب. وإن لم تجد نظامك أضفه من ${B("المكتبة", "Library")}.</li>
+</ul>
+<p class="fine">الخطة كاملة بكل زرعاتها تُحفظ وتُرسل عند مشاركة الحالة مع طبيب آخر.</p>`],
+    en: ["Choosing implants and placing several", `<ol>
+<li><b>Place an implant:</b> press ${B("Implant", "Implant")} in the top bar, tap the panoramic at the missing tooth to open its cross-section, then tap the cross-section at the bone crest.</li>
+<li><b>Choose the manufacturer and system:</b> open the Implant system menu in the card below. Systems are grouped by company. Changing the system picks the nearest diameter and length that system actually offers.</li>
+<li><b>Choose the diameter, then the length:</b> only diameters the company makes are listed, and the lengths change with the diameter. Changing the length keeps the platform in place and moves the apex.</li>
+<li><b>Adjust:</b> drag the implant to move it; drag the white dot at the apex to tilt it. The badge at the top of the card shows the distance to the canal and warns inside the safety margin.</li>
+</ol>
+<h4>Adding more implants</h4>
+<ul>
+<li>Keep Implant on, tap the panoramic at the next tooth, then tap an <b>empty spot</b> on the cross-section to add a new implant. Tapping an existing implant only selects it.</li>
+<li>Implants are numbered automatically, and each new one starts with the system and size of the previous one. Each implant can be resized on its own.</li>
+<li>Tap an implant on the panoramic or cross-section to edit it again. All implants are listed in ${B("الخطة", "Plan")}.</li>
+<li>Use ${B("قياس", "Measure")} to check that implants are at least about 3 mm apart.</li>
+</ul>
+<h4>Sizing tips</h4>
+<ul>
+<li>Diameter: leave about 1.5–2 mm of bone buccally and lingually (7 mm of bone → about 3.5–4 mm implant).</li>
+<li>Length: leave about 2 mm above the canal in the mandible; watch the sinus floor in the maxilla.</li>
+<li>Systems marked ⚠ Verify in the Library: check sizes against the distributor catalog before ordering.</li>
+</ul>
+<p class="fine">The whole plan, with all implants, is saved and sent when you share the case.</p>`] },
   { id: "implant", ar: ["قائمة فحص قبل الزرعة", `<ul class="check">
 <li>${TM("Bone height")} فوق ${TM("Canal")} مع ترك ${TM("Safety margin")}، يُذكر عادة نحو ٢ ملم.</li>
 <li>${TM("Bone width")}: يُفضَّل بقاء نحو ١٫٥ إلى ٢ ملم من العظم حول ${TM("Implant")} من الجهتين ${TM("Buccal")} و${TM("Lingual")}.</li>
@@ -2314,7 +2355,7 @@ function howTo(view) {
   add("القائمة أعلى النافذة تغيّر نوعها (Axial، Panoramic، Cross-section…). النافذة الحمراء هي النشطة.", "The menu at the top changes the view type (axial, panoramic, cross-section…). The red-framed view is the active one.");
   // الأداة الحالية
   const tool = { measure: ["<b>أداة القياس:</b> انقر نقطتين فتظهر المسافة بالملم.", "<b>Measure tool:</b> tap two points to get the distance in mm."],
-    implant: ["<b>أداة الزرعة:</b> انقر على <bdi class=\"tm\">Cross-section</bdi> لوضع <bdi class=\"tm\">Implant</bdi>، اسحب وسطها لتحريكها، واسحب طرفها لتغيير <bdi class=\"tm\">Angulation</bdi>.", "<b>Implant tool:</b> tap the cross-section to place an implant, drag its middle to move it and its tip to tilt it."],
+    implant: ["<b>أداة الزرعة:</b> انقر على <bdi class=\"tm\">Cross-section</bdi> لوضع <bdi class=\"tm\">Implant</bdi>، اسحب وسطها لتحريكها، واسحب طرفها لتغيير <bdi class=\"tm\">Angulation</bdi>. اختر الشركة و<bdi class=\"tm\">Diameter</bdi> و<bdi class=\"tm\">Length</bdi> من البطاقة أسفل الشاشة. ولإضافة زرعة أخرى انقر على <bdi class=\"tm\">Panoramic</bdi> عند السن التالي ثم على مكان فارغ في <bdi class=\"tm\">Cross-section</bdi>.", "<b>Implant tool:</b> tap the cross-section to place an implant, drag its middle to move it and its tip to tilt it. Pick the company, diameter and length in the card below. To add another, tap the panoramic at the next tooth, then an empty spot on the cross-section."],
     nerve: ["<b>أداة القناة:</b> انقر نقاطاً على مسار <bdi class=\"tm\">Mandibular canal</bdi> في <bdi class=\"tm\">Panoramic</bdi>، ثم «تتبّع ذكي» يكمل المسار.", "<b>Canal tool:</b> tap points along the canal on the panoramic, then “Smart trace” completes it."],
     wl: ["<b>ضبط السطوع:</b> اسحب أفقياً للتباين <bdi class=\"tm\">Window width</bdi> وعمودياً للسطوع <bdi class=\"tm\">Window level</bdi>.", "<b>Brightness drag:</b> drag sideways for contrast and up/down for brightness."] }[S.tool];
   if (tool) add(tool[0], tool[1]);
@@ -4653,7 +4694,7 @@ $("impL").onchange = (e) => { // تغيير الطول يُبقي المنصة �
   const imp = S.implants.find((m) => m.id === S.sel); if (!imp) return; pushUndo("تغيير الطول", "changing the length");
   setImplantSize(imp, imp.D, parseFloat(e.target.value)); updateSheet(); updatePlan(); requestRender();
 };
-$("btnLib").onclick = openLib; $("btnLib2").onclick = openLib;
+$("btnLib").onclick = openLib; $("btnLib2").onclick = openLib; $("impHelp").onclick = () => openLearn("implantPick");
 $("btnLearn").onclick = () => openLearn(); $("btnLearnStart").onclick = () => openLearn("start");
 document.querySelectorAll(".beginnerTg").forEach((el) => (el.onchange = (e) => setBeginner(e.target.checked)));
 document.querySelectorAll(".learnLangSeg button").forEach((b) => (b.onclick = () => setLearnLang(b.dataset.ll)));
